@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import DaumPostcode from 'react-daum-postcode';  // 다음주소찾기
 import './App.css';
+
 
 function App() {
   const [myUserid, setMyUserid] = useState('');
@@ -14,10 +16,11 @@ function App() {
   const [customDomain, setCustomDomain] = useState('');
   const [isCustom, setIsCustom] = useState(false);
   const [address, setAddress] = useState('');
+  const [detailadd, setDetailadd] = useState('');
   const finalEmail = `${email}@${isCustom ? customDomain : domain}`;
+  const finaladd = `${address} ${detailadd}`
 
-
-
+  // 로그인버튼
   const handleLogin = () => {
     axios.post('/login', {
       userid: myUserid,
@@ -39,7 +42,7 @@ function App() {
       });
   };
 
-
+  // 회원가입 버튼 스프링부트로 POST 요청
   const handleSignup = () => {
     if (nickname == "") {
       alert("이름을 입력해주세요")
@@ -49,11 +52,21 @@ function App() {
       alert("비밀번호를 입력해주세요")
     } else if (myPassword != chkPassword) {
       alert("비밀번호 확인요망")
-    } else {
+    } else if (phone == "") {
+      alert("전화번호를 입력해주세요")
+    } else if (email == "") {
+      alert("이메일을 입력해주세요")
+    } else if (address == "") {
+      alert("주소를 입력해주세요")
+    }
+    else {
       axios.post('/signup', {
         username: nickname,
         userid: myUserid,
-        password: myPassword
+        password: myPassword,
+        phone: phone,
+        email: finalEmail,
+        address: finaladd
       })
         .then(res => {
           if (res.status === 200) {
@@ -81,7 +94,7 @@ function App() {
   };
 
 
-
+  // 이메일 도메인 직접입력 변경
   const handleDomainChange = (e) => {
     const value = e.target.value;
     if (value === 'custom') {
@@ -93,18 +106,19 @@ function App() {
     }
   };
 
-  // const openAddressPopup = () => {
-  //   const popup = window.open(
-  //     'https://business.juso.go.kr/addrlink/addrLinkUrl.do?confmKey=devU01TX0FVVEgyMDI1MDYxNjExMzgzNzExNTg0NzQ%3D&returnUrl=http://localhost:8080/juso',
-  //     'addrPopup',
-  //     'width=570,height=420,scrollbars=yes,resizeable=yes'
-  //   );
+  // 주소입력
+  const [isOpen, setIsOpen] = useState(false);
+  const handleComplete = (data) => {
+    setAddress(data.roadAddress || data.jibunAddress);
+    setIsOpen(false);
+  };
 
 
 
 
   return (
     <>
+
       {loginchange ?
         <>
           <h1>회원가입</h1>
@@ -164,28 +178,45 @@ function App() {
                 value={customDomain}
                 onChange={(e) => setCustomDomain(e.target.value)}
               />
-            ) : (
-              <select onChange={handleDomainChange}>
-                <option value="">선택하세요</option>
-                <option value="naver.com">naver.com</option>
-                <option value="daum.com">daum.com</option>
-                <option value="google.com">google.com</option>
-                <option value="custom">직접입력</option>
-              </select>
-            )}
+            ) : (<></>)}
+            <select onChange={handleDomainChange}>
+              <option value="">선택하세요</option>
+              <option value="naver.com">naver.com</option>
+              <option value="daum.com">daum.com</option>
+              <option value="google.com">google.com</option>
+              <option value="custom">직접입력</option>
+            </select>
             <div>{finalEmail}</div>
           </div>
           <div>
-            <label>주소: </label>
-            <button>주소찾기</button>
-            <div>
-              <input
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
+            <button onClick={() => setIsOpen(true)}>주소찾기</button>
+            <div>주소: {address}</div>
+            <label>세부주소: </label>
+            <input type="text" onChange={(e) => setDetailadd(e.target.value)} />
+            <div>{finaladd}</div>
           </div>
+          <div>
+            {isOpen && (
+              <div style={{
+                position: 'fixed',
+                top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 1000
+              }}>
+                <div style={{ background: '#fff', padding: '20px' }}>
+                  <DaumPostcode
+                    onComplete={handleComplete}
+                    style={{ width: '400px', height: '400px' }}
+                  />
+                  <button onClick={() => setIsOpen(false)}>닫기</button>
+                </div>
+              </div>
+            )}
+          </div>
+
 
           <button onClick={handleSignup}>회원가입</button>
           <button onClick={() => { setLoginchange(false) }} >로그인 하러가기</button>
