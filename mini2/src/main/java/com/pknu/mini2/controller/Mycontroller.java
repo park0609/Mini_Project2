@@ -38,6 +38,7 @@ public class Mycontroller {
 
             ResultSet rs = stmt.executeQuery();
 
+            // 암호화
             if (rs.next()) {
                 String hashedPassword = rs.getString("PASSWORD");
                 if (passwordEncoder.matches(password, hashedPassword)) {
