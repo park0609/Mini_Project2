@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './pages/Navbar';
-import { Button } from './pages/Button';
-import Chart from './pages/Chart';
+import Home from './pages/Home'
+import Login from './pages/Login';
 
 
 function App() {
@@ -10,13 +10,13 @@ function App() {
 
   return (
     <>
-      {/* <Router> */}
       <Navbar />
-      <Chart />
+
       <Routes>
-        <Route path='/' exact />
+        <Route path='/' element={<Home />} /> {/*메인 페이지*/}
+        <Route path='/Login' element={<Login />} /> {/*로그인 페이지*/}
       </Routes>
-      {/* </Router> */}
+
     </>
   );
 }
