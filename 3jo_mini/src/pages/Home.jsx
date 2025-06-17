@@ -1,8 +1,14 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import Chart from './Chart';
+
 const Home = () => {
     return (
         <>
-            <h1>Home 페이지 입니다.</h1>
-            <h2>React 예제를 준비하였습니다.</h2>
+            <Chart />
+            <Routes>
+                <Route path='/' exact />
+            </Routes>
         </>
     )
 }

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import DaumPostcode from 'react-daum-postcode';  // 다음주소찾기
-import './App.css';
+import './Login.css';
 
 
-function App() {
+function Login() {
   const [myUserid, setMyUserid] = useState('');
   const [myPassword, setMyPassword] = useState('');
   const [chkPassword, setChkPassword] = useState('');
@@ -255,4 +255,4 @@ function App() {
   );
 }
 
-export default App;
+export default Login;
