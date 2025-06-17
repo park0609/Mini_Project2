@@ -1,0 +1,98 @@
+.chart-slider {
+    position: fixed;
+    top: 120px;
+    right: 20px;
+    width: 900px;
+    height: 450px;
+    overflow: hidden;
+    background: white;
+    z-index: 1000;
+}
+
+.tab-slider-wrapper {
+    overflow: hidden;
+    width: 330px;
+    margin: 0 10px;
+}
+
+.tab-slider {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+}
+
+/* 탭 전체 묶음 */
+.swiper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 10px;
+    gap: 8px;
+    background: white;
+}
+
+/* 탭 하나 */
+.chart-tab-div {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 6px;
+    background-color: #c4c5c16e;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 180px;
+    text-align: center;
+    /* 줄바꿈 방지 */
+    white-space: nowrap;
+}
+
+/* 게이지 바 기본 상태 */
+.chart-tab-div .progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background-color: #B8CFCE;
+    width: 0%;
+}
+
+
+/* 선택된 탭 */
+.chart-tab-div:hover {
+    background-color: #5a5a596c;
+    color: white;
+}
+
+/* 현재 활성화된 탭 */
+.chart-tab-div.active {
+    background-color: #303333;
+    color: white;
+    font-weight: bold;
+}
+
+.tab-arrow {
+    background: none;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.tab-arrow:focus {
+    outline: none;
+}
+
+.tab-arrow:hover {
+    background-color: #46474660;
+    color: white;
+}
