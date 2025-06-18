@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import './App.css'
 import "react-calendar"
 import axios from 'axios'
@@ -53,16 +53,23 @@ function App() {
   // 일정표
   const [schedule, setSchedule] = useState("접수")
   const [data, setData] = useState([])
+  const [data2, setData2] = useState([])
 
   // Oracle에 있는 값 받아오기
   useEffect(() => {
-    axios.get("http://localhost:8080/api/data")
+    axios.get("/api/data")
       .then(response => {
-        console.log(response.data);
         setData(response.data);
       })
   }, [])
-  
+
+  useEffect(() => {
+    axios.get("/api/data2")
+    .then(response => {
+        setData2(response.data);
+      })
+  }, [])
+
   
 
   return (
@@ -90,12 +97,32 @@ function App() {
                   const isToday =
                     day === ToDay.getDate() &&
                     month === ToDay.getMonth() &&
-                    year === ToDay.getFullYear();
+                    year === ToDay.getFullYear()
 
+                     // 날짜 객체로 변환 (빈 셀은 null임)
+                    const thisDate = day !== null ? new Date(year, month, day) : null
+
+                    // 해당 날짜에 포함되는 일정만 필터
+                    const matchedSchedules = thisDate
+                      ? data.filter(v => {
+                          const start = new Date(v.START_DATE);
+                          const end = new Date(v.END_DATE);
+                          return (
+                            start <= thisDate &&
+                            thisDate <= end &&
+                            v.QUALI_TYPE.includes(schedule)
+                          );
+                        })
+                      : [];
+                    
                   return (
                     <td key={i} className={isToday ? 'today' : ''}>
                       {day || ''}
-
+                         <div className="bars">
+                              {matchedSchedules.map((_, idx) => (
+                          <div key={idx} className="bar" />
+                              ))}
+                            </div>           
                     </td>
                   );
                 })}
@@ -118,10 +145,10 @@ function App() {
           <div>
             {schedule === '접수' && <div>
               {data.filter((v => {
-                const StDate = new Date(v.STRAT_DATE)
+                const StDate = new Date(v.START_DATE)
                 const EnDate = new Date(v.END_DATE)
                 return (
-                  ((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month) && (v.QUALI_TYPE.includes("접수") || v.QUALI_TYPE.includes("제출")))
+                  (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month)) && (v.QUALI_TYPE.includes("접수") || v.QUALI_TYPE.includes("제출")))
                 )
               }))
                 .map((v, i) => (
@@ -133,10 +160,10 @@ function App() {
             </div>}
             {schedule === '시험' && <div>
               {data.filter((v => {
-                const StDate = new Date(v.STRAT_DATE)
+                const StDate = new Date(v.START_DATE)
                 const EnDate = new Date(v.END_DATE)
                 return (
-                  ((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month) && v.QUALI_TYPE.includes("시험"))
+                  (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month)) && v.QUALI_TYPE.includes("시험"))
                 )
               }))
                 .map((v, i) => (
@@ -148,10 +175,10 @@ function App() {
             </div>}
             {schedule === '결과' && <div>
               {data.filter((v => {
-                const StDate = new Date(v.STRAT_DATE)
+                const StDate = new Date(v.START_DATE)
                 const EnDate = new Date(v.END_DATE)
                 return (
-                  ((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month) && (v.QUALI_TYPE.includes("결과") || v.QUALI_TYPE.includes("발표")))
+                  (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month) )&& (v.QUALI_TYPE.includes("결과") || v.QUALI_TYPE.includes("발표")))
                 )
               }))
                 .map((v, i) => (

@@ -25,4 +25,10 @@ public class Mycontroller {
         String query = "SELECT * FROM quali_info";
         return jdbcTemplate.queryForList(query);
     }
+
+    @GetMapping("/data2")
+    public List<Map<String, Object>> GetData() {
+        String qurey = "SELECT * FROM QUALI_INFO qi JOIN QUALI_TITLE qt ON qi.QUALI_NAME  = qt.QUALI_NAME";
+        return jdbcTemplate.queryForList(qurey);
+    }
 }
