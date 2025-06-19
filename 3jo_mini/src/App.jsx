@@ -1,23 +1,59 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import Navbar from './pages/Navbar';
-import Home from './pages/Home'
-import Login from './pages/Login';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useRef, useEffect } from 'react';
 
+// 페이지 컴포넌트 import
+import Navbar from "./components/Navbar";
+import "./components/Navbar.css";
+import BoardList from './pages/BoardList';
+import PostWrite from './pages/PostWrite';
+import PostView from './pages/PostView';
+import PostModify from './pages/PostModify';
 
 function App() {
+  const navRef = useRef(null);
 
+  const handleScroll = () => {
+    if (!navRef.current) return;
+
+    if (window.scrollY > 0) {
+      navRef.current.style.position = "fixed";
+      navRef.current.style.top = "0";
+      navRef.current.style.left = "0";
+      navRef.current.style.width = "100%";
+      navRef.current.style.zIndex = "999";
+    } else {
+      navRef.current.style.position = "static";
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <>
-      <Navbar />
+    <Router>
+      <div ref={navRef}>
+        <Navbar />
+      </div>
+      <div style={{ paddingTop: "80px" }}>{/* ← 네비 높이만큼 밀어줌 */}
+        <Routes>
+          {/* 글 목록 */}
+          <Route path="/" element={<BoardList />} />
 
-      <Routes>
-        <Route path='/' element={<Home />} /> {/*메인 페이지*/}
-        <Route path='/Login' element={<Login />} /> {/*로그인 페이지*/}
-      </Routes>
+          {/* 글 작성 */}
+          <Route path="/postWrite" element={<PostWrite />} />
 
-    </>
+          {/* 글 상세보기 */}
+          <Route path="/postView" element={<PostView />} />
+
+          <Route path="/postModify" element={<PostModify />} />
+          <Route path="/InfoBoard" element={<InfoBoard />} />
+        </Routes>
+      </div>
+    </Router>
+
   );
 }
+
 export default App;
