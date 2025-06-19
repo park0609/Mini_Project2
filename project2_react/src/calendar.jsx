@@ -3,14 +3,14 @@ import './App.css'
 import "react-calendar"
 import axios from 'axios'
 
-function App() {
+function Calendar() {
   const ToDay = new Date()
   const ToDayYear = new Date().getFullYear()
   const ToDayMonth = new Date().getMonth()
   const [month, setMonth] = useState(ToDayMonth)
   const [year, setYear] = useState(ToDayYear)
   const dayStartMonth = new Date(year, month, 1).getDay()
-  const dayEndMonth = new Date(year, (month + 1), 0).getDate()
+  const dayEndMonth = new Date(year, (month), 0).getDate()
 
   // 월 증가 버튼 핸들러
   const changeMonthPrev = () => {
@@ -30,6 +30,14 @@ function App() {
       setMonth(month + 1);
     }
   }
+  // 오늘날짜 돌아가기
+  const ReturnDay = () => {
+    const returnMonth = new Date().getMonth()
+    const returnYear = new Date().getFullYear()
+    setMonth(returnMonth)
+    setYear(returnYear)
+  }
+
   // 달력 초기 설정 만들기
   const SetCalendar = () => {
     const cells = [];
@@ -53,7 +61,7 @@ function App() {
   // 일정표
   const [schedule, setSchedule] = useState("접수")
   const [data, setData] = useState([])
-  const [data2, setData2] = useState([])
+  const stripTime = (date) => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
   // Oracle에 있는 값 받아오기
   useEffect(() => {
@@ -63,17 +71,9 @@ function App() {
       })
   }, [])
 
-  useEffect(() => {
-    axios.get("/api/data2")
-    .then(response => {
-        setData2(response.data);
-      })
-  }, [])
-
-  
-
   return (
     <>
+      <button onClick={ReturnDay}>원래날짜</button>
       <button onClick={changeMonthPrev}>⬅️</button>
       <button onClick={changeMonthNext}>➡️</button>
       <div>{`${year}년 ${month + 1}월`}</div>
@@ -100,21 +100,22 @@ function App() {
                     year === ToDay.getFullYear()
 
                      // 날짜 객체로 변환 (빈 셀은 null임)
-                    const thisDate = day !== null ? new Date(year, month, day) : null
+                    const thisDate = day !== null ? stripTime(new Date(year, month, day)) : null
 
                     // 해당 날짜에 포함되는 일정만 필터
                     const matchedSchedules = thisDate
                       ? data.filter(v => {
-                          const start = new Date(v.START_DATE);
-                          const end = new Date(v.END_DATE);
+                          const start = stripTime(new Date(v.START_DATE));
+                          const end = stripTime(new Date(v.END_DATE));
+                          const ThisDate = stripTime(thisDate)
                           return (
-                            start <= thisDate &&
-                            thisDate <= end &&
-                            v.QUALI_TYPE.includes(schedule)
-                          );
-                        })
-                      : [];
-                    
+                              start.getTime() <= ThisDate.getTime() &&
+                              ThisDate.getTime() <= end.getTime() &&
+                              (schedule === '접수'
+                                ? v.QUALI_TYPE.includes("접수") || v.QUALI_TYPE.includes("제출")
+                                : schedule === '시험'
+                                ? v.QUALI_TYPE.includes("시험")
+                                : v.QUALI_TYPE.includes("결과") || v.QUALI_TYPE.includes("발표")))}): []
                   return (
                     <td key={i} className={isToday ? 'today' : ''}>
                       {day || ''}
@@ -145,8 +146,8 @@ function App() {
           <div>
             {schedule === '접수' && <div>
               {data.filter((v => {
-                const StDate = new Date(v.START_DATE)
-                const EnDate = new Date(v.END_DATE)
+                const StDate = stripTime(new Date(v.START_DATE))
+                const EnDate = stripTime(new Date(v.END_DATE))
                 return (
                   (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month)) && (v.QUALI_TYPE.includes("접수") || v.QUALI_TYPE.includes("제출")))
                 )
@@ -160,8 +161,8 @@ function App() {
             </div>}
             {schedule === '시험' && <div>
               {data.filter((v => {
-                const StDate = new Date(v.START_DATE)
-                const EnDate = new Date(v.END_DATE)
+                const StDate = stripTime(new Date(v.START_DATE))
+                const EnDate = stripTime(new Date(v.END_DATE))
                 return (
                   (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month)) && v.QUALI_TYPE.includes("시험"))
                 )
@@ -175,8 +176,8 @@ function App() {
             </div>}
             {schedule === '결과' && <div>
               {data.filter((v => {
-                const StDate = new Date(v.START_DATE)
-                const EnDate = new Date(v.END_DATE)
+                const StDate = stripTime(new Date(v.START_DATE))
+                const EnDate = stripTime(new Date(v.END_DATE))
                 return (
                   (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month) )&& (v.QUALI_TYPE.includes("결과") || v.QUALI_TYPE.includes("발표")))
                 )
@@ -196,4 +197,4 @@ function App() {
   )
 }
 
-export default App
+export default Calendar
