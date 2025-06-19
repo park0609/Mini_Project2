@@ -73,9 +73,8 @@ const PostWrite = () => {
     const handleCommit = () => {
         axios.post("http://localhost:8090/commit", {
             title: title,
-            content: content
-        }
-        )
+            content: content,
+        })
         /*  return console.log(title) */
 
     }
