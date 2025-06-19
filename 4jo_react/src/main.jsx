@@ -1,6 +1,7 @@
-import React from 'react'; // 이 줄이 꼭 있어야 함!
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import '@toast-ui/editor/dist/toastui-editor.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

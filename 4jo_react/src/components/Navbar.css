@@ -1,5 +1,18 @@
+.dropdown-menu li a {
+    font-size: 0.85rem;
+    color: #888;
+    text-decoration: none;
+    padding: 10px 12px;
+    display: block;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #f0f0f0;
+    color: black;
+}
+
 .navbar {
-    background: linear-gradient(90deg, rgb(28, 27, 27) 0%, rgb(26, 23, 23) 100%);
+    background: linear-gradient(135deg, #83e7d5 0%, #7388e7 100%);
     height: 80px;
     display: flex;
     justify-content: center;
@@ -24,7 +37,7 @@
 }
 
 .navbar-logo {
-    color: #fff;
+    color: black;
     justify-self: start;
     margin-left: 20px;
     cursor: pointer;
@@ -55,13 +68,15 @@
 }
 
 .nav-links {
-    color: #fff;
+
+    color: black;
     display: flex;
     align-items: center;
     text-decoration: none;
     padding: 0.5rem 1rem;
     height: 100%;
 }
+
 
 .nav-links:hover {
     border-bottom: 4px solid #fff;
@@ -160,4 +175,42 @@
         color: #242424;
         transition: 250ms;
     }
+
+    ul,
+    li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-menu li a {
+        font-size: 0.85rem;
+        color: #888;
+        text-decoration: none;
+        padding: 10px 12px;
+        display: block;
+    }
+
+
+
+    .small-grey {
+        font-size: 0.85rem;
+        color: #888;
+
+    }
+
+
+
+
+
+
 }

@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { Editor } from '@toast-ui/react-editor';
+import { useRef } from 'react';
+
 
 const PostWrite = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [author, setAuthor] = useState('');
     const navigate = useNavigate();
+    const editorRef = useRef();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        const content = editorRef.current.getInstance().getHTML(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
         const newPost = {
             title,
             content,
@@ -28,31 +32,63 @@ const PostWrite = () => {
     };
 
     return (
-        <div style={{ width: "80%", margin: "0 auto", marginTop: "40px" }}>
-            <h2> 게시판 글쓰기</h2>
-            <form onSubmit={handleSubmit}>
-                <div style={{ margin: "10px 0" }}>
-                    <label>제목: </label>
-                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-                </div>
-                <div style={{ margin: "10px 0" }}>
-                    <label>내용: </label><br />
-                    <textarea value={content} onChange={(e) => setContent(e.target.value)} rows="10" cols="80" required />
-                </div>
-                {/* <div style={{ margin: "10px 0" }}>
-                    <label>작성자: </label>
-                    <input type="text" value={author} onChange={(e) => setAuthor(e.target.value)} required />
-                </div> */}
-                <button type="submit">등록</button>
+        <div style={{ width: "100%", maxWidth: "900px", margin: "0 auto", marginTop: "200px" }}>
 
-                <div style={{ textAlign: "center", marginTop: "20px" }}>
-                    <Link to="/">
-                        <button type="button">목록</button>
-                    </Link>
+            {/* 제목 줄 */}
+            <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
+                <label style={{ width: "66px", fontWeight: "bold", textAlign: "right", paddingRight: "10px" }}>
+                    제목
+                </label>
+                <input
+                    type="text"
+                    placeholder="제목을 입력해 주세요."
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                    style={{
+                        flex: 1,
+                        height: "40px",
+                        fontSize: "16px",
+                        padding: "6px 10px",
+                        boxSizing: "border-box"
+                    }}
+                />
+            </div>
 
+            {/* 내용 줄 */}
+            <div style={{
+                display: "flex",
+                alignItems: "flex-start",
+                marginBottom: "20px"
+            }}>
+                <label style={{
+                    width: "80px",
+                    fontWeight: "bold",
+                    textAlign: "right",
+                    paddingRight: "10px",
+                    marginTop: "8px"
+                }}>
+                    내용
+                </label>
+                <div style={{ flex: 1 }}>
+                    <Editor
+                        ref={editorRef}
+                        previewStyle="vertical"
+                        height="400px"
+                        initialEditType="wysiwyg"
+                        useCommandShortcut={true}
+                    />
                 </div>
-            </form>
+            </div>
+
+            {/* 버튼 */}
+            <div style={{ textAlign: "center" }}>
+                <button style={{ marginRight: "10px" }}>등록</button>
+                <button>목록</button>
+            </div>
+
         </div>
+
     );
 };
 

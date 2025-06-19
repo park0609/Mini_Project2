@@ -16,6 +16,7 @@ const BoardWrite = () => {
     };
 
     return (
+
         <form onSubmit={handleSubmit}>
             <h2>글쓰기</h2>
             <input value={title} onChange={e => setTitle(e.target.value)} placeholder="제목" required />
@@ -24,6 +25,7 @@ const BoardWrite = () => {
             <br />
             <button type="submit">등록</button>
         </form>
+
     );
 };
 

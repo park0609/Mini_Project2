@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@toast-ui/editor": "^3.2.2",
+    "@toast-ui/react-editor": "^3.2.3",
     "axios": "^1.10.0",
     "bootstrap": "^5.3.6",
     "react": "^19.1.0",

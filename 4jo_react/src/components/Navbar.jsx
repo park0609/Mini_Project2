@@ -47,25 +47,24 @@ function Navbar() {
                                 Home
                             </Link>
                         </li>
-                        <li className='nav-item'>
-                            <Link to='/station' className='nav-links' onClick={closeMobileMenu}>
-                                Station
-                            </Link>
-                        </li>
-                        <li className='nav-item'>
-                            <Link to='/voc' className='nav-links' onClick={closeMobileMenu}>
-                                Voc
-                            </Link>
-                        </li>
-                        <li className='nav-item'>
-                            <Link to='/sign-up' className='nav-links-mobile' onClick={closeMobileMenu}>
-                                Sign Up
-                            </Link>
+
+                        {/* 드롭다운 메뉴 */}
+                        <li className='nav-item dropdown'>
+                            <span className='nav-links'>게시판</span>
+                            <ul className='dropdown-menu'>
+                                <li>
+                                    <Link to='/InfoBoard'>
+                                        정보게시판
+                                    </Link>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
+
+
                     {button && <Button buttonStyle='btn--outline'>SIGN UP</Button>}
                 </div>
-            </nav>
+            </nav >
         </>
     );
 }
