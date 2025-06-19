@@ -1,23 +1,20 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 
-const PostWrite = () => {
+const UpdateWrite = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [author, setAuthor] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
 
-    // 글 수정 여부 확인용
     const searchParams = new URLSearchParams(location.search);
     const postId = searchParams.get("no");
 
     useEffect(() => {
         if (postId) {
-            axios.get(`/posts/${postId}`)
+            axios.get(`http://localhost:8090/posts/${postId}`)
                 .then(res => {
                     const data = res.data;
                     setTitle(data.title);
@@ -30,35 +27,46 @@ const PostWrite = () => {
         }
     }, [postId]);
 
-    // 글 등록 & 수정
-    const handleSubmit = (e) => {
+    const ModifySubmit = (e) => {
         e.preventDefault();
 
         const newPost = {
+            id: postId, // 수정 시 id 꼭 포함!
             title,
             content,
             author,
-            date: new Date().toISOString().split('T')[0], // 날짜 형식: YYYY-MM-DD
+            date: new Date().toISOString().split('T')[0],
             views: 0,
         };
 
-        console.log("작성된 글:", newPost);
-        // 예시 목적 navigate만 있음
-        navigate("/");
-    };
-
-    const handleCommit = () => {
-        axios.post("http://localhost:8090/posts/commit", {
-            title: title,
-            content: content,
-            author: "홍길동"
-        });
+        if (postId) {
+            // 수정
+            axios.put(`http://localhost:8090/posts/${postId}`, newPost)
+                .then(() => {
+                    alert("글이 수정되었습니다.");
+                    navigate(`/postView?no=${postId}`);
+                })
+                .catch(err => {
+                    console.error("수정 실패", err);
+                });
+        }
+        // } else {
+        //     // 등록
+        //     axios.post("http://localhost:8090/posts", newPost)
+        //         .then(() => {
+        //             alert("글이 등록되었습니다.");
+        //             navigate("/");
+        //         })
+        //         .catch(err => {
+        //             console.error("등록 실패", err);
+        //         });
+        // }
     };
 
     return (
         <div style={{ width: "80%", margin: "0 auto", marginTop: "40px" }}>
-            <h2> 게시판 글쓰기</h2>
-            <form onSubmit={handleSubmit}>
+            <h2> 게시판 수정</h2>
+            <form onSubmit={ModifySubmit}>
                 <div style={{ margin: "10px 0" }}>
                     <label>제목: </label>
                     <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
@@ -71,7 +79,7 @@ const PostWrite = () => {
                     <label>작성자: </label>
                     <input type="text" value={author} onChange={(e) => setAuthor(e.target.value)} required />
                 </div>
-                <button type="submit" onClick={handleCommit}>등록</button>
+                <button type="submit">등록</button>
 
                 <div style={{ textAlign: "center", marginTop: "20px" }}>
                     <Link to="/">
@@ -83,4 +91,4 @@ const PostWrite = () => {
     );
 };
 
-export default PostWrite;
+export default UpdateWrite;

@@ -2,10 +2,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const dummyPosts = [
-    { _id: "1", title: "React 게시판 만들기", content: "내용입니다.", author: "관리자", date: "2025-06-18", views: 10 },
-    { _id: "2", title: "첫 글입니다", content: "이건 첫 글이에요.", author: "홍길동", date: "2025-06-17", views: 5 },
-];
+// const dummyPosts = [
+//     { _id: "1", title: "React 게시판 만들기", content: "내용입니다.", author: "관리자", date: "2025-06-18", views: 10 },
+//     { _id: "2", title: "첫 글입니다", content: "이건 첫 글이에요.", author: "홍길동", date: "2025-06-17", views: 5 },
+// ];
 
 const PostView = () => {
     const location = useLocation();
@@ -15,11 +15,21 @@ const PostView = () => {
 
     const [post, setPost] = useState(null);
 
+    // useEffect(() => {
+    //     // 임시 더미데이터에서 가져오기 (나중엔 axios.get)
+    //     const found = dummyPosts.find((p) => p._id === postId);
+    //     setPost(found);
+    // }, [postId]);
+
     useEffect(() => {
-        // 임시 더미데이터에서 가져오기 (나중엔 axios.get)
-        const found = dummyPosts.find((p) => p._id === postId);
-        setPost(found);
-    }, [postId]);
+        console.log("useEffect 실행됨")
+        axios.get(`http://localhost:8090/posts/${postId}`)
+            .then((res) => {
+                console.log("데이터 받음: ", res.data)
+                setPost(res.data); // 실제 글 목록으로 상태 설정
+            })
+            .catch((err) => console.error("에러: ", err));
+    }, []);
 
     const handleDelete = async () => {
         try {
@@ -34,7 +44,8 @@ const PostView = () => {
 
     const handleEdit = () => {
         // 글 수정 페이지로 이동 (이 예시에서는 PostWrite 재활용 가능)
-        navigate(`/postWrite?no=${postId}`);
+        navigate(`/postModify?no=${postId}`);
+        // navigate("/posts/{id}");
     };
 
     if (!post) return <div>❗게시글을 찾을 수 없습니다.</div>;
@@ -58,7 +69,8 @@ const PostView = () => {
                     </tr>
                     <tr>
                         <th>조회수</th>
-                        <td>{post.views}</td>
+                        {/* <td>{post.views}</td> */}
+                        <td>123</td>
                     </tr>
                     <tr>
                         <th>내용</th>

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BoardList from './pages/BoardList';
 import PostWrite from './pages/PostWrite';
 import PostView from './pages/PostView';
+import PostModify from './pages/PostModify';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
 
         {/* 글 상세보기 */}
         <Route path="/postView" element={<PostView />} />
+
+        <Route path="/postModify" element={<PostModify />} />
       </Routes>
     </Router>
   );
