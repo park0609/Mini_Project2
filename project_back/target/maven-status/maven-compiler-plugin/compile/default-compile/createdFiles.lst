@@ -1,0 +1,4 @@
+com/mini2/project_back/domain/Post.class
+com/mini2/project_back/repository/PostRepository.class
+com/mini2/project_back/ProjectBackApplication.class
+com/mini2/project_back/controller/MiniController.class

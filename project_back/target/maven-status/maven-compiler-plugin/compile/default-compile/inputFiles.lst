@@ -1,0 +1,4 @@
+/workspaces/mini_project2/project_back/src/main/java/com/mini2/project_back/ProjectBackApplication.java
+/workspaces/mini_project2/project_back/src/main/java/com/mini2/project_back/controller/MiniController.java
+/workspaces/mini_project2/project_back/src/main/java/com/mini2/project_back/domain/Post.java
+/workspaces/mini_project2/project_back/src/main/java/com/mini2/project_back/repository/PostRepository.java
