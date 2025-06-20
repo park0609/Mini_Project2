@@ -1,16 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import Chart from './Chart';
-import Calender from './calendar';
+import Chart from './pages/Chart.jsx';
+import Calendar from './pages/calendar.jsx';
+// import App from './App.jsx';
 
 const Home = () => {
     return (
-        <>
-            <Calender />
+        <>  
+            <Calendar />
             <Chart />
-            <Routes>
-                <Route path='/' exact />
-            </Routes>
+            
         </>
     )
 }

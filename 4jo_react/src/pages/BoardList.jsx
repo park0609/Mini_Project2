@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link, Routes, Route } from 'react-router-dom';
+// import PostWrite from './PostWrite';
+// import PostView from './PostView';
 
 //db 연결시삭제
 // const dummyPosts = [
@@ -10,18 +12,16 @@ import axios from 'axios';
 
 
 const BoardList = () => {
-
     const [post, setPost] = useState([]);
-
-
     useEffect(() => {
         axios.get("/posts/board_list")
-            .then(respose => {
-                setPost(respose.data)
+            .then(response => {
+                setPost(response.data)
             })
     }, [])
 
     return (
+        <>
         <div style={{ width: "80%", margin: "0 auto", marginTop: "40px" }}>
             <h2>게시판</h2>
 
@@ -57,6 +57,8 @@ const BoardList = () => {
                 </tbody>
             </table>
         </div>
+        
+        </>
     );
 };
 

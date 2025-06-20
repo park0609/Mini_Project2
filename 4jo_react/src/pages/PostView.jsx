@@ -27,7 +27,7 @@ const PostView = () => {
         try {
             await axios.delete(`http://localhost:8090/posts/${postId}`);
             alert("삭제되었습니다.");
-            navigate("/");
+            navigate("/boardlist");
         } catch (error) {
             console.error("삭제 중 오류 발생", error);
             alert("삭제에 실패했습니다.");
@@ -74,7 +74,7 @@ const PostView = () => {
             <div style={{ marginTop: "20px", textAlign: "right" }}>
                 <button onClick={handleEdit}>수정</button>{" "}
                 <button onClick={handleDelete}>삭제</button>{" "}
-                <button onClick={() => navigate("/")}>목록</button>
+                <button onClick={() => navigate("/boardlist")}>목록</button>
             </div>
         </div>
     );

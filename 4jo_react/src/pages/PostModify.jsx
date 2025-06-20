@@ -147,7 +147,7 @@ const UpdateWrite = () => {
                 {/* 버튼 */}
                 <div style={{ textAlign: "center" }}>
                     <button type="submit" style={{ marginRight: "10px" }}>등록</button>
-                    <Link to="/">
+                    <Link to="/boardlist">
                         <button type="button">목록</button>
                     </Link>
                 </div>

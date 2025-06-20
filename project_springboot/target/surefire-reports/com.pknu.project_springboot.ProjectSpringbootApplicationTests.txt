@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.pknu.project_springboot.ProjectSpringbootApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.427 s -- in com.pknu.project_springboot.ProjectSpringbootApplicationTests

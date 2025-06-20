@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from './Button';
 import './Navbar.css';
@@ -53,7 +53,7 @@ function Navbar() {
                             <span className='nav-links'>게시판</span>
                             <ul className='dropdown-menu'>
                                 <li>
-                                    <Link to='/board'>
+                                    <Link to='/boardlist'>
                                         정보게시판
                                     </Link>
                                 </li>
