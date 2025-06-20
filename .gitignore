@@ -26,3 +26,5 @@ replay_pid*
 .env
 config.json
 *.key
+
+node_modules/

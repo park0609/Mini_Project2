@@ -18,7 +18,7 @@ const charts = [
 const Chart = () => {
     const [current, setCurrent] = useState(0);              // current -> 화면에 보여줄(현재 선택된)차트 / 탭의 인덱스번호 저장
     const [isPaused, setIsPaused] = useState(false);        // 슬라이드, 게이지 일시정지
-    const [progress, setProgress] = useState(0);            // 하단 탭 베이지바 진행정도
+    const [progress, setProgress] = useState(0);            // 하단 탭 게이지바 진행정도
     const [tabStartIndex, setTabStartIndex] = useState(0);  // 시작하는 탭 인덱스 확인
     const [chartData, setChartData] = useState(null);
 
