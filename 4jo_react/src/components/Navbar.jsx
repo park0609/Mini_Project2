@@ -53,7 +53,7 @@ function Navbar() {
                             <span className='nav-links'>게시판</span>
                             <ul className='dropdown-menu'>
                                 <li>
-                                    <Link to='/InfoBoard'>
+                                    <Link to='/board'>
                                         정보게시판
                                     </Link>
                                 </li>

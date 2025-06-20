@@ -1,15 +1,15 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useRef, useEffect } from 'react';
-import '@toast-ui/editor/dist/toastui-editor.css';
+import React, { useRef, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home'
+import Login from './pages/Login';
+import Searchuser from './pages/Searchuser';
+import Mypage from './pages/Mypage';
+import Modifyprofile from './pages/Modifyprofile'
+import './App.css'
+import Board from './Board';
+import { Button } from './components/Button';
 
-// 컴포넌트 import
-import Navbar from "./components/Navbar";
-import "./components/Navbar.css";
-import BoardList from './pages/BoardList';
-import PostWrite from './pages/PostWrite';
-import PostView from './pages/PostView';
-import InfoBoard from './pages/InfoBoard';
-import PostModify from './pages/PostModify'
 
 function App() {
   const navRef = useRef(null);
@@ -34,24 +34,23 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <>
+
       <div ref={navRef}>
         <Navbar />
       </div>
-      <div style={{ paddingTop: "80px" }}>{/* ← 네비 높이만큼 밀어줌 */}
-        <Routes>
-          <Route path="/" element={<BoardList />} />
-          <Route path="/postWrite" element={<PostWrite />} />
-          <Route path="/postView" element={<PostView />} />
-          <Route path="/postModify" element={<PostModify />} />
-          <Route path="/InfoBoard" element={<InfoBoard />} />
-        </Routes>
-      </div>
-    </Router>
+
+
+      <Routes>
+        <Route path='/' element={<Home />} /> {/*메인 페이지*/}
+        <Route path='/Login' element={<Login />} /> {/*로그인 페이지*/}
+        <Route path='/Searchuser' element={<Searchuser />} /> {/* 아이디/비번찾기페이지 */}
+        <Route path='/Mypage' element={<Mypage />} /> {/* 마이페이지 */}
+        <Route path='/Mypage/Modifyprofile' element={<Modifyprofile />} /> {/* 회원정보수정페이지 */}
+        <Route path='/board' element={<Board />} /> {/* 게시판페이지 */}
+      </Routes>
+
+    </>
   );
 }
-
 export default App;
-
-
-
