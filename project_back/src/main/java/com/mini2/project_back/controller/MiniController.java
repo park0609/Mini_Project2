@@ -1,8 +1,9 @@
 package com.mini2.project_back.controller;
 
-import java.util.Optional;
+import java.util.List;
+// import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
+// import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +28,11 @@ public class MiniController {
         this.postRepository = postRepository;
     }
 
-    // // 전체 게시글 목록 조회
-    // @GetMapping
-    // public List<Post> getAllPosts() {
-    // return postRepository.findAll();
-    // }
+    // 전체 게시글 목록 조회
+    @GetMapping("/board_list")
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
+    }
 
     // 게시글 작성
     @PostMapping("/commit")
@@ -40,37 +41,40 @@ public class MiniController {
     }
 
     // 게시물 수정
-    @PutMapping("/posts/{id}")
-    public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody Post post) {
-        Optional<Post> optionalPost = postRepository.findById(id);
-
-        if (optionalPost.isPresent()) {
-            Post existingPost = optionalPost.get();
-            existingPost.setTitle(post.getTitle());
-            existingPost.setContent(post.getContent());
-            existingPost.setAuthor(post.getAuthor());
-            existingPost.setDate(post.getDate());
-
-            postRepository.save(existingPost); // 수정된 내용 저장
-            return ResponseEntity.ok("수정 성공");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 게시글이 없습니다.");
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post newPost) {
+        return postRepository.findById(id)
+                .map(post -> {
+                    post.setTitle(newPost.getTitle());
+                    post.setContent(newPost.getContent());
+                    post.setAuthor(newPost.getAuthor());
+                    post.setDate(newPost.getDate());
+                    return ResponseEntity.ok(postRepository.save(post));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // 수정할 내용 본문에 보여지게 하기
-    @GetMapping("/posts/{id}")
+    // // 수정할 내용 본문에 보여지게 하기
+    // @GetMapping("/posts/{id}")
+    // public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+    // Optional<Post> post = postRepository.findById(id);
+    // if (post.isPresent()) {
+    // return ResponseEntity.ok(post.get());
+    // } else {
+    // return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    // }
+    // }
+
+    // 선택한 게시물 보게 하기
+    @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable Long id) {
-        Optional<Post> post = postRepository.findById(id);
-        if (post.isPresent()) {
-            return ResponseEntity.ok(post.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return postRepository.findById(id)
+                .map(post -> ResponseEntity.ok(post))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     // 삭제 기능
-    @DeleteMapping("/posts/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         postRepository.deleteById(id);
         return ResponseEntity.noContent().build();
