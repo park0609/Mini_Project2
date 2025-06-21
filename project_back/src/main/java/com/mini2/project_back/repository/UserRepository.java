@@ -110,4 +110,22 @@ public class UserRepository {
         }
         return null;
     }
+
+    // 회원정보 수정
+    public int updateUser(UserDTO user) throws SQLException {
+        String sql = "UPDATE USER_INFO SET PASSWORD = ?, NAME = ?, PHONE = ?, EMAIL = ?, ADDRESS = ? WHERE ID = ?";
+
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getPassword());
+            stmt.setString(2, user.getUsername());
+            stmt.setString(3, user.getPhone());
+            stmt.setString(4, user.getEmail());
+            stmt.setString(5, user.getAddress());
+            stmt.setString(6, user.getUserid());
+
+            return stmt.executeUpdate();
+        }
+    }
 }

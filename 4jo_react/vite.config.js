@@ -8,6 +8,7 @@ export default defineConfig({
   },
   plugins: [react()],
   server: {
+    historyApiFallback: true,
     proxy: {
       '/api': 'http://localhost:8090',
       '/login': 'http://localhost:8090',
@@ -19,6 +20,8 @@ export default defineConfig({
       '/find-pw': 'http://localhost:8090',
       '/data': 'http://localhost:8090',
       '/data2': 'http://localhost:8090',
+      '/posts': 'http://localhost:8090',
+      '/modify-profile': 'http://localhost:8090',
     }
   }
 })

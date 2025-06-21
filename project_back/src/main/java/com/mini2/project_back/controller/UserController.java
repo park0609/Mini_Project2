@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -125,7 +126,7 @@ public class UserController {
             // 실제 DB 조회
             UserDTO userinfo = userService.getUserInfoById(userId);
             if (userinfo != null) {
-                return ResponseEntity.ok(Map.of("userid", userinfo.getUserid()));
+                return ResponseEntity.ok(Map.of("username", userinfo.getUsername()));
             } else {
                 return ResponseEntity.status(401).body("UNAUTHORIZED");
             }
@@ -158,6 +159,17 @@ public class UserController {
             return ResponseEntity.status(404).body("ID not found");
         } else {
             return ResponseEntity.ok(Map.of("pw", tempPw));
+        }
+    }
+
+    // 회원정보 수정하기
+    @PostMapping("/modify-profile")
+    public ResponseEntity<?> modifyProfile(@RequestBody UserDTO userDto) {
+        boolean result = userService.modifyUser(userDto);
+        if (result) {
+            return ResponseEntity.ok("수정 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("수정 실패");
         }
     }
 }

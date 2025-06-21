@@ -12,10 +12,11 @@ import { Link, Routes, Route } from 'react-router-dom';
 
 
 const BoardList = () => {
-    const [post, setPost] = useState({});
+    const [post, setPost] = useState([]);
     useEffect(() => {
         axios.get("/posts/board_list")
             .then(response => {
+                console.log("응답 데이터:", response.data);
                 setPost(response.data)
             })
     }, [])

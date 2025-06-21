@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 function Modifyprofile() {
 
     const [detailadd, setDetailadd] = useState('');
+    const [chkpassword, setChkpassword] = useState('');
     const navigate = useNavigate()
 
     const [userinfo, setUserinfo] = useState({
@@ -18,6 +19,17 @@ function Modifyprofile() {
         email: '',
         address: ''
     });
+
+    // 로그아웃관련
+    const handleLogout = () => {
+        axios.post('/logout', {}, { withCredentials: true })
+            .then(() => {
+                navigate("/login");
+            })
+            .catch(err => {
+                console.error("Logout failed", err);
+            });
+    };
 
 
     useEffect(() => {
@@ -55,6 +67,61 @@ function Modifyprofile() {
     const finaladd = `${userinfo.address} ${detailadd}`;
 
 
+    const handleModify = () => {
+        // 유효성 검사 예시
+        if (!userinfo.username) {
+            alert("이름을 입력해주세요");
+            return;
+        }
+        if (!userinfo.myPassword) {
+            alert("비밀번호를 입력해주세요");
+            return;
+        }
+        if (userinfo.myPassword !== chkpassword) {
+            alert("비밀번호 확인이 일치하지 않습니다");
+            return;
+        }
+        if (!userinfo.phone) {
+            alert("전화번호를 입력해주세요");
+            return;
+        }
+        if (!userinfo.email) {
+            alert("이메일을 입력해주세요");
+            return;
+        }
+        if (!userinfo.address) {
+            alert("주소를 입력해주세요");
+            return;
+        }
+
+        // 수정 요청
+        axios.post('/modify-profile', {
+            userid: userinfo.userid,
+            username: userinfo.username,
+            password: userinfo.myPassword,
+            phone: userinfo.phone,
+            email: userinfo.email,
+            address: finaladd
+        }, { withCredentials: true })
+            .then(res => {
+                if (res.status === 200) {
+                    alert(`회원정보가 성공적으로 수정되었습니다. 다시 로그인 해주세요`);
+                    handleLogout();
+                } else {
+                    alert(`수정 실패: ${res.status}`);
+                }
+            })
+            .catch(err => {
+                if (err.response) {
+                    alert(`서버 오류: ${err.response.status}`);
+                } else {
+                    console.error(err);
+                    alert("네트워크 오류");
+                }
+            });
+    };
+
+
 
     return (
         <>
@@ -69,6 +136,8 @@ function Modifyprofile() {
 
                     <label>비밀번호 변경:</label>
                     <input type="password" name="myPassword" value={userinfo.myPassword} onChange={handleChange} />
+                    <label>비밀번호 확인</label>
+                    <input type="password" name="chkpassword" value={chkpassword} onChange={(e) => { setChkpassword(e.target.value) }} />
 
                     <label>전화번호 변경:</label>
                     <input type="text" name="phone" value={userinfo.phone} onChange={handleChange} />
@@ -101,7 +170,7 @@ function Modifyprofile() {
                             </div>
                         </div>
                     )}
-                    <button>수정하기</button>
+                    <button onClick={handleModify}>수정하기</button>
                     <button onClick={() => navigate('/Mypage')}>뒤로가기</button>
                 </div>
             </div>

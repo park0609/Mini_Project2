@@ -1,6 +1,7 @@
 import axios from 'axios';
 import './Searchuser.css'
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Searchuser() {
 
@@ -9,6 +10,7 @@ function Searchuser() {
     const [userid, setUserid] = useState('')
     const [foundIds, setFoundIds] = useState([]);
     const [foundpw, setFoundPw] = useState('');
+    const navigate = useNavigate()
 
 
 
@@ -34,6 +36,8 @@ function Searchuser() {
                 const pw = res.data.pw;  // 서버에서 받은 비밀번호
                 setFoundPw(pw);          // 필요하면 상태에도 저장
                 alert(`임시 비밀번호는 ${pw} 입니다`);
+                navigate('/login')
+
             })
             .catch(err => {
                 if (err.response && err.response.status === 404) {
