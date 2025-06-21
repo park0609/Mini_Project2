@@ -55,21 +55,35 @@ public class UserService {
 
         // 랜덤 4자리 숫자 생성
         String tempPw = String.format("%04d", (int) (Math.random() * 10000));
-
         // 암호화
         String hashed = passwordEncoder.encode(tempPw);
-
         // DB 업데이트
         userRepository.updatePassword(userid, hashed);
-
         System.out.println("임시 비밀번호: " + tempPw);
-
-        return tempPw; // 암호화되지 않은 임시 비밀번호를 리턴
+        return tempPw;
     }
 
     // 쿠키에서 정보 가져오기
     public UserDTO getUserInfoById(String userId) {
         return userRepository.findById(userId);
+    }
+
+    // 회원정보 수정하기
+    public boolean modifyUser(UserDTO userDto) {
+        if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
+            // 암호화 수행
+            String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+            userDto.setPassword(encodedPassword);
+        } else {
+            return false;
+        }
+        try {
+            int rows = userRepository.updateUser(userDto);
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

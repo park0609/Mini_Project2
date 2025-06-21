@@ -17,6 +17,7 @@ const PostWrite = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const editorRef = useRef();
+    const [userinfo, setUserinfo] = useState([]);
 
 
     // 글 수정 여부 확인용
@@ -24,6 +25,17 @@ const PostWrite = () => {
     const postId = searchParams.get("no");
 
     useEffect(() => {
+        // 회원정보 가져오기
+        axios.get('/search-cookie', { withCredentials: true })
+            .then(res => {
+                setUserinfo(res.data)
+                console.log("사용자 정보:", res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                alert("인증 실패 또는 서버 오류");
+            });
+
         if (postId) {
             axios.get(`/posts/${postId}`)
                 .then(res => {
@@ -37,13 +49,17 @@ const PostWrite = () => {
                 });
         }
     }, [postId]);
+    useEffect(() => {
+        if (userinfo.username) {
+            setAuthor(userinfo.username);
+        }
+    }, [userinfo]);
 
     // 글 등록 
     const handleSubmit = (e) => {
         e.preventDefault();
         // const content = editorRef.current.getInstance().getHTML(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
         const content = editorRef.current.getInstance().getMarkdown(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
-
         const newPost = {
             title,
             content,
@@ -51,14 +67,8 @@ const PostWrite = () => {
             date: new Date().toISOString().split('T')[0], // 날짜 형식: YYYY-MM-DD
             views: 0,
         };
-        
 
-        // console.log("작성된 글:", newPost);
-        // // 예시 목적 navigate만 있음
-
-
-
-        axios.post("http://localhost:8090/posts/commit", newPost)
+        axios.post("/posts/commit", newPost)
             .then(() => {
                 alert("글이 등록되었습니다!");
                 navigate("/boardlist");
@@ -100,9 +110,9 @@ const PostWrite = () => {
                     </label>
                     <input
                         type="text"
-                        placeholder="작성자 이름"
+                        placeholder={userinfo.username}
                         value={author}
-                        onChange={(e) => setAuthor(e.target.value)}
+                        disabled
                         required
                         style={{
                             flex: 1,

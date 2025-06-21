@@ -9,23 +9,35 @@ const PostView = () => {
     const navigate = useNavigate();
     const searchParams = new URLSearchParams(location.search);
     const postId = searchParams.get("no");
-
+    const [userinfo, setUserinfo] = useState('');
     const [post, setPost] = useState(null);
 
 
     useEffect(() => {
+
         console.log("useEffect 실행됨")
-        axios.get(`http://localhost:8090/posts/${postId}`)
+        axios.get(`/posts/${postId}`)
             .then((res) => {
                 console.log("데이터 받음: ", res.data)
                 setPost(res.data); // 실제 글 목록으로 상태 설정
             })
             .catch((err) => console.error("에러: ", err));
+        // 회원정보 가져오기
+        axios.get('/search-cookie', { withCredentials: true })
+            .then(res => {
+                setUserinfo(res.data)
+                console.log("사용자 정보:", res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                alert("인증 실패 또는 서버 오류");
+            });
+
     }, [postId]);
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`http://localhost:8090/posts/${postId}`);
+            await axios.delete(`/posts/${postId}`);
             alert("삭제되었습니다.");
             navigate("/boardlist");
         } catch (error) {
@@ -72,8 +84,12 @@ const PostView = () => {
             </table>
 
             <div style={{ marginTop: "20px", textAlign: "right" }}>
-                <button onClick={handleEdit}>수정</button>{" "}
-                <button onClick={handleDelete}>삭제</button>{" "}
+                {userinfo && userinfo.username === post.author && (
+                    <>
+                        <button onClick={handleEdit}>수정</button>{" "}
+                        <button onClick={handleDelete}>삭제</button>{" "}
+                    </>
+                )}
                 <button onClick={() => navigate("/boardlist")}>목록</button>
             </div>
         </div>

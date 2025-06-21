@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 function Mypage() {
     const [userinfo, setUserinfo] = useState([]);
 
+
     useEffect(() => {
         axios.get('/search-cookie', { withCredentials: true })
             .then(res => {

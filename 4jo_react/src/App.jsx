@@ -60,7 +60,7 @@ function App() {
         <Route path="/postModify" element={<PostModify /> } />
         <Route path="/postView" element={<PostView /> } />
       </Routes>
-
+        
     </>
   );
 }
