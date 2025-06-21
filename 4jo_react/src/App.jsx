@@ -50,15 +50,15 @@ function App() {
             <Chart /> */}
       <Routes>
         <Route path='/' element={<Home />} /> {/*메인 페이지*/}
-        <Route path='/Login' element={<Login />} /> {/*로그인 페이지*/}
+        <Route path='/login' element={<Login />} /> {/*로그인 페이지*/}
         <Route path='/Searchuser' element={<Searchuser />} /> {/* 아이디/비번찾기페이지 */}
         <Route path='/Mypage' element={<Mypage />} /> {/* 마이페이지 */}
         <Route path='/Mypage/Modifyprofile' element={<Modifyprofile />} /> {/* 회원정보수정페이지 */}
         <Route path='/boardlist' element={<BoardList />} /> {/* 게시판페이지 */}
-        <Route path="/postWrite" element={<PostWrite /> } />
-        <Route path="/postView" element={<PostView /> } />
-        <Route path="/postModify" element={<PostModify /> } />
-        <Route path="/postView" element={<PostView /> } />
+        <Route path="/postWrite" element={<PostWrite />} />
+        <Route path="/postView" element={<PostView />} />
+        <Route path="/postModify" element={<PostModify />} />
+        <Route path="/postView" element={<PostView />} />
       </Routes>
 
     </>

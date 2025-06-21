@@ -107,6 +107,7 @@ function Login() {
               myPassword: '',
               phone: ''
             })
+            setChkPassword("");
             setLoginchange(false);
           }
         })
@@ -217,7 +218,7 @@ function Login() {
                 value={email ? finalEmail : ""} />
               <button onClick={() => setIsOpen(true)}>주소찾기</button>
               <label>세부주소: </label>
-              <input type="text" onChange={(e) => setDetailadd(e.target.value)} />
+              <input type="text" disabled={!userinfo.address} onChange={(e) => setDetailadd(e.target.value)} />
               <input type="text"
                 disabled
                 value={finaladd} />
@@ -242,7 +243,6 @@ function Login() {
               )}
               <button onClick={() => {
                 handleSignup();
-                setChkPassword("");
               }}>회원가입</button>
               <button onClick={() => {
                 setLoginchange(false);

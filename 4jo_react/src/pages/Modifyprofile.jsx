@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import './Modifyprofile.css'
 import axios from 'axios'
+import DaumPostcode from 'react-daum-postcode';
 import { useState, useEffect } from 'react';
 
 
 function Modifyprofile() {
 
+    const [detailadd, setDetailadd] = useState('');
     const navigate = useNavigate()
 
     const [userinfo, setUserinfo] = useState({
@@ -16,6 +18,7 @@ function Modifyprofile() {
         email: '',
         address: ''
     });
+
 
     useEffect(() => {
         axios.get('/search-cookie', { withCredentials: true })
@@ -38,6 +41,19 @@ function Modifyprofile() {
         }));
     };
 
+    // 주소입력
+    const [addressSelected, setAddressSelected] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const handleComplete = (data) => {
+        setUserinfo(prev => ({
+            ...prev,
+            address: data.roadAddress || data.jibunAddress
+        }));
+        setAddressSelected(true);
+        setIsOpen(false);
+    };
+    const finaladd = `${userinfo.address} ${detailadd}`;
+
 
 
     return (
@@ -48,21 +64,43 @@ function Modifyprofile() {
                     <label>아이디:</label>
                     <input type="text" name="userid" value={userinfo.userid} readOnly />
 
-                    <label>이름:</label>
+                    <label>이름 변경:</label>
                     <input type="text" name="username" value={userinfo.username} onChange={handleChange} />
 
-                    <label>비밀번호:</label>
+                    <label>비밀번호 변경:</label>
                     <input type="password" name="myPassword" value={userinfo.myPassword} onChange={handleChange} />
 
-                    <label>전화번호:</label>
+                    <label>전화번호 변경:</label>
                     <input type="text" name="phone" value={userinfo.phone} onChange={handleChange} />
 
-                    <label>이메일:</label>
+                    <label>이메일 변경:</label>
                     <input type="text" name="email" value={userinfo.email} onChange={handleChange} />
 
-                    <label>주소:</label>
-                    <input type="text" name="address" value={userinfo.address} onChange={handleChange} />
-
+                    <button onClick={() => setIsOpen(true)}>주소찾기</button>
+                    <label>세부주소: </label>
+                    <input type="text" disabled={!addressSelected} onChange={(e) => setDetailadd(e.target.value)} />
+                    <input type="text"
+                        disabled
+                        value={finaladd} />
+                    {isOpen && (
+                        <div style={{
+                            position: 'fixed',
+                            top: 0, left: 0, right: 0, bottom: 0,
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            zIndex: 1000
+                        }}>
+                            <div style={{ background: '#fff', padding: '20px' }}>
+                                <DaumPostcode
+                                    onComplete={handleComplete}
+                                    style={{ width: '400px', height: '400px' }}
+                                />
+                                <button onClick={() => setIsOpen(false)}>닫기</button>
+                            </div>
+                        </div>
+                    )}
                     <button>수정하기</button>
                     <button onClick={() => navigate('/Mypage')}>뒤로가기</button>
                 </div>
