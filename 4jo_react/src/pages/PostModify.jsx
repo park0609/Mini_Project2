@@ -21,7 +21,7 @@ const UpdateWrite = () => {
 
     useEffect(() => {
         if (postId) {
-            axios.get(`http://localhost:8090/posts/${postId}`)
+            axios.get(`/posts/${postId}`)
                 .then(res => {
                     const data = res.data;
                     setTitle(data.title);
@@ -48,7 +48,7 @@ const UpdateWrite = () => {
 
         if (postId) {
             // 수정
-            axios.put(`http://localhost:8090/posts/${postId}`, newPost)
+            axios.put(`/posts/${postId}`, newPost)
                 .then(() => {
                     alert("글이 수정되었습니다.");
                     navigate(`/postView?no=${postId}`);
@@ -147,7 +147,7 @@ const UpdateWrite = () => {
                 {/* 버튼 */}
                 <div style={{ textAlign: "center" }}>
                     <button type="submit" style={{ marginRight: "10px" }}>등록</button>
-                    <Link to="/">
+                    <Link to="/boardlist">
                         <button type="button">목록</button>
                     </Link>
                 </div>

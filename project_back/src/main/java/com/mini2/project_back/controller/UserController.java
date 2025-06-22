@@ -82,7 +82,7 @@ public class UserController {
             byte[] decodedBytes = Base64.getDecoder().decode(safeToken);
             String token = new String(decodedBytes, StandardCharsets.UTF_8);
 
-            // token: userId-타임스탬프 라고 가정
+            // token: userId-타임스탬프
             String[] parts = token.split("-");
             String userId = parts[0];
 
@@ -110,6 +110,32 @@ public class UserController {
         }
     }
 
+    // 로그인 상태확인
+    @GetMapping("/checklog")
+    public ResponseEntity<?> authMe(@CookieValue(name = "token", required = false) String safeToken) {
+        if (safeToken == null) {
+            return ResponseEntity.status(401).body("UNAUTHORIZED");
+        }
+        try {
+            byte[] decodedBytes = Base64.getDecoder().decode(safeToken);
+            String token = new String(decodedBytes, StandardCharsets.UTF_8);
+            String[] parts = token.split("-");
+            String userId = parts[0];
+
+            // 실제 DB 조회
+            UserDTO userinfo = userService.getUserInfoById(userId);
+            if (userinfo != null) {
+                return ResponseEntity.ok(Map.of("userid", userinfo.getUserid()));
+            } else {
+                return ResponseEntity.status(401).body("UNAUTHORIZED");
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("INVALID TOKEN");
+        }
+    }
+
+    // 아이디 찾기
     @PostMapping("/find-id")
     public ResponseEntity<?> findIdsByPassword(@RequestBody Map<String, String> body) {
         String inputPassword = body.get("password");
@@ -122,6 +148,7 @@ public class UserController {
         }
     }
 
+    // 비밀번호 찾기
     @PostMapping("/find-pw")
     public ResponseEntity<?> findPw(@RequestBody Map<String, String> body) {
         String userid = body.get("userid");

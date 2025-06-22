@@ -55,6 +55,7 @@ function Login() {
             myPassword: '',
             phone: ''
           })
+          window.location.reload();
         }
       })
       .catch(err => {

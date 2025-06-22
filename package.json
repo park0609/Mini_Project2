@@ -1,5 +1,12 @@
 {
   "dependencies": {
-    "@toast-ui/react-editor": "^3.2.3"
+    "@toast-ui/react-editor": "^3.2.3",
+    "apexcharts": "^4.7.0",
+    "react": "^17.0.2",
+    "react-apexcharts": "^1.7.0",
+    "react-calendar": "^6.0.0",
+    "react-daum-postcode": "^3.2.0",
+    "react-dom": "^17.0.2",
+    "react-toastify": "^8.2.0"
   }
 }

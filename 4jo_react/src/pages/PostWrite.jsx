@@ -52,16 +52,16 @@ const PostWrite = () => {
             views: 0,
         };
 
+
         // console.log("작성된 글:", newPost);
         // // 예시 목적 navigate만 있음
-        // navigate("/");
 
 
 
-        axios.post("http://localhost:8090/posts/commit", newPost)
+        axios.post("/posts/commit", newPost)
             .then(() => {
                 alert("글이 등록되었습니다!");
-                navigate("/");
+                navigate("/boardlist");
             })
             .catch(err => {
                 console.error("등록 실패", err);
@@ -145,7 +145,7 @@ const PostWrite = () => {
                 {/* 버튼 */}
                 <div style={{ textAlign: "center" }}>
                     <button type="submit" style={{ marginRight: "10px" }}>등록</button>
-                    <Link to="/">
+                    <Link to="/boardlist">
                         <button type="button">목록</button>
                     </Link>
                 </div>

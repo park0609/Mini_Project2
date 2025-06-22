@@ -1,0 +1,184 @@
+/* 메인 컨테이너 */
+.cert-container {
+    max-width: 112rem;
+    margin: 2.5rem auto 0;
+    width: 80rem;
+    height: 40rem;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* 검색창 영역 */
+.search-container {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    ring: 2px solid #3b82f6;
+    border-color: #3b82f6;
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+/* 메인 레이아웃 */
+.cert-layout {
+    display: flex;
+    gap: 1rem;
+}
+
+/* 탭 컨테이너 공통 */
+.tab-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-right: 1px solid #e5e7eb;
+    padding-right: 1rem;
+    min-width: 160px;
+}
+
+.cert-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-right: 1px solid #e5e7eb;
+    padding-right: 1rem;
+    min-width: 180px;
+}
+
+/* 버튼 공통 스타일 */
+.tab-button {
+    text-align: left;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-button:hover {
+    background-color: #dbeafe;
+}
+
+/* 메인 탭 (국가기술자격, 민간자격, 국제자격) */
+.main-tab.active {
+    background-color: #3b82f6;
+    color: white;
+}
+
+/* 서브 탭 (국가공인, 비공인) */
+.sub-tab:hover {
+    background-color: #dcfce7;
+}
+
+.sub-tab.active {
+    background-color: #22c55e;
+    color: white;
+}
+
+/* 자격증 버튼 */
+.cert-button:hover {
+    background-color: #f3f4f6;
+}
+
+.cert-button.active {
+    background-color: #4b5563;
+    color: white;
+}
+
+/* 검색 결과 */
+.search-results-header {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+}
+
+.search-result-item {
+    text-align: left;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.search-result-item:hover {
+    background-color: #f3f4f6;
+}
+
+.search-result-item.active {
+    background-color: #4b5563;
+    color: white;
+}
+
+.search-result-name {
+    font-weight: 500;
+}
+
+.search-result-category {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.125rem;
+}
+
+.search-result-item.active .search-result-category {
+    color: #d1d5db;
+}
+
+.no-results {
+    color: #6b7280;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+/* 자격증 상세 정보 */
+.cert-info {
+    padding: 1rem;
+    width: 100%;
+}
+
+.cert-title {
+    font-size: 2.75rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.cert-detail {
+    margin-bottom: 0.25rem;
+}
+
+.cert-label {
+    font-weight: 600;
+    position: relative;
+}
+
+.cert-label:nth-of-type(1) {
+    left: auto;
+
+}
+
+.cert-label:nth-of-type(2) {
+    left: auto;
+
+}

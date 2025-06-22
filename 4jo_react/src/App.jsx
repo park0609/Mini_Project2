@@ -1,14 +1,22 @@
-import React, { useRef, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './pages/Home'
-import Login from './pages/Login';
-import Searchuser from './pages/Searchuser';
-import Mypage from './pages/Mypage';
-import Modifyprofile from './pages/Modifyprofile'
-import './App.css'
-import Board from './Board';
-import { Button } from './components/Button';
+import { useEffect, useRef } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar.jsx';
+import Home from './Home'
+import './App.css';
+import Login from './pages/Login.jsx';
+import Modifyprofile from './pages/Modifyprofile.jsx';
+import Mypage from './pages/Mypage.jsx';
+import Searchuser from './pages/Searchuser.jsx';
+// import Board from './Board';
+// import { Button } from './components/Button';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import BoardList from './pages/BoardList.jsx';
+import PostModify from './pages/PostModify.jsx';
+import PostView from './pages/PostView.jsx';
+import PostWrite from './pages/PostWrite.jsx';
+import Chart from './pages/Chart';
+import Calendar from './pages/calendar';
+import CertInfo from './pages/CertInfo.jsx';
 
 
 function App() {
@@ -39,15 +47,20 @@ function App() {
       <div ref={navRef}>
         <Navbar />
       </div>
-
-
+      {/* <Calendar />
+            <Chart /> */}
       <Routes>
         <Route path='/' element={<Home />} /> {/*메인 페이지*/}
         <Route path='/Login' element={<Login />} /> {/*로그인 페이지*/}
         <Route path='/Searchuser' element={<Searchuser />} /> {/* 아이디/비번찾기페이지 */}
         <Route path='/Mypage' element={<Mypage />} /> {/* 마이페이지 */}
         <Route path='/Mypage/Modifyprofile' element={<Modifyprofile />} /> {/* 회원정보수정페이지 */}
-        <Route path='/board' element={<Board />} /> {/* 게시판페이지 */}
+        <Route path='/boardlist' element={<BoardList />} /> {/* 게시판페이지 */}
+        <Route path="/postWrite" element={<PostWrite />} />
+        <Route path="/postView" element={<PostView />} />
+        <Route path="/postModify" element={<PostModify />} />
+        <Route path="/postView" element={<PostView />} />
+        <Route path="/certInfo" element={<CertInfo />} />
       </Routes>
 
     </>

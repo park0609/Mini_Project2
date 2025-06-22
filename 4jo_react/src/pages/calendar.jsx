@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from 'react'
 import "react-calendar"
 import axios from 'axios'
 
-function Calender() {
+function Calendar() {
   const ToDay = new Date()
   const ToDayYear = new Date().getFullYear()
   const ToDayMonth = new Date().getMonth()
@@ -53,7 +53,7 @@ function Calender() {
   // 일정표
   const [schedule, setSchedule] = useState("접수")
   const [data, setData] = useState([])
-  const [data2, setData2] = useState([])
+  const stripTime = (date) => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
   // Oracle에 있는 값 받아오기
   useEffect(() => {
@@ -62,14 +62,6 @@ function Calender() {
         setData(response.data);
       })
   }, [])
-
-  useEffect(() => {
-    axios.get("/api/data2")
-      .then(response => {
-        setData2(response.data);
-      })
-  }, [])
-
 
 
   return (
@@ -103,26 +95,24 @@ function Calender() {
                   const thisDate = day !== null ? new Date(year, month, day) : null
 
                   // 해당 날짜에 포함되는 일정만 필터
-                  const matchedSchedules = thisDate
-                    ? data.filter(v => {
-                      const start = new Date(v.START_DATE);
-                      const end = new Date(v.END_DATE);
-                      return (
-                        start <= thisDate &&
-                        thisDate <= end &&
-                        v.QUALI_TYPE.includes(schedule)
-                      );
-                    })
-                    : [];
-
+                    const matchedSchedules = thisDate
+                      ? data.filter(v => {
+                          const start = stripTime(new Date(v.START_DATE));
+                          const end = stripTime(new Date(v.END_DATE));
+                          const ThisDate = stripTime(thisDate)
+                          return (
+                              start.getTime() <= ThisDate.getTime() &&
+                              ThisDate.getTime() <= end.getTime() &&
+                              (schedule === '접수' ? v.QUALI_TYPE.includes("접수") || v.QUALI_TYPE.includes("제출") : schedule === '시험'
+                                ? v.QUALI_TYPE.includes("시험") : v.QUALI_TYPE.includes("결과") || v.QUALI_TYPE.includes("발표")))}) : []
                   return (
                     <td key={i} className={isToday ? 'today' : ''}>
                       {day || ''}
-                      <div className="bars">
-                        {matchedSchedules.map((_, idx) => (
+                         <div className="bars">
+                              {matchedSchedules.map((_, idx) => (
                           <div key={idx} className="bar" />
-                        ))}
-                      </div>
+                              ))}
+                            </div>           
                     </td>
                   );
                 })}
@@ -145,55 +135,56 @@ function Calender() {
           <div>
             {schedule === '접수' && <div>
               {data.filter((v => {
-                const StDate = new Date(v.START_DATE)
-                const EnDate = new Date(v.END_DATE)
+                const StDate = stripTime(new Date(v.START_DATE))
+                const EnDate = stripTime(new Date(v.END_DATE))
                 return (
                   (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month)) && (v.QUALI_TYPE.includes("접수") || v.QUALI_TYPE.includes("제출")))
                 )
               }))
                 .map((v, i) => (
-                  <div key={i}>
-                    {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
-                    {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
-                  </div>)
+                    <div key={i}>
+                      {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
+                      {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
+                    </div>)
                 )}
             </div>}
             {schedule === '시험' && <div>
               {data.filter((v => {
-                const StDate = new Date(v.START_DATE)
-                const EnDate = new Date(v.END_DATE)
+                const StDate = stripTime(new Date(v.START_DATE))
+                const EnDate = stripTime(new Date(v.END_DATE))
                 return (
                   (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month)) && v.QUALI_TYPE.includes("시험"))
                 )
               }))
                 .map((v, i) => (
-                  <div key={i}>
-                    {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
-                    {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
-                  </div>)
+                    <div key={i}>
+                      {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
+                      {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
+                    </div>)
                 )}
             </div>}
             {schedule === '결과' && <div>
               {data.filter((v => {
-                const StDate = new Date(v.START_DATE)
-                const EnDate = new Date(v.END_DATE)
+                const StDate = stripTime(new Date(v.START_DATE))
+                const EnDate = stripTime(new Date(v.END_DATE))
                 return (
-                  (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month)) && (v.QUALI_TYPE.includes("결과") || v.QUALI_TYPE.includes("발표")))
+                  (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month) )&& (v.QUALI_TYPE.includes("결과") || v.QUALI_TYPE.includes("발표")))
                 )
               }))
                 .map((v, i) => (
-                  <div key={i}>
-                    {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
-                    {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
-                  </div>)
+                    <div key={i}>
+                      {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
+                      {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
+                    </div>)
                 )}
             </div>}
 
           </div>
         </div>
       </div>
+      <div></div>
     </>
   )
 }
 
-export default Calender
+export default Calendar
