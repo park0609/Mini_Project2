@@ -16,6 +16,7 @@ import PostView from './pages/PostView.jsx';
 import PostWrite from './pages/PostWrite.jsx';
 import Chart from './pages/Chart';
 import Calendar from './pages/calendar';
+import Qualipage from './pages/Qualipage.jsx';
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
         <Route path="/postView" element={<PostView /> } />
         <Route path="/postModify" element={<PostModify /> } />
         <Route path="/postView" element={<PostView /> } />
+        <Route path="/qualipage" element={<Qualipage />} />
       </Routes>
         
     </>

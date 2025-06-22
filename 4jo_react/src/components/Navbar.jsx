@@ -76,6 +76,12 @@ function Navbar() {
                             </Link>
                         </li>
 
+                        <li className='nav-item'>
+                            <Link to='/qualipage' className='nav-links' onClick={closeMobileMenu}>
+                                정보자격증
+                            </Link>
+                        </li>
+
                         {/* 드롭다운 메뉴 */}
                         <li className='nav-item dropdown'>
                             <span className='nav-links'><Link to='/boardlist'>

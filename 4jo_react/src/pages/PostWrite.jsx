@@ -14,10 +14,12 @@ const PostWrite = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [author, setAuthor] = useState('');
+    const [userid, setUserid] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
     const editorRef = useRef();
     const [userinfo, setUserinfo] = useState([]);
+
 
 
     // 글 수정 여부 확인용
@@ -52,6 +54,7 @@ const PostWrite = () => {
     useEffect(() => {
         if (userinfo.username) {
             setAuthor(userinfo.username);
+            setUserid(userinfo.userid);
         }
     }, [userinfo]);
 
@@ -66,6 +69,7 @@ const PostWrite = () => {
             author,
             date: new Date().toISOString().split('T')[0], // 날짜 형식: YYYY-MM-DD
             views: 0,
+            userid,
         };
 
         axios.post("/posts/commit", newPost)
@@ -141,13 +145,29 @@ const PostWrite = () => {
                     </label>
                     <div style={{ flex: 1 }}>
                         <Editor
-
                             initialEditType="wysiwyg"
                             initialValue={content}
                             ref={editorRef}
-                            previewStyle="vertical"
+                            previewStyle="tab"
                             height="400px"
                             useCommandShortcut={true}
+                            hooks={{
+                                addImageBlobHook: async (blob, callback) => {
+                                    const formData = new FormData();
+                                    formData.append('image', blob);
+
+                                    try {
+                                        const res = await axios.post("http://localhost:8090/api/upload-image", formData, {
+                                            headers: { 'Content-Type': 'multipart/form-data' }
+                                        });
+
+                                        callback(res.data, 'image'); // Toast UI에 삽입
+                                        console.log(res.data);
+                                    } catch (err) {
+                                        console.error("이미지 업로드 실패", err);
+                                    }
+                                }
+                            }}
                         />
                     </div>
                 </div>

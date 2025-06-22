@@ -136,9 +136,24 @@ const UpdateWrite = () => {
                             initialEditType="wysiwyg"
                             initialValue={content}
                             ref={editorRef}
-                            previewStyle="vertical"
+                            previewStyle="tab"
                             height="400px"
                             useCommandShortcut={true}
+                            hooks={{
+                                addImageBlobHook: async (blob, callback) => {
+                                    const formData = new FormData();
+                                    formData.append('image', blob);
+
+                                    try {
+                                        const res = await axios.post("http://localhost:8090/api/upload-image", formData, {
+                                            headers: { 'Content-Type': 'multipart/form-data' }
+                                        });
+                                        callback(res.data, 'image');
+                                    } catch (err) {
+                                        console.error("이미지 업로드 실패", err);
+                                    }
+                                }
+                            }}
                         />
                     </div>
                 </div>

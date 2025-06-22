@@ -13,7 +13,9 @@ public class SecurityConfig {
         http
                 .csrf().disable() // CSRF 비활성화 (API 개발용)
                 .authorizeHttpRequests()
-                .anyRequest().permitAll(); // 모든 요청 허용 (기본 로그인 창 차단)
+                .anyRequest().permitAll() // 모든 요청 허용 (기본 로그인 창 차단)
+                .and()
+                .logout().disable();
         return http.build();
     }
 }

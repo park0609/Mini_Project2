@@ -16,7 +16,7 @@ const BoardList = () => {
     useEffect(() => {
         axios.get("/posts/board_list")
             .then(response => {
-                console.log("응답 데이터:", response.data);
+                // console.log("응답 데이터:", response.data);
                 setPost(response.data)
             })
     }, [])

@@ -41,10 +41,10 @@ public class UserRepository {
     public int insertUser(UserDTO user) throws SQLException {
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(
-                        "INSERT INTO USER_INFO (ID, PASSWORD, NAME, PHONE, EMAIL, ADDRESS) VALUES (?, ?, ?, ?, ?, ?)")) {
+                        "INSERT INTO USER_INFO (ID, NAME, PASSWORD, PHONE, EMAIL, ADDRESS) VALUES (?, ?, ?, ?, ?, ?)")) {
             stmt.setString(1, user.getUserid());
-            stmt.setString(2, user.getPassword());
-            stmt.setString(3, user.getUsername());
+            stmt.setString(2, user.getUsername());
+            stmt.setString(3, user.getPassword());
             stmt.setString(4, user.getPhone());
             stmt.setString(5, user.getEmail());
             stmt.setString(6, user.getAddress());
