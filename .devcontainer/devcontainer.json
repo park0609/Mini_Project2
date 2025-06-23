@@ -1,0 +1,30 @@
+{
+    "name": "Fullstack Dev Container", // VS Code Dev Container 이름
+  
+    "build": {
+      "dockerfile": "Dockerfile" // 사용할 Dockerfile 경로
+    },
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "terminal.integrated.defaultProfile.linux": "bash" // 기본 터미널 셸을 bash로 설정
+        },
+        "extensions": [
+          "vscjava.vscode-java-pack", // Java 개발을 위한 통합 확장팩
+          "pivotal.vscode-spring-boot", // Spring Boot 지원 플러그인
+          "ms-azuretools.vscode-docker" // Docker 관리 도구
+        ]
+      }
+    },
+  
+    // 개발 서버 포트 포워딩 설정 (컨테이너 -> 로컬로 열기)
+    "forwardPorts": [
+      8080,  // Spring Boot 기본 포트
+      3000,  // React 앱(CRA) 기본 포트
+      5173,  // Vite 기본 포트
+      5500   // Live Server 등 기타 툴 포트
+    ],
+  
+    // 컨테이너 생성 완료 후 실행할 커맨드
+    "postCreateCommand": "echo 'Dev Container Ready!'"
+  }
