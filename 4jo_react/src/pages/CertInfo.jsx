@@ -1,104 +1,117 @@
-import React, { useState, useEffect } from 'react';
-// 검색 아이콘을 위해 lucide-react에서 Search 아이콘 가져옴
-import { Search } from 'lucide-react';
-// CSS 스타일 불러오기
+import React, { useState } from 'react';
+import { Search, MousePointerClick, ChevronsRight } from 'lucide-react';
 import './CertInfo.css';
 
-// 자격증 분류 데이터 (카테고리별로 자격증 이름 나열)
-const certData = {
-    국가기술자격: { 자격증: ['정보처리기사', '전기기사', '산업안전기사'] },
-    민간자격: {
-        국가공인: ['SQLD', 'ADsP', 'DAsP'],
-        비공인: ['코딩지도사', '엑셀전문가', 'OA Master'],
-    },
-    국제자격: { 자격증: ['OCA', 'OCP', 'OCM', 'LPIC'] },
+// 외부 JSON 파일 import (카테고리 > 자격증명 > 상세정보 구조)
+import certJson from '../data/CertDetails.json';
+
+// 자격증 목록 데이터를 기존 형식에 맞춰 변환하는 함수
+const buildCertList = (json) => {
+    const data = {};
+    for (const category in json) {
+        if (category === '민간자격') { // 민간자격은 하위분류있음
+            data[category] = {};
+            for (const sub in json[category]) {
+                data[category][sub] = Object.keys(json[category][sub]);
+            }
+        } else {
+            data[category] = {
+                자격증: Object.keys(json[category])
+            };
+        }
+    }
+    return data;
 };
 
-// 자격증별 상세 정보
-const certDetails = {
-    정보처리기사: { 설명: '정보시스템의 분석, 설계, 구현 등을 담당하는 자격증', 시행처: '한국산업인력공단' },
-    전기기사: { 설명: '전기설비의 설계, 시공, 검사 등을 담당', 시행처: '한국산업인력공단' },
-    산업안전기사: { 설명: '산업현장의 안전관리 및 재해예방', 시행처: '한국산업인력공단' },
-    SQLD: { 설명: 'SQL 개발자 자격증', 시행처: '한국데이터산업진흥원' },
-    ADsP: { 설명: '데이터분석 준전문가 자격증', 시행처: '한국데이터산업진흥원' },
-    DAsP: { 설명: '데이터아키텍처 준전문가 자격증', 시행처: '한국데이터산업진흥원' },
-    코딩지도사: { 설명: '초중등 SW 교육 관련 민간 자격증', 시행처: '한국코딩교육진흥협회' },
-    엑셀전문가: { 설명: 'Excel 활용 능력 인증 자격증', 시행처: '대한상공회의소' },
-    'OA Master': { 설명: '오피스 프로그램 종합 활용 자격증', 시행처: '한국생산성본부' },
-    OCA: { 설명: 'Oracle DB 기초 자격증', 시행처: 'Oracle Corporation' },
-    OCP: { 설명: 'Oracle DB 전문가 자격증', 시행처: 'Oracle Corporation' },
-    OCM: { 설명: 'Oracle DB 최고 전문가 자격증', 시행처: 'Oracle Corporation' },
-    LPIC: { 설명: '리눅스 시스템 관리자 자격증', 시행처: 'Linux Professional Institute' },
+// 자격증 목록 객체 생성
+const certData = buildCertList(certJson);
+
+// 상세 정보 가져오는 함수
+const getCertDetail = (category, subCategory, certName) => {
+    if (category === '민간자격') {
+        return certJson[category]?.[subCategory]?.[certName];
+    } else {
+        return certJson[category]?.[certName];
+    }
 };
 
 const CertInfo = () => {
-    // 상태 관리: 선택된 카테고리/서브카테고리/자격증/검색어/검색결과
-    const [mainTab, setMainTab] = useState(null);
-    const [subTab, setSubTab] = useState(null);
-    const [selectedCert, setSelectedCert] = useState(null);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
+    const [mainTab, setMainTab] = useState(null); // 대분류 선택 상태
+    const [subTab, setSubTab] = useState(null);   // 민간자격 하위 분류 상태
+    const [selectedCert, setSelectedCert] = useState(null); // 선택된 자격증 이름
+    const [searchQuery, setSearchQuery] = useState(''); // 검색어 상태
+    const [searchResults, setSearchResults] = useState([]); // 검색 결과 리스트
 
-    // 검색어가 입력될 때마다 결과 필터링
-    useEffect(() => {
-        if (!searchQuery.trim()) {
+    // 검색 처리 함수 (검색어가 바뀔 때 호출됨)
+    const handleSearch = (query) => {
+        if (!query.trim()) {
             setSearchResults([]);
             return;
         }
-
-        const query = searchQuery.toLowerCase();
+        const lowerQuery = query.toLowerCase();
         const results = [];
 
-        Object.entries(certData).forEach(([category, data]) => {
+        for (const category in certJson) {
             if (category === '민간자격') {
-                Object.entries(data).forEach(([subCategory, certs]) => {
-                    certs.forEach(cert => {
-                        const info = certDetails[cert];
+                for (const sub in certJson[category]) {
+                    for (const certName in certJson[category][sub]) {
+                        const cert = certJson[category][sub][certName];
                         if (
-                            cert.toLowerCase().includes(query) ||
-                            (info && info.설명.toLowerCase().includes(query))
+                            certName.toLowerCase().includes(lowerQuery) ||
+                            cert.설명?.toLowerCase().includes(lowerQuery)
                         ) {
-                            results.push({ name: cert, category, subCategory });
+                            results.push({ name: certName, category, subCategory: sub });
                         }
-                    });
-                });
-            } else {
-                data.자격증.forEach(cert => {
-                    const info = certDetails[cert];
-                    if (
-                        cert.toLowerCase().includes(query) ||
-                        (info && info.설명.toLowerCase().includes(query))
-                    ) {
-                        results.push({ name: cert, category });
                     }
-                });
+                }
+            } else {
+                for (const certName in certJson[category]) {
+                    const cert = certJson[category][certName];
+                    if (
+                        certName.toLowerCase().includes(lowerQuery) ||
+                        cert.설명?.toLowerCase().includes(lowerQuery)
+                    ) {
+                        results.push({ name: certName, category });
+                    }
+                }
             }
-        });
-
+        }
         setSearchResults(results);
-    }, [searchQuery]);
+    };
 
-    // 메인 카테고리 클릭 시 실행
+    // 메인 카테고리 클릭 시 처리
     const handleMainTabClick = (category) => {
         setMainTab(category);
         setSubTab(null);
         setSelectedCert(null);
         setSearchQuery('');
+        setSearchResults([]);
     };
 
-    // 서브 카테고리 클릭 시 실행 (민간자격만 해당)
+    // 서브 카테고리 클릭 시 처리
     const handleSubTabClick = (sub) => {
         setSubTab(sub);
         setSelectedCert(null);
     };
 
-    // 검색 결과에서 자격증 클릭 시 실행
+    // 검색창 입력 변화 처리
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        setSearchQuery(value);
+        handleSearch(value);
+    };
+
+    // 검색 결과 클릭 시 처리
     const handleSearchResultClick = (result) => {
         setSelectedCert(result.name);
         setMainTab(result.category);
         setSubTab(result.subCategory || null);
         setSearchQuery('');
+        setSearchResults([]);
     };
+
+    // 선택된 자격증 상세 정보 가져오기
+    const certInfo = selectedCert ? getCertDetail(mainTab, subTab, selectedCert) : null;
 
     return (
         <div className="cert-container">
@@ -109,13 +122,13 @@ const CertInfo = () => {
                     type="text"
                     placeholder="자격증명 또는 설명으로 검색..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={handleInputChange}
                     className="search-input"
                 />
             </div>
 
             <div className="cert-layout">
-                {/* 왼쪽: 메인 카테고리 목록 */}
+                {/* 왼쪽: 대분류 탭 */}
                 <div className="tab-container">
                     {Object.keys(certData).map((category) => (
                         <button
@@ -128,10 +141,9 @@ const CertInfo = () => {
                     ))}
                 </div>
 
-                {/* 가운데: 검색 결과 또는 자격증 목록 */}
+                {/* 가운데: 자격증 목록 또는 검색 결과 */}
                 <div className="cert-list-container">
                     {searchQuery.trim() ? (
-                        // 검색 결과가 있을 경우
                         <>
                             <div className="search-results-header">검색 결과 ({searchResults.length}개)</div>
                             {searchResults.length === 0 ? (
@@ -152,18 +164,16 @@ const CertInfo = () => {
                             )}
                         </>
                     ) : mainTab === '민간자격' && !subTab ? (
-                        // 민간자격의 경우 서브 카테고리 선택
-                        Object.keys(certData[mainTab]).map((type) => (
+                        Object.keys(certData[mainTab]).map((sub) => (
                             <button
-                                key={type}
-                                onClick={() => handleSubTabClick(type)}
-                                className={`tab-button sub-tab ${subTab === type ? 'active' : ''}`}
+                                key={sub}
+                                onClick={() => handleSubTabClick(sub)}
+                                className={`tab-button sub-tab ${subTab === sub ? 'active' : ''}`}
                             >
-                                {type} 민간자격
+                                {sub} 민간자격
                             </button>
                         ))
                     ) : mainTab === '민간자격' && subTab ? (
-                        // 서브 카테고리에서 자격증 목록 표시
                         certData[mainTab][subTab].map((cert) => (
                             <button
                                 key={cert}
@@ -174,7 +184,6 @@ const CertInfo = () => {
                             </button>
                         ))
                     ) : mainTab && certData[mainTab].자격증 ? (
-                        // 국가기술자격 / 국제자격 등
                         certData[mainTab].자격증.map((cert) => (
                             <button
                                 key={cert}
@@ -189,17 +198,58 @@ const CertInfo = () => {
                     )}
                 </div>
 
-                {/* 오른쪽: 자격증 상세 정보 표시 */}
+                {/* 오른쪽: 상세 정보 */}
                 <div className="cert-info">
-                    {selectedCert ? (
+                    {selectedCert && certInfo ? (
                         <>
-                            <h2 className="cert-title">{selectedCert}</h2>
-                            <p className="cert-detail">
-                                <span className="cert-label">설명:</span> {certDetails[selectedCert]?.설명 || '정보 없음'}
-                            </p>
-                            <p className="cert-detail">
-                                <span className="cert-label">시행처:</span> {certDetails[selectedCert]?.시행처 || '정보 없음'}
-                            </p>
+                            <div className="cert-header">
+                                <h2 className="cert-title">{selectedCert}</h2>
+
+                                {certInfo["시행기관"] && (
+                                    <div className="cert-agency-box">
+                                        <div className="cert-label">시행기관</div>
+                                        <div className="cert-agency">{certInfo["시행기관"]}</div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="cert-underline" />
+
+                            {Object.entries(certInfo).map(([key, value]) =>
+                                key === "시행기관" ? null : (
+                                    <p className="cert-detail" key={key}>
+                                        <span className="cert-label">
+                                            {key === "사이트" ? (
+                                                <MousePointerClick      /* 아이콘 */
+                                                    size={20}
+                                                    style={{ marginRight: "6px", verticalAlign: "middle" }}
+                                                />
+                                            ) : (
+                                                <ChevronsRight          /* 아이콘 */
+                                                    size={20}
+                                                    style={{ marginRight: "6px", verticalAlign: "middle" }}
+                                                />
+                                            )}
+                                            {key}
+                                        </span>
+                                        <br />
+                                        <span className="cert-value">
+                                            {key === "사이트" ? (       /* 사이트 링크 */
+                                                <a href={value} target="_blank" rel="noopener noreferrer" className="cert-link">
+                                                    {value}
+                                                </a>
+                                            ) : (                       /* json파일 내 \n 문자들 줄바꿈 처리 */
+                                                String(value).split('\n').map((line, idx) => (
+                                                    <React.Fragment key={idx}>
+                                                        {line}
+                                                        <br />
+                                                    </React.Fragment>
+                                                ))
+                                            )}
+                                        </span>
+                                    </p>
+                                )
+                            )}
                         </>
                     ) : (
                         <p>자격증을 선택해주세요</p>

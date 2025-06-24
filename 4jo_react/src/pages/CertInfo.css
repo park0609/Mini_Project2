@@ -1,9 +1,20 @@
+@font-face {
+    font-family: 'NanumSquare';
+    src: url('../assets/NanumSquare_acR.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'NanumSquare', sans-serif;
+}
+
 /* 메인 컨테이너 */
 .cert-container {
     max-width: 112rem;
     margin: 2.5rem auto 0;
-    width: 80rem;
-    height: 40rem;
+    width: 90rem;
+    height: 45rem;
     padding: 1.5rem;
     background-color: white;
     border-radius: 0.75rem;
@@ -17,7 +28,8 @@
 }
 
 .search-input {
-    width: 100%;
+    width: 70rem;
+    height: 2rem;
     padding: 0.5rem 1rem 0.5rem 2.5rem;
     border: 1px solid #d1d5db;
     border-radius: 0.5rem;
@@ -26,8 +38,9 @@
 }
 
 .search-input:focus {
-    ring: 2px solid #3b82f6;
-    border-color: #3b82f6;
+    box-shadow: 0 0 0 1.5rem solid #3b83f6a4;
+    border-color:
+        #3b83f68e;
 }
 
 .search-icon {
@@ -35,17 +48,19 @@
     left: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    color: #9ca3af;
 }
 
 /* 메인 레이아웃 */
 .cert-layout {
     display: flex;
     gap: 1rem;
+    height: 41rem;
+    /* cert-list-container의 부모 - 넘어가면 스크롤 생기는 길이 지정 */
 }
 
 /* 탭 컨테이너 공통 */
 .tab-container {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -61,7 +76,56 @@
     border-right: 1px solid #e5e7eb;
     padding-right: 1rem;
     min-width: 180px;
+    /* 스크롤바 생성 */
+    overflow-y: auto;
 }
+
+/* 스크롤바 */
+.cert-list-container::-webkit-scrollbar {
+    width: 10px;
+    /* 스크롤 바 너비 */
+}
+
+.cert-list-container::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    /* 스크롤 배경 */
+    border-radius: 10px;
+}
+
+.cert-list-container::-webkit-scrollbar-thumb {
+    background: #1d5ca856;
+    /* 스크롤 바 색상 */
+    border-radius: 10px;
+}
+
+.cert-list-container::-webkit-scrollbar-thumb:hover {
+    background: #f5eaf8ce;
+    /* 호버 시 색상 */
+}
+
+/* 자격증 상세내역 스크롤 바 */
+.cert-info::-webkit-scrollbar {
+    width: 10px;
+    /* 스크롤 바 너비 */
+}
+
+.cert-info::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    /* 스크롤 배경 */
+    border-radius: 10px;
+}
+
+.cert-info::-webkit-scrollbar-thumb {
+    background: #1d5ca856;
+    /* 스크롤 바 색상 */
+    border-radius: 10px;
+}
+
+.cert-info::-webkit-scrollbar-thumb:hover {
+    background: #f5eaf8ce;
+    /* 호버 시 색상 */
+}
+
 
 /* 버튼 공통 스타일 */
 .tab-button {
@@ -75,32 +139,38 @@
 }
 
 .tab-button:hover {
-    background-color: #dbeafe;
+    background-color:
+        #dbeafe;
 }
 
 /* 메인 탭 (국가기술자격, 민간자격, 국제자격) */
 .main-tab.active {
-    background-color: #3b82f6;
+    background-color:
+        #3b82f6;
     color: white;
 }
 
 /* 서브 탭 (국가공인, 비공인) */
 .sub-tab:hover {
-    background-color: #dcfce7;
+    background-color:
+        #dcfce7;
 }
 
 .sub-tab.active {
-    background-color: #22c55e;
+    background-color:
+        #22c55e;
     color: white;
 }
 
 /* 자격증 버튼 */
 .cert-button:hover {
-    background-color: #f3f4f6;
+    background-color:
+        #f3f4f6;
 }
 
 .cert-button.active {
-    background-color: #4b5563;
+    background-color:
+        #4b5563;
     color: white;
 }
 
@@ -108,7 +178,8 @@
 .search-results-header {
     font-size: 0.875rem;
     font-weight: 500;
-    color: #4b5563;
+    color:
+        #4b5563;
     margin-bottom: 0.5rem;
 }
 
@@ -124,11 +195,13 @@
 }
 
 .search-result-item:hover {
-    background-color: #f3f4f6;
+    background-color:
+        #f3f4f6;
 }
 
 .search-result-item.active {
-    background-color: #4b5563;
+    background-color:
+        #4b5563;
     color: white;
 }
 
@@ -138,35 +211,99 @@
 
 .search-result-category {
     font-size: 0.75rem;
-    color: #6b7280;
+    color:
+        #6b7280;
     margin-top: 0.125rem;
 }
 
 .search-result-item.active .search-result-category {
-    color: #d1d5db;
+    color:
+        #d1d5db;
 }
 
 .no-results {
-    color: #6b7280;
+    color:
+        #6b7280;
     text-align: center;
     padding: 1rem 0;
 }
 
 /* 자격증 상세 정보 */
 .cert-info {
-    padding: 1rem;
+    padding: 2rem 3rem;
     width: 100%;
+    overflow-y: auto;
+}
+
+/* 여기서부터 */
+.cert-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
 .cert-title {
-    font-size: 2.75rem;
+    font-size: 2rem;
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    margin: 0;
 }
+
+.cert-agency-box {
+    /* background: linear-gradient(135deg, #1E40AF, #3B82F6); */
+    background: #1d5ba8;
+    /* box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); */
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    text-align: right;
+}
+
+.cert-underline {
+    height: 3px;
+    background: linear-gradient(to right, #3b82f6, #60a5fa, transparent);
+    border-radius: 2px;
+    margin: 10px 0;
+}
+
+
+/* 여기까지 */
+
+/* .cert-title {
+    text-align: left;
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: #1f2937;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+} */
+
+/* .cert-detail:nth-of-type(1)::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa, transparent);
+    border-radius: 2px;
+} */
+
+/* 상세보기 타이틀과 본문 사이 간격 /
+/ .cert-detailmargin {
+    margin-top: 3rem;
+} */
 
 .cert-detail {
     margin-bottom: 0.25rem;
+    text-align: left;
 }
+
+
 
 .cert-label {
     font-weight: 600;
