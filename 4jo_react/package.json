@@ -16,6 +16,7 @@
     "axios": "^1.10.0",
     "bootstrap": "^5.3.6",
     "calendar": "^0.1.1",
+    "lucide-react": "^0.522.0",
     "react": "^19.1.0",
     "react-apexcharts": "^1.7.0",
     "react-calendar": "^6.0.0",

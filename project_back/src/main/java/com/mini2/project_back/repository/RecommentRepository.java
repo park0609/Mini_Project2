@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RecommentRepository extends JpaRepository<Recomment, Long> {
-    List<Recomment> findByCommentId(Long commentId);
+    List<Recomment> findByCommentIdOrderByDateDesc(Long commentId);
+
+    List<Recomment> findByCommentIdOrderByDateAsc(Long commentId);
 }

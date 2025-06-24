@@ -1,9 +1,11 @@
 package com.mini2.project_back.controller;
 
 import com.mini2.project_back.domain.Comment;
+import com.mini2.project_back.dto.CommentResponseDTO;
 import com.mini2.project_back.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -17,9 +19,9 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Comment>> getComments(@PathVariable Long postId) {
-        List<Comment> comments = commentService.getCommentsByPostId(postId);
-        return ResponseEntity.ok(comments);
+    public ResponseEntity<List<CommentResponseDTO>> getCommentsWithRecomments(@PathVariable Long postId) {
+        List<CommentResponseDTO> dtos = commentService.getCommentsWithRecomments(postId);
+        return ResponseEntity.ok(dtos);
     }
 
     @PostMapping
@@ -27,5 +29,11 @@ public class CommentController {
         comment.setPostId(postId);
         Comment saved = commentService.addComment(comment);
         return ResponseEntity.ok(saved);
+    }
+
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+        return ResponseEntity.ok().build();
     }
 }

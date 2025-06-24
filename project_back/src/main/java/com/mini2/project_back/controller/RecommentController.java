@@ -4,10 +4,11 @@ import com.mini2.project_back.domain.Recomment;
 import com.mini2.project_back.service.RecommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/posts/{postId}/comments/{commentId}/recomments")
+@RequestMapping("/posts/{postId}")
 public class RecommentController {
 
     private final RecommentService recommentService;
@@ -16,15 +17,22 @@ public class RecommentController {
         this.recommentService = recommentService;
     }
 
-    @GetMapping
+    @GetMapping("/comments/{commentId}/recomments")
     public ResponseEntity<List<Recomment>> getRecomments(@PathVariable Long commentId) {
-        return ResponseEntity.ok(recommentService.getRecommentsByCommentId(commentId));
+        List<Recomment> recomments = recommentService.getRecommentsByCommentId(commentId);
+        return ResponseEntity.ok(recomments);
     }
 
-    @PostMapping
-    public ResponseEntity<Recomment> addRecomment(@PathVariable Long commentId,
-            @RequestBody Recomment recomment) {
+    @PostMapping("/comments/{commentId}/recomments")
+    public ResponseEntity<Recomment> addRecomment(@PathVariable Long commentId, @RequestBody Recomment recomment) {
         recomment.setCommentId(commentId);
-        return ResponseEntity.ok(recommentService.addRecomment(recomment));
+        Recomment saved = recommentService.addRecomment(commentId, recomment);
+        return ResponseEntity.ok(saved);
+    }
+
+    @DeleteMapping("/recomments/{recommentId}")
+    public ResponseEntity<Void> deleteRecomment(@PathVariable Long recommentId) {
+        recommentService.deleteRecomment(recommentId);
+        return ResponseEntity.ok().build();
     }
 }

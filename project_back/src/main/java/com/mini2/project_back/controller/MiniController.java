@@ -80,4 +80,15 @@ public class MiniController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}/view")
+    public ResponseEntity<Void> incrementViewCount(@PathVariable Long id) {
+        Post post = postRepository.findById(id).orElse(null);
+        if (post == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        post.setViewCount(post.getViewCount() + 1);
+        postRepository.save(post);
+        return ResponseEntity.ok().build();
+    }
 }
