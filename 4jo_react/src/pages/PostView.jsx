@@ -19,17 +19,25 @@ const PostView = () => {
     const [likeCount, setLikeCount] = useState()
 
     useEffect(() => {
+
+        console.log("useEffect 실행됨")
         axios.get(`/posts/${postId}`)
-            .then(res => setPost(res.data))
-            .catch(err => console.error("게시글 불러오기 실패", err));
-
+            .then((res) => {
+                console.log("데이터 받음: ", res.data)
+                setPost(res.data); // 실제 글 목록으로 상태 설정
+            })
+            .catch((err) => console.error("에러: ", err));
+        // 회원정보 가져오기
         axios.get('/search-cookie', { withCredentials: true })
-            .then(res => setUserinfo(res.data))
-            .catch(() => alert("인증 실패 또는 서버 오류"));
+            .then(res => {
+                setUserinfo(res.data)
+                console.log("사용자 정보:", res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                alert("인증 실패 또는 서버 오류");
+            });
 
-        axios.get(`/posts/${postId}/comments`)
-            .then(res => setComments(res.data))
-            .catch(err => console.error("댓글 가져오기 실패", err));
     }, [postId]);
 
     const handleAddComment = () => {
@@ -190,65 +198,13 @@ const PostView = () => {
             </table>
             {/* 
             <div style={{ marginTop: "20px", textAlign: "right" }}>
-                <button onClick={handleEdit}>수정</button>{" "}
-                <button onClick={handleDelete}>삭제</button>{" "}
-                <button onClick={() => navigate("/boardlist")}>목록</button>
-            </div> */}
-            <div style={{ marginTop: "20px", textAlign: "right" }}>
-                <button onClick={() => handleLike()}>{like ? "❤️‍🔥 좋아용" : "❤️ 싫어용"}</button>
-                {userinfo && userinfo.userid === post.userid && (
+                {userinfo && userinfo.username === post.author && (
                     <>
                         <button onClick={handleEdit}>수정</button>{" "}
                         <button onClick={handleDelete}>삭제</button>{" "}
                     </>
                 )}
                 <button onClick={() => navigate("/boardlist")}>목록</button>
-            </div>
-
-            <div style={{ marginTop: "30px" }}>
-                <h3>💬 댓글</h3>
-                {comments.length === 0 && <p>댓글이 없습니다.</p>}
-                <ul style={{ listStyle: "none", padding: 0 }}>
-                    {comments.map((cmt) => (
-                        <li key={cmt.id} style={{ padding: "5px 0", borderBottom: "1px solid #ccc" }}>
-                            <strong>{cmt.author}</strong>: {cmt.content}
-                            {userinfo.userid === cmt.authorId && (
-                                <button onClick={() => handleDeleteComment(cmt.id)} style={{ marginLeft: "10px" }}>댓글삭제</button>
-                            )}
-                            <button onClick={() => setRecommentingTo(cmt.id)} style={{ marginLeft: "10px" }}>답글쓰기</button>
-                            {cmt.recomments && cmt.recomments.map(re => (
-                                <div key={re.id} style={{ marginLeft: "20px", paddingTop: "2px" }}>
-                                    <strong>{re.author}</strong>: {re.content}
-                                    {userinfo.userid === re.authorId && (
-                                        <button onClick={() => handleDeleteRecomment(re.id)} style={{ marginLeft: "10px" }}>답글삭제</button>
-                                    )}
-                                </div>
-                            ))}
-                            {recommentingTo === cmt.id && (
-                                <div style={{ marginTop: "5px", marginLeft: "20px" }}>
-                                    <input
-                                        type="text"
-                                        value={recommentContent}
-                                        onChange={(e) => setRecommentContent(e.target.value)}
-                                        placeholder="답글을 입력하세요"
-                                        style={{ width: "70%", padding: "3px" }}
-                                    />
-                                    <button onClick={() => handleAddRecomment(cmt)}>작성</button>
-                                </div>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-                <div style={{ marginTop: "10px" }}>
-                    <input
-                        type="text"
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        placeholder="댓글을 입력하세요"
-                        style={{ width: "80%", padding: "5px" }}
-                    />
-                    <button onClick={handleAddComment} style={{ padding: "5px 10px", marginLeft: "5px" }}>작성</button>
-                </div>
             </div>
         </div>
     );

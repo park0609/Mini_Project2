@@ -9,6 +9,7 @@ function Mypage() {
     const [likedPosts, setLikedPosts] = useState([]);
     const navigate = useNavigate();
 
+
     useEffect(() => {
         axios.get('/search-cookie', { withCredentials: true })
             .then(res => {

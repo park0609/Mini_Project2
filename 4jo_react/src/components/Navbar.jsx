@@ -1,5 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from './Button';
 import './Navbar.css';
 import axios from 'axios';
 
@@ -8,12 +11,10 @@ function Navbar() {
     const [click, setClick] = useState(false);
     const [button, setButton] = useState(true);
     const [username, setUsername] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(null);
-    const [remainingTime, setRemainingTime] = useState(0);
-    const timerRef = useRef(null);
-    const navigate = useNavigate();
 
     // 로그아웃 관련
+    const [isLoggedIn, setIsLoggedIn] = useState(null);
+    const navigate = useNavigate();
     const handleLogout = () => {
         axios.post('/logout', {}, { withCredentials: true })
             .then(() => {
@@ -44,18 +45,17 @@ function Navbar() {
     useEffect(() => {
         showButton();
 
+        //로그아웃관련
         axios.get('/checklog', { withCredentials: true })
             .then(res => {
                 setUsername(res.data.username);
+                console.log(res.data.username)
                 setIsLoggedIn(true);
-                const expiresAt = parseInt(localStorage.getItem("expiresAt"), 10);
-                if (expiresAt) {
-                    startSessionTimer(expiresAt);
-                }
             })
             .catch(() => {
                 setIsLoggedIn(false);
             });
+    }, [navigate]);
 
         window.addEventListener('resize', showButton);
 
@@ -117,7 +117,7 @@ function Navbar() {
                         </li>
 
                         <li className='nav-item'>
-                            <Link to='/certinfo' className='nav-links' onClick={closeMobileMenu}>
+                            <Link to='/qualipage' className='nav-links' onClick={closeMobileMenu}>
                                 정보자격증
                             </Link>
                         </li>
@@ -133,16 +133,15 @@ function Navbar() {
                             </ul>
                         </li>
                     </ul>
+                    {/* {button && <button className='btn-primary btn-medium'>
+                        <Link to='/Login'>로그인</Link>
+                    </button> */}
                     {isLoggedIn === null ? null : (
                         isLoggedIn ? (
                             <>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                    <p>세션 남은 시간: {formatTime(remainingTime)}</p>
-                                    <button onClick={extendSession}>시간 연장</button>
-                                </div>
                                 <p>{username}</p>
-                                <button onClick={() => navigate('/Mypage')}>마이페이지</button>
-                                <button onClick={handleLogout}>로그아웃</button>
+                                <button onClick={() => { navigate('/Mypage') }}>마이페이지</button>
+                                <button onClick={() => { handleLogout(); }}>로그아웃</button>
                             </>
                         ) : (
                             <Link to="/login">로그인</Link>

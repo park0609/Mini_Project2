@@ -7,12 +7,16 @@ import Login from './pages/Login.jsx';
 import Modifyprofile from './pages/Modifyprofile.jsx';
 import Mypage from './pages/Mypage.jsx';
 import Searchuser from './pages/Searchuser.jsx';
+// import Board from './Board';
+// import { Button } from './components/Button';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import BoardList from './pages/BoardList.jsx';
 import PostModify from './pages/PostModify.jsx';
 import PostView from './pages/PostView.jsx';
 import PostWrite from './pages/PostWrite.jsx';
-import CertInfo from './pages/CertInfo.jsx';
+import Chart from './pages/Chart';
+import Calendar from './pages/calendar';
+import Qualipage from './pages/Qualipage.jsx';
 
 
 function App() {
@@ -43,7 +47,8 @@ function App() {
       <div ref={navRef}>
         <Navbar />
       </div>
-
+      {/* <Calendar />
+            <Chart /> */}
       <Routes>
         <Route path='/' element={<Home />} /> {/*메인 페이지*/}
         <Route path='/Login' element={<Login />} /> {/*로그인 페이지*/}
@@ -51,13 +56,13 @@ function App() {
         <Route path='/Mypage' element={<Mypage />} /> {/* 마이페이지 */}
         <Route path='/Mypage/Modifyprofile' element={<Modifyprofile />} /> {/* 회원정보수정페이지 */}
         <Route path='/boardlist' element={<BoardList />} /> {/* 게시판페이지 */}
-        <Route path="/postWrite" element={<PostWrite />} />
-        <Route path="/postView" element={<PostView />} />
-        <Route path="/postModify" element={<PostModify />} />
-        <Route path="/postView" element={<PostView />} />
-        <Route path="/certinfo" element={<CertInfo />} />
+        <Route path="/postWrite" element={<PostWrite /> } />
+        <Route path="/postView" element={<PostView /> } />
+        <Route path="/postModify" element={<PostModify /> } />
+        <Route path="/postView" element={<PostView /> } />
+        <Route path="/qualipage" element={<Qualipage />} />
       </Routes>
-
+        
     </>
   );
 }

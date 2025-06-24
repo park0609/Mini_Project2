@@ -78,6 +78,9 @@ public class UserService {
             return false;
         }
         try {
+            int rows = userRepository.updateUser(userDto);
+            return rows > 0;
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

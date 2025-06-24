@@ -1,18 +1,25 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import LikeCount from './LikeCount';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link, Routes, Route } from 'react-router-dom';
+// import PostWrite from './PostWrite';
+// import PostView from './PostView';
+
+//db 연결시삭제
+// const dummyPosts = [
+//     { _id: "1", title: "React 게시판 만들기", author: "관리자", date: "2025-06-18", views: 10 },
+//     { _id: "2", title: "첫 글입니다", author: "홍길동", date: "2025-06-17", views: 5 },
+// ];
+
 
 const BoardList = () => {
-    const [post, setPost] = useState([])
-
+    const [post, setPost] = useState([]);
     useEffect(() => {
         axios.get("/posts/board_list")
             .then(response => {
+                // console.log("응답 데이터:", response.data);
                 setPost(response.data)
             })
     }, [])
-
 
     return (
         <>
@@ -33,10 +40,10 @@ const BoardList = () => {
                             <th>작성자</th>
                             <th>등록일</th>
                             <th>조회수</th>
-                            <th>좋아요</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {/* {dummyPosts.map((post, index) => ( */}
                         {post.map((post, index) => (
                             <tr key={index}>
                                 <td>{post.id}</td>
@@ -45,8 +52,7 @@ const BoardList = () => {
                                 </td>
                                 <td>{post.author}</td>
                                 <td>{new Date(post.date).toLocaleDateString('ko-KR')}</td>
-                                <td>{post.viewCount}</td>
-                                <td><LikeCount postId={post.id} /></td>
+                                <td>123</td>
                             </tr>
                         ))}
                     </tbody>

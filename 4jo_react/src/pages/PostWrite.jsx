@@ -62,7 +62,7 @@ const PostWrite = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // const content = editorRef.current.getInstance().getHTML(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
-        const content = editorRef.current.getInstance().getHTML(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
+        const content = editorRef.current.getInstance().getMarkdown(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
         const newPost = {
             title,
             content,
