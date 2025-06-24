@@ -216,7 +216,8 @@ function Login() {
                 value={email ? finalEmail : ""} />
               <button onClick={() => setIsOpen(true)}>주소찾기</button>
               <label>세부주소: </label>
-              <input type="text" onChange={(e) => setDetailadd(e.target.value)} />
+              {/* 수정함 */}
+              {address && <input type="text" onChange={(e) => setDetailadd(e.target.value)} />}
               <input type="text"
                 disabled
                 value={finaladd} />

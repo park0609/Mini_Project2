@@ -35,7 +35,8 @@ const PostWrite = () => {
             })
             .catch(err => {
                 console.error(err);
-                alert("인증 실패 또는 서버 오류");
+                alert("로그인 후 이용 가능합니다");
+                navigate('/login');
             });
 
         if (postId) {

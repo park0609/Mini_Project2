@@ -19,13 +19,17 @@ const PostView = () => {
     const [likeCount, setLikeCount] = useState()
 
     useEffect(() => {
-        axios.get(`/posts/${postId}`)
-            .then(res => setPost(res.data))
-            .catch(err => console.error("게시글 불러오기 실패", err));
 
         axios.get('/search-cookie', { withCredentials: true })
             .then(res => setUserinfo(res.data))
-            .catch(() => alert("인증 실패 또는 서버 오류"));
+            .catch(() => {
+                alert("로그인 후 이용가능합니다");
+                navigate('/login');
+            });
+
+        axios.get(`/posts/${postId}`)
+            .then(res => setPost(res.data))
+            .catch(err => console.error("게시글 불러오기 실패", err));
 
         axios.get(`/posts/${postId}/comments`)
             .then(res => setComments(res.data))
