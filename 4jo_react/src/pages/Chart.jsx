@@ -105,7 +105,7 @@ const Chart = () => {
                 onMouseEnter={() => setIsPaused(true)} // 마우스 올리면 멈춤
                 onMouseLeave={() => setIsPaused(false)} // 마우스 치우면 다시 재생
             >
-                <ApexCharts options={options} series={series} type="line" height={350} />
+                <ApexCharts options={options} series={series} type="line" width={750} height={350} />
             </a>
 
             {/* 슬라이드 하단 탭 */}
@@ -121,7 +121,7 @@ const Chart = () => {
                     <div
                         className="tab-slider"
                         style={{
-                            transform: `translateX(-${tabStartIndex * 110}px)`, // 전체 박스를 왼쪽으로 밀어서 슬라이드 시킴 (탭 한 칸의 가로길이 110px)
+                            transform: `translateX(-${tabStartIndex * 152}px)`, // 전체 박스를 왼쪽으로 밀어서 슬라이드 시킴 (탭 한 칸의 가로길이 110px)
                         }}
                     >
                         {charts.map((chart, index) => (                         // 전체 chart 배열을 순회하면서 탭 항목 만들기

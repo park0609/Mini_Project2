@@ -1,4 +1,8 @@
 .chart-slider {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     top: 120px;
     right: 20px;
@@ -9,9 +13,14 @@
     z-index: 1000;
 }
 
+.chart-slider a:focus,
+.chart-slider a:active {
+    outline: none;
+}
+
 .tab-slider-wrapper {
     overflow: hidden;
-    width: 330px;
+    width: 455px;
     margin: 0 10px;
 }
 
@@ -25,7 +34,7 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    padding: 10px;
+    padding: 10px 100px;
     gap: 8px;
     background: white;
 }
@@ -36,13 +45,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 6px 6px;
+    padding: 4px 6px;
     background-color: #c4c5c16e;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 12px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    min-width: 180px;
+    min-width: 140px;
     text-align: center;
     /* 줄바꿈 방지 */
     white-space: nowrap;
