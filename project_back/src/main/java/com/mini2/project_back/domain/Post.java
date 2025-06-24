@@ -37,6 +37,12 @@ public class Post {
     @Column(name = "FREE_AUTHOR", nullable = false)
     private String author;
 
+    @Column(name = "FREE_VIEWER", nullable = false)
+    private Integer viewCount = 0;
+
+    @Column(name = "FREE_LIKECOUNT", nullable = false)
+    private Integer likeCount = 0;
+
     public Post() {
     } // 기본 생성자
 
@@ -88,5 +94,21 @@ public class Post {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public Integer getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
     }
 }

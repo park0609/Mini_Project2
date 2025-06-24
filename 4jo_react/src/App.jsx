@@ -7,15 +7,11 @@ import Login from './pages/Login.jsx';
 import Modifyprofile from './pages/Modifyprofile.jsx';
 import Mypage from './pages/Mypage.jsx';
 import Searchuser from './pages/Searchuser.jsx';
-// import Board from './Board';
-// import { Button } from './components/Button';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import BoardList from './pages/BoardList.jsx';
 import PostModify from './pages/PostModify.jsx';
 import PostView from './pages/PostView.jsx';
 import PostWrite from './pages/PostWrite.jsx';
-import Chart from './pages/Chart';
-import Calendar from './pages/calendar';
 import CertInfo from './pages/CertInfo.jsx';
 
 
@@ -47,8 +43,7 @@ function App() {
       <div ref={navRef}>
         <Navbar />
       </div>
-      {/* <Calendar />
-            <Chart /> */}
+
       <Routes>
         <Route path='/' element={<Home />} /> {/*메인 페이지*/}
         <Route path='/Login' element={<Login />} /> {/*로그인 페이지*/}
@@ -60,7 +55,7 @@ function App() {
         <Route path="/postView" element={<PostView />} />
         <Route path="/postModify" element={<PostModify />} />
         <Route path="/postView" element={<PostView />} />
-        <Route path="/certInfo" element={<CertInfo />} />
+        <Route path="/certinfo" element={<CertInfo />} />
       </Routes>
 
     </>
