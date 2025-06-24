@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+
 
 import axios from 'axios';
 //const LazyEditor = React.lazy(() => import('@toast-ui/react-editor'));
@@ -36,7 +37,7 @@ const UpdateWrite = () => {
 
     const ModifySubmit = (e) => {
         e.preventDefault();
-        const content = editorRef.current.getInstance().getMarkdown();
+        const content = editorRef.current.getInstance().getHTML();
         const newPost = {
             id: postId, // 수정 시 id 꼭 포함!
             title,
@@ -105,6 +106,7 @@ const UpdateWrite = () => {
                         placeholder="작성자 이름"
                         value={author}
                         onChange={(e) => setAuthor(e.target.value)}
+                        disabled
                         required
                         style={{
                             flex: 1,
@@ -136,9 +138,24 @@ const UpdateWrite = () => {
                             initialEditType="wysiwyg"
                             initialValue={content}
                             ref={editorRef}
-                            previewStyle="vertical"
+                            previewStyle="tab"
                             height="400px"
                             useCommandShortcut={true}
+                            hooks={{
+                                addImageBlobHook: async (blob, callback) => {
+                                    const formData = new FormData();
+                                    formData.append('image', blob);
+
+                                    try {
+                                        const res = await axios.post("http://localhost:8090/api/upload-image", formData, {
+                                            headers: { 'Content-Type': 'multipart/form-data' }
+                                        });
+                                        callback(res.data, 'image');
+                                    } catch (err) {
+                                        console.error("이미지 업로드 실패", err);
+                                    }
+                                }
+                            }}
                         />
                     </div>
                 </div>

@@ -14,9 +14,12 @@ const PostWrite = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [author, setAuthor] = useState('');
+    const [userid, setUserid] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
     const editorRef = useRef();
+    const [userinfo, setUserinfo] = useState([]);
+
 
 
     // 글 수정 여부 확인용
@@ -24,6 +27,17 @@ const PostWrite = () => {
     const postId = searchParams.get("no");
 
     useEffect(() => {
+        // 회원정보 가져오기
+        axios.get('/search-cookie', { withCredentials: true })
+            .then(res => {
+                setUserinfo(res.data)
+                console.log("사용자 정보:", res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                alert("인증 실패 또는 서버 오류");
+            });
+
         if (postId) {
             axios.get(`/posts/${postId}`)
                 .then(res => {
@@ -37,26 +51,26 @@ const PostWrite = () => {
                 });
         }
     }, [postId]);
+    useEffect(() => {
+        if (userinfo.username) {
+            setAuthor(userinfo.username);
+            setUserid(userinfo.userid);
+        }
+    }, [userinfo]);
 
     // 글 등록 
     const handleSubmit = (e) => {
         e.preventDefault();
         // const content = editorRef.current.getInstance().getHTML(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
-        const content = editorRef.current.getInstance().getMarkdown(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
-
+        const content = editorRef.current.getInstance().getHTML(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
         const newPost = {
             title,
             content,
             author,
             date: new Date().toISOString().split('T')[0], // 날짜 형식: YYYY-MM-DD
             views: 0,
+            userid,
         };
-
-
-        // console.log("작성된 글:", newPost);
-        // // 예시 목적 navigate만 있음
-
-
 
         axios.post("/posts/commit", newPost)
             .then(() => {
@@ -100,9 +114,9 @@ const PostWrite = () => {
                     </label>
                     <input
                         type="text"
-                        placeholder="작성자 이름"
+                        placeholder={userinfo.username}
                         value={author}
-                        onChange={(e) => setAuthor(e.target.value)}
+                        disabled
                         required
                         style={{
                             flex: 1,
@@ -131,13 +145,29 @@ const PostWrite = () => {
                     </label>
                     <div style={{ flex: 1 }}>
                         <Editor
-
                             initialEditType="wysiwyg"
                             initialValue={content}
                             ref={editorRef}
-                            previewStyle="vertical"
+                            previewStyle="tab"
                             height="400px"
                             useCommandShortcut={true}
+                            hooks={{
+                                addImageBlobHook: async (blob, callback) => {
+                                    const formData = new FormData();
+                                    formData.append('image', blob);
+
+                                    try {
+                                        const res = await axios.post("http://localhost:8090/api/upload-image", formData, {
+                                            headers: { 'Content-Type': 'multipart/form-data' }
+                                        });
+
+                                        callback(res.data, 'image'); // Toast UI에 삽입
+                                        console.log(res.data);
+                                    } catch (err) {
+                                        console.error("이미지 업로드 실패", err);
+                                    }
+                                }
+                            }}
                         />
                     </div>
                 </div>

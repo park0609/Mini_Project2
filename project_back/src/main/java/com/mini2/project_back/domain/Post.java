@@ -17,10 +17,13 @@ import jakarta.persistence.Table;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "free_board_seq")
-    @SequenceGenerator(name = "free_board_seq", sequenceName = "FREE_BOARD_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FREE_INDEX")
+    @SequenceGenerator(name = "SEQ_FREE_INDEX", sequenceName = "SEQ_FREE_INDEX", allocationSize = 1)
     @Column(name = "FREE_INDEX")
     private Long id;
+
+    @Column(name = "ID")
+    private String userid;
 
     @Column(name = "FREE_TITLE", nullable = false)
     private String title;
@@ -45,6 +48,14 @@ public class Post {
     // Getter / Setter
     public Long getID() {
         return id;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public String getTitle() {

@@ -5,11 +5,13 @@ import './Navbar.css';
 import axios from 'axios';
 
 function Navbar() {
+
     const [click, setClick] = useState(false);
     const [button, setButton] = useState(true);
+    const [username, setUsername] = useState('');
 
     // 로그아웃 관련
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(null);
     const navigate = useNavigate();
     const handleLogout = () => {
         axios.post('/logout', {}, { withCredentials: true })
@@ -22,8 +24,6 @@ function Navbar() {
                 console.error("Logout failed", err);
             });
     };
-
-
 
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
@@ -46,13 +46,14 @@ function Navbar() {
         //로그아웃관련
         axios.get('/checklog', { withCredentials: true })
             .then(res => {
+                setUsername(res.data.username);
+                console.log(res.data.username)
                 setIsLoggedIn(true);
             })
             .catch(() => {
                 setIsLoggedIn(false);
             });
-    }, []);
-
+    }, [navigate]);
 
     window.addEventListener('resize', showButton);
 
@@ -75,14 +76,19 @@ function Navbar() {
                             </Link>
                         </li>
 
+                        <li className='nav-item'>
+                            <Link to='/qualipage' className='nav-links' onClick={closeMobileMenu}>
+                                정보자격증
+                            </Link>
+                        </li>
+
                         {/* 드롭다운 메뉴 */}
                         <li className='nav-item dropdown'>
-                            <span className='nav-links'>게시판</span>
+                            <span className='nav-links'><Link to='/boardlist'>
+                                게시판
+                            </Link></span>
                             <ul className='dropdown-menu'>
                                 <li>
-                                    <Link to='/boardlist'>
-                                        정보게시판
-                                    </Link>
                                 </li>
                             </ul>
                         </li>
@@ -90,13 +96,16 @@ function Navbar() {
                     {/* {button && <button className='btn-primary btn-medium'>
                         <Link to='/Login'>로그인</Link>
                     </button> */}
-                    {isLoggedIn ? (
-                        <>
-                            <button onClick={() => { navigate('/Mypage') }}>마이페이지</button>
-                            <button onClick={() => { handleLogout(); }}>로그아웃</button>
-                        </>
-                    ) : (
-                        <Link to="/login">로그인</Link>
+                    {isLoggedIn === null ? null : (
+                        isLoggedIn ? (
+                            <>
+                                <p>{username}</p>
+                                <button onClick={() => { navigate('/Mypage') }}>마이페이지</button>
+                                <button onClick={() => { handleLogout(); }}>로그아웃</button>
+                            </>
+                        ) : (
+                            <Link to="/login">로그인</Link>
+                        )
                     )}
                 </div>
             </nav >

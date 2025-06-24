@@ -16,48 +16,49 @@ const BoardList = () => {
     useEffect(() => {
         axios.get("/posts/board_list")
             .then(response => {
+                // console.log("응답 데이터:", response.data);
                 setPost(response.data)
             })
     }, [])
 
     return (
         <>
-        <div style={{ width: "80%", margin: "0 auto", marginTop: "40px" }}>
-            <h2>게시판</h2>
+            <div style={{ width: "80%", margin: "0 auto", marginTop: "40px" }}>
+                <h2>게시판</h2>
 
-            <div style={{ marginBottom: "10px", textAlign: "left" }}>
-                <Link to="/postWrite">
-                    <button>글쓰기</button>
-                </Link>
+                <div style={{ marginBottom: "10px", textAlign: "left" }}>
+                    <Link to="/postWrite">
+                        <button>글쓰기</button>
+                    </Link>
+                </div>
+
+                <table width="100%" border="1" cellPadding="10" style={{ borderCollapse: "collapse" }}>
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>등록일</th>
+                            <th>조회수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* {dummyPosts.map((post, index) => ( */}
+                        {post.map((post, index) => (
+                            <tr key={index}>
+                                <td>{post.id}</td>
+                                <td>
+                                    <Link to={`/postView?no=${post.id}`}>{post.title}</Link>
+                                </td>
+                                <td>{post.author}</td>
+                                <td>{new Date(post.date).toLocaleDateString('ko-KR')}</td>
+                                <td>123</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
 
-            <table width="100%" border="1" cellPadding="10" style={{ borderCollapse: "collapse" }}>
-                <thead>
-                    <tr>
-                        <th>번호</th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>등록일</th>
-                        <th>조회수</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {/* {dummyPosts.map((post, index) => ( */}
-                    {post.map((post, index) => (
-                        <tr key={index}>
-                            <td>{post.id}</td>
-                            <td>
-                                <Link to={`/postView?no=${post.id}`}>{post.title}</Link>
-                            </td>
-                            <td>{post.author}</td>
-                            <td>{new Date(post.date).toLocaleDateString('ko-KR')}</td>
-                            <td>123</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-        
         </>
     );
 };

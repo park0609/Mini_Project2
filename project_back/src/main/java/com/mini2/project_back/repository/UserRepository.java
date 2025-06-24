@@ -41,10 +41,10 @@ public class UserRepository {
     public int insertUser(UserDTO user) throws SQLException {
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(
-                        "INSERT INTO USER_INFO (ID, PASSWORD, NAME, PHONE, EMAIL, ADDRESS) VALUES (?, ?, ?, ?, ?, ?)")) {
+                        "INSERT INTO USER_INFO (ID, NAME, PASSWORD, PHONE, EMAIL, ADDRESS) VALUES (?, ?, ?, ?, ?, ?)")) {
             stmt.setString(1, user.getUserid());
-            stmt.setString(2, user.getPassword());
-            stmt.setString(3, user.getUsername());
+            stmt.setString(2, user.getUsername());
+            stmt.setString(3, user.getPassword());
             stmt.setString(4, user.getPhone());
             stmt.setString(5, user.getEmail());
             stmt.setString(6, user.getAddress());
@@ -109,5 +109,23 @@ public class UserRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    // 회원정보 수정
+    public int updateUser(UserDTO user) throws SQLException {
+        String sql = "UPDATE USER_INFO SET PASSWORD = ?, NAME = ?, PHONE = ?, EMAIL = ?, ADDRESS = ? WHERE ID = ?";
+
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getPassword());
+            stmt.setString(2, user.getUsername());
+            stmt.setString(3, user.getPhone());
+            stmt.setString(4, user.getEmail());
+            stmt.setString(5, user.getAddress());
+            stmt.setString(6, user.getUserid());
+
+            return stmt.executeUpdate();
+        }
     }
 }
