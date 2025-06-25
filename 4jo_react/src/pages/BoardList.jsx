@@ -41,7 +41,7 @@ const BoardList = () => {
                             <tr key={index}>
                                 <td>{post.id}</td>
                                 <td>
-                                    <Link to={`/postView?no=${post.id}`}>{post.title}</Link>
+                                    <Link to={`/postView?no=${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>{post.title}</Link>
                                 </td>
                                 <td>{post.author}</td>
                                 <td>{new Date(post.date).toLocaleDateString('ko-KR')}</td>
