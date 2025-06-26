@@ -141,8 +141,8 @@ body {
 
 .nav-button {
     margin-top: -4px;
-    background-color: #EBBF75;
-    width: 100px;
+    background-color: #99BC85;
+    width: 115px;
     height: 50px;
     margin: 10px;
     font-weight: bold;
@@ -152,8 +152,8 @@ body {
     align-items: center;
     text-decoration: none;
     color: black;
-    border: 2px solid #EBBF75;
-    border-radius: 30%;
+    border: 2px solid #99BC85;
+    border-radius: 15%;
 }
 
 .nav-button-time {
@@ -170,7 +170,6 @@ body {
     align-items: center;
     text-decoration: none;
     color: black;
-    border-radius: 30%;
 }
 
 @media screen and (max-width: 960px) {
