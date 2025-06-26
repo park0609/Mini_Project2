@@ -18,7 +18,6 @@ export default function PostView() {
     const [likeCount, setLikeCount] = useState(0);
     const [liked, setLiked] = useState(false);
 
-    // 쿼리 파라미터 변화 감지 및 데이터 로드
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const id = params.get('no');
@@ -29,7 +28,6 @@ export default function PostView() {
         if (id !== postId) {
             setPostId(id);
 
-            // 1) 유저 정보
             axios.get('/search-cookie', { withCredentials: true })
                 .then(res => setUserInfo(res.data))
                 .catch(() => {
@@ -37,22 +35,18 @@ export default function PostView() {
                     navigate('/login');
                 });
 
-            // 2) 게시글
             axios.get(`/posts/${id}`)
                 .then(res => setPost(res.data))
                 .catch(err => console.error('게시글 불러오기 실패', err));
 
-            // 3) 댓글
             axios.get(`/posts/${id}/comments`)
                 .then(res => setComments(res.data))
                 .catch(err => console.error('댓글 가져오기 실패', err));
 
-            // 4) 좋아요 수
             axios.get(`/like/count/${id}`)
                 .then(res => setLikeCount(res.data))
                 .catch(err => console.error('좋아요 값 가져오기 실패', err));
 
-            // 5) 좋아요 상태
             if (userInfo?.userid) {
                 axios.get(`/like/status/${id}`, {
                     params: { userId: userInfo.userid }, withCredentials: true
@@ -61,7 +55,6 @@ export default function PostView() {
                     .catch(err => console.error('좋아요 상태 가져오기 실패', err));
             }
 
-            // 6) 조회수 증가
             axios.put(`/posts/${id}/view`)
                 .catch(err => console.error('조회수 업데이트 실패', err));
         }
@@ -154,8 +147,21 @@ export default function PostView() {
 
     if (!post) return <div>❗게시글을 찾을 수 없습니다.</div>;
 
-    // 댓글+답글 총 개수
     const totalComments = comments.reduce((sum, c) => sum + 1 + (c.recomments?.length || 0), 0);
+
+    //여기
+    const toKST = isoString => {
+        if (!isoString) return '';
+        // Date.parse(isoString) 로 UTC 기준 timestamp(ms) 얻고, +9h
+        const ts = Date.parse(isoString) + 9 * 60 * 60 * 1000;
+        return new Date(ts).toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
 
     return (
         <div className="post-view-container">
@@ -170,7 +176,13 @@ export default function PostView() {
                         </td>
                     </tr>
                     <tr><th>작성자</th><td>{post.author}</td></tr>
-                    <tr><th>등록일</th><td>{post.date}</td></tr>
+                    <tr>
+                        <th>등록일</th>
+                        //여기
+                        <td>
+                            {toKST(post.date)}
+                        </td>
+                    </tr>
                     <tr><th>조회수</th><td>{post.viewCount}</td></tr>
                     <tr><th>좋아요</th><td>{likeCount}</td></tr>
                     <tr>
@@ -203,19 +215,44 @@ export default function PostView() {
                     <ul className="comment-list">
                         {comments.map(cmt => (
                             <li key={cmt.id} className="comment-item">
-                                <strong>{cmt.author}</strong>: {cmt.content}
-                                {userInfo?.userid === cmt.authorId && (
-                                    <button onClick={() => handleDeleteComment(cmt.id)} className="post-button">
-                                        댓글삭제
-                                    </button>
-                                )}
-                                <button onClick={() => setRecommentingTo(cmt.id)} className="post-button">
-                                    답글쓰기
-                                </button>
+                                <div className="comment-header">
 
+                                    <strong>{cmt.author}</strong>
+                                    //여기
+                                    <span className="comment-date">
+
+                                        {toKST(cmt.date)}
+                                    </span>
+                                </div>
+                                <div className="comment-body">
+                                    {cmt.content}
+                                </div>
+                                <div className="comment-actions">
+                                    {userInfo?.userid === cmt.authorId && (
+                                        <button onClick={() => handleDeleteComment(cmt.id)} className="post-button">
+                                            댓글삭제
+                                        </button>
+                                    )}
+                                    <button onClick={() => setRecommentingTo(cmt.id)} className="post-button">
+                                        답글쓰기
+                                    </button>
+                                </div>
+
+                                //여기
                                 {cmt.recomments?.map(re => (
                                     <div key={re.id} className="recomment-item">
-                                        <strong>{re.author}</strong>: {re.content}
+                                        <div className="comment-header">
+                                            <strong>{re.author}</strong>
+                                            //여기
+                                            <span className="comment-date">
+                                                {toKST(re.date)}
+                                            </span>
+
+
+                                        </div>
+                                        <div className="comment-body">
+                                            {re.content}
+                                        </div>
                                         {userInfo?.userid === re.authorId && (
                                             <button
                                                 onClick={() => handleDeleteRecomment(cmt.id, re.id)}

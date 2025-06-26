@@ -6,7 +6,7 @@ import com.mini2.project_back.repository.CommentRepository;
 import com.mini2.project_back.repository.RecommentRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,7 +24,7 @@ public class RecommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("댓글이 존재하지 않습니다: " + commentId));
         recomment.setCommentId(comment.getId());
-        recomment.setDate(LocalDate.now());
+        recomment.setDate(LocalDateTime.now());
         return recommentRepository.save(recomment);
     }
 

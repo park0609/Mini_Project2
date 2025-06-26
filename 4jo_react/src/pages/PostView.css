@@ -133,3 +133,17 @@
     padding: 8px;
     font-size: 1em;
 }
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 댓글·답글 날짜 */
+.comment-date {
+    color: #777;
+    font-size: 0.8em;
+    margin-left: 0.5em;
+
+}

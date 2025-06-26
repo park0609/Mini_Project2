@@ -1,7 +1,8 @@
 package com.mini2.project_back.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class CommentResponseDTO {
     private Long id;
@@ -9,7 +10,8 @@ public class CommentResponseDTO {
     private String authorId;
     private String author;
     private String content;
-    private LocalDate date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime date;
     private List<RecommentResponseDTO> recomments;
 
     public Long getId() {
@@ -52,11 +54,11 @@ public class CommentResponseDTO {
         this.content = content;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

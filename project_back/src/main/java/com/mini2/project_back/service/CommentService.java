@@ -36,8 +36,9 @@ public class CommentService {
             dto.setAuthor(c.getAuthor());
             dto.setContent(c.getContent());
             dto.setDate(c.getDate());
-            dto.setRecomments(
-                    c.getRecomments().stream().map(r -> {
+
+            List<RecommentResponseDTO> recDtos = c.getRecomments().stream()
+                    .map(r -> {
                         RecommentResponseDTO rdto = new RecommentResponseDTO();
                         rdto.setId(r.getId());
                         rdto.setCommentId(r.getCommentId());
@@ -46,8 +47,12 @@ public class CommentService {
                         rdto.setContent(r.getContent());
                         rdto.setDate(r.getDate());
                         return rdto;
-                    }).collect(Collectors.toList()));
+                    })
+                    .collect(Collectors.toList());
+
+            dto.setRecomments(recDtos);
             return dto;
         }).collect(Collectors.toList());
     }
+
 }

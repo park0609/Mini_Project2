@@ -1,7 +1,13 @@
 package com.mini2.project_back.domain;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "FREE_RE_COMMENT")
@@ -25,8 +31,10 @@ public class Recomment {
     @Column(name = "FREE_RECOMMENT", nullable = false)
     private String content;
 
-    @Column(name = "FREE_RECOMMENT_DATE", insertable = false, updatable = false)
-    private LocalDate date;
+    @CreationTimestamp
+    @JsonProperty(access = Access.READ_ONLY)
+    @Column(name = "FREE_RECOMMENT_DATE", nullable = false, updatable = false)
+    private LocalDateTime date;
 
     // Getter & Setter
     public Long getId() {
@@ -69,11 +77,11 @@ public class Recomment {
         this.content = content;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }
