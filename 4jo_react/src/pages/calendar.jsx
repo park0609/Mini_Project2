@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 // import './App.css'
 import "react-calendar"
 import axios from 'axios'
+import './calendar.css'
 
 function Calendar() {
   const ToDay = new Date()
@@ -66,10 +67,13 @@ function Calendar() {
 
   return (
     <>
-      <button onClick={changeMonthPrev}>⬅️</button>
-      <button onClick={changeMonthNext}>➡️</button>
-      <div>{`${year}년 ${month + 1}월`}</div>
+
       <div className='cal-layout'>
+        <div className="calendar-header">
+          <button className="arrow-btn" onClick={changeMonthPrev}>⬅️</button>
+          <div className="calendar-title">{`${year}년 ${month + 1}월`}</div>
+          <button className="arrow-btn" onClick={changeMonthNext}>➡️</button>
+        </div>
         <table className='cal'>
           <thead>
             <tr >
@@ -95,24 +99,25 @@ function Calendar() {
                   const thisDate = day !== null ? new Date(year, month, day) : null
 
                   // 해당 날짜에 포함되는 일정만 필터
-                    const matchedSchedules = thisDate
-                      ? data.filter(v => {
-                          const start = stripTime(new Date(v.START_DATE));
-                          const end = stripTime(new Date(v.END_DATE));
-                          const ThisDate = stripTime(thisDate)
-                          return (
-                              start.getTime() <= ThisDate.getTime() &&
-                              ThisDate.getTime() <= end.getTime() &&
-                              (schedule === '접수' ? v.QUALI_TYPE.includes("접수") || v.QUALI_TYPE.includes("제출") : schedule === '시험'
-                                ? v.QUALI_TYPE.includes("시험") : v.QUALI_TYPE.includes("결과") || v.QUALI_TYPE.includes("발표")))}) : []
+                  const matchedSchedules = thisDate
+                    ? data.filter(v => {
+                      const start = stripTime(new Date(v.START_DATE));
+                      const end = stripTime(new Date(v.END_DATE));
+                      const ThisDate = stripTime(thisDate)
+                      return (
+                        start.getTime() <= ThisDate.getTime() &&
+                        ThisDate.getTime() <= end.getTime() &&
+                        (schedule === '접수' ? v.QUALI_TYPE.includes("접수") || v.QUALI_TYPE.includes("제출") : schedule === '시험'
+                          ? v.QUALI_TYPE.includes("시험") : v.QUALI_TYPE.includes("결과") || v.QUALI_TYPE.includes("발표")))
+                    }) : []
                   return (
                     <td key={i} className={isToday ? 'today' : ''}>
                       {day || ''}
-                         <div className="bars">
-                              {matchedSchedules.map((_, idx) => (
+                      <div className="bars">
+                        {matchedSchedules.map((_, idx) => (
                           <div key={idx} className="bar" />
-                              ))}
-                            </div>           
+                        ))}
+                      </div>
                     </td>
                   );
                 })}
@@ -121,7 +126,7 @@ function Calendar() {
           </tbody>
         </table>
         <div className='sche'>
-          <div>
+          <div className='sche-title'>
             <a className={schedule === "접수" ? 'active' : ""}
               onClick={() => setSchedule("접수")}
             >접수</a> | {" "}
@@ -142,10 +147,10 @@ function Calendar() {
                 )
               }))
                 .map((v, i) => (
-                    <div key={i}>
-                      {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
-                      {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
-                    </div>)
+                  <div key={i} className="schedule-block">
+                    {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
+                    {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
+                  </div>)
                 )}
             </div>}
             {schedule === '시험' && <div>
@@ -157,10 +162,10 @@ function Calendar() {
                 )
               }))
                 .map((v, i) => (
-                    <div key={i}>
-                      {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
-                      {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
-                    </div>)
+                  <div key={i} className="schedule-block">
+                    {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
+                    {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
+                  </div>)
                 )}
             </div>}
             {schedule === '결과' && <div>
@@ -168,21 +173,21 @@ function Calendar() {
                 const StDate = stripTime(new Date(v.START_DATE))
                 const EnDate = stripTime(new Date(v.END_DATE))
                 return (
-                  (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month) )&& (v.QUALI_TYPE.includes("결과") || v.QUALI_TYPE.includes("발표")))
+                  (((StDate.getFullYear() === year && StDate.getMonth() === month) || (EnDate.getFullYear() === year && EnDate.getMonth() === month)) && (v.QUALI_TYPE.includes("결과") || v.QUALI_TYPE.includes("발표")))
                 )
               }))
                 .map((v, i) => (
-                    <div key={i}>
-                      {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
-                      {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
-                    </div>)
+                  <div key={i} className="schedule-block">
+                    {v.ROUND}회 {v.QUALI_NAME} {v.QUALI_TYPE}<br />
+                    {new Date(v.START_DATE).toLocaleDateString('ko-KR')} ~ {new Date(v.END_DATE).toLocaleDateString('ko-KR')}
+                  </div>)
                 )}
             </div>}
 
           </div>
         </div>
       </div>
-      <div></div>
+
     </>
   )
 }

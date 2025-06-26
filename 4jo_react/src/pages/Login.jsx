@@ -4,6 +4,7 @@ import DaumPostcode from 'react-daum-postcode';  // 다음주소찾기
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import { jsx } from 'react/jsx-runtime';
+import { CenturyView } from 'react-calendar';
 
 
 function Login() {
@@ -149,102 +150,145 @@ function Login() {
 
 
   return (
-    <>
-      <div className='login-page'>
-        {loginchange ?
-          <>
-            <h1 className='head'>회원가입</h1>
-            <div>
-              <label>이름: </label>
-              <input
-                type="text"
-                name='username'
-                value={userinfo.username}
-                onChange={handleUserinfo}
-              />
-              <label>아이디: </label>
-              <input
-                type="text"
-                name='userid'
-                value={userinfo.userid}
-                onChange={handleUserinfo}
-              />
-              <label>비밀번호: </label>
-              <input
-                type="password"
-                name='myPassword'
-                value={userinfo.myPassword}
-                onChange={handleUserinfo}
-              />
-              <label>비밀번호 확인: </label>
-              <input
-                type="password"
-                value={chkPassword}
-                onChange={(e) => setChkPassword(e.target.value)}
-              />
-              <label>전화번호: </label>
-              <input
-                type="text"
-                name='phone'
-                value={userinfo.phone}
-                onChange={handleUserinfo}
-              />
-              <label>이메일: </label>
-              <input
-                type="text"
-                value={userinfo.email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+    <div className='login-page'
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)',
+        fontFamily: 'Arial ,sans-serif'
+      }}>
+      {loginchange ?
+        <>
+          <h1 className='head'>회원가입</h1>
+          <div>
+            <label>이름: </label>
+            <input
+              type="text"
+              name='username'
+              value={userinfo.username}
+              onChange={handleUserinfo}
+            />
+            <label>아이디: </label>
+            <input
+              type="text"
+              name='userid'
+              value={userinfo.userid}
+              onChange={handleUserinfo}
+            />
+            <label>비밀번호: </label>
+            <input
+              type="password"
+              name='myPassword'
+              value={userinfo.myPassword}
+              onChange={handleUserinfo}
+            />
+            <label>비밀번호 확인: </label>
+            <input
+              type="password"
+              value={chkPassword}
+              onChange={(e) => setChkPassword(e.target.value)}
+            />
+            <label>전화번호: </label>
+            <input
+              type="text"
+              name='phone'
+              value={userinfo.phone}
+              onChange={handleUserinfo}
+            />
+            <label>이메일: </label>
+            <input
+              type="text"
+              value={userinfo.email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-              {isCustom ? (
-                <input
-                  type="text"
-                  placeholder="직접 입력"
-                  value={customDomain}
-                  onChange={(e) => setCustomDomain(e.target.value)}
-                />
-              ) : (<></>)}
-              <select onChange={handleDomainChange}>
-                <option value="">선택하세요</option>
-                <option value="@naver.com">@naver.com</option>
-                <option value="@daum.com">@daum.com</option>
-                <option value="@google.com">@google.com</option>
-                <option value="custom">직접입력</option>
-              </select>
-              <input type="text"
-                disabled
-                value={email ? finalEmail : ""} />
-              <button onClick={() => setIsOpen(true)}>주소찾기</button>
-              <label>세부주소: </label>
-              <input type="text" onChange={(e) => setDetailadd(e.target.value)} />
-              <input type="text"
-                disabled
-                value={finaladd} />
-              {isOpen && (
-                <div style={{
-                  position: 'fixed',
-                  top: 0, left: 0, right: 0, bottom: 0,
-                  backgroundColor: 'rgba(0,0,0,0.5)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  zIndex: 1000
-                }}>
-                  <div style={{ background: '#fff', padding: '20px' }}>
-                    <DaumPostcode
-                      onComplete={handleComplete}
-                      style={{ width: '400px', height: '400px' }}
-                    />
-                    <button onClick={() => setIsOpen(false)}>닫기</button>
-                  </div>
+            {isCustom ? (
+              <input
+                type="text"
+                placeholder="직접 입력"
+                value={customDomain}
+                onChange={(e) => setCustomDomain(e.target.value)}
+              />
+            ) : (<></>)}
+            <select onChange={handleDomainChange}>
+              <option value="">선택하세요</option>
+              <option value="@naver.com">@naver.com</option>
+              <option value="@daum.com">@daum.com</option>
+              <option value="@google.com">@google.com</option>
+              <option value="custom">직접입력</option>
+            </select>
+            <input type="text"
+              disabled
+              value={email ? finalEmail : ""} />
+            <button onClick={() => setIsOpen(true)}>주소찾기</button>
+            <label>세부주소: </label>
+            {address && <input type="text" onChange={(e) => setDetailadd(e.target.value)} />}
+            <input type="text"
+              disabled
+              value={finaladd} />
+            {isOpen && (
+              <div style={{
+                position: 'fixed',
+                top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 1000
+              }}>
+                <div style={{ background: '#fff', padding: '20px' }}>
+                  <DaumPostcode
+                    onComplete={handleComplete}
+                    style={{ width: '400px', height: '400px' }}
+                  />
+                  <button onClick={() => setIsOpen(false)}>닫기</button>
                 </div>
-              )}
-              <button onClick={() => {
-                handleSignup();
-                setChkPassword("");
-              }}>회원가입</button>
-              <button onClick={() => {
-                setLoginchange(false);
+              </div>
+            )}
+            <button onClick={() => {
+              handleSignup();
+              setChkPassword("");
+            }}>회원가입</button>
+            <button onClick={() => {
+              setLoginchange(false);
+              setChkPassword("");
+              setUserinfo({
+                username: '',
+                userid: '',
+                myPassword: '',
+                phone: ''
+              })
+            }} >로그인 하러가기</button>
+          </div>
+        </>
+        :
+        <>
+          <h1 className='head'>로그인</h1>
+          <div>
+            <label>아이디: </label>
+            <input
+              type="text"
+              name='userid'
+              value={userinfo.userid}
+              onChange={handleUserinfo}
+            />
+            <label>비밀번호: </label>
+            <input
+              type="password"
+              name='myPassword'
+              value={userinfo.myPassword}
+              onChange={handleUserinfo}
+            />
+            <button onClick={() => {
+              handleLogin();
+              setChkPassword("");
+            }}>로그인</button>
+            <div className='btn-line'>
+              <button className="link-btn" onClick={() => {
+                setLoginchange(true);
                 setChkPassword("");
                 setUserinfo({
                   username: '',
@@ -252,49 +296,13 @@ function Login() {
                   myPassword: '',
                   phone: ''
                 })
-              }} >로그인 하러가기</button>
+              }}>회원가입 </button>
+              <button className="link-btn" onClick={() => navigate('/Searchuser')}>아이디/비밀번호 찾기</button>
             </div>
-          </>
-          :
-          <>
-            <h1 className='head'>로그인</h1>
-            <div>
-              <label>아이디: </label>
-              <input
-                type="text"
-                name='userid'
-                value={userinfo.userid}
-                onChange={handleUserinfo}
-              />
-              <label>비밀번호: </label>
-              <input
-                type="password"
-                name='myPassword'
-                value={userinfo.myPassword}
-                onChange={handleUserinfo}
-              />
-              <button onClick={() => {
-                handleLogin();
-                setChkPassword("");
-              }}>로그인</button>
-              <div className='btn-line'>
-                <button className="link-btn" onClick={() => {
-                  setLoginchange(true);
-                  setChkPassword("");
-                  setUserinfo({
-                    username: '',
-                    userid: '',
-                    myPassword: '',
-                    phone: ''
-                  })
-                }}>회원가입 </button>
-                <button className="link-btn" onClick={() => navigate('/Searchuser')}>아이디/비밀번호 찾기</button>
-              </div>
-            </div>
-          </>
-        }
-      </div>
-    </>
+          </div>
+        </>
+      }
+    </div>
 
 
   );

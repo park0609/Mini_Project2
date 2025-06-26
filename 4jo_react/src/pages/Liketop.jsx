@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import '../Home.css';
+import { Link } from 'react-router-dom'
+
 
 function TopLike() {
     const [posts, setPosts] = useState([]);
@@ -16,14 +19,19 @@ function TopLike() {
 
     return (
         <>
-            <h1>좋아요 Top 5</h1>
-            <ul>
-                {posts.map(post => (
-                    <li key={post.id}>
-                        {post.title} (작성자: {post.author}, 조회수: {post.viewer}, 좋아요: {post.likeCount})
-                    </li>
-                ))}
-            </ul>
+            <div className='like-top'>
+                <div className='top-name'>
+                    <div className='top-title'>좋아요 Top 5</div>
+                    <Link to='/boardlist'><span className='board-move'>+</span></Link>
+                </div>
+                <ul className='top-content'>
+                    {posts.map(post => (
+                        <li key={post.id} >
+                            {post.title} (작성자: {post.author}, 조회수: {post.viewer}, 좋아요: {post.likeCount})
+                        </li>
+                    ))}
+                </ul>
+            </div >
         </>
     );
 }

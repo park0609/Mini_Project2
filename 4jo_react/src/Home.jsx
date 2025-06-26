@@ -1,15 +1,19 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Chart from './pages/Chart.jsx';
+import Viewtop from './pages/Viewtop.jsx';
 import Calendar from './pages/calendar.jsx';
-// import App from './App.jsx';
+import Liketop from './pages/Liketop.jsx'
+import './Home.css'
 
 const Home = () => {
     return (
-        <>  
+        <>
             <Calendar />
             <Chart />
-            
+            <div className='top-wapper'>
+                <Viewtop />
+                <Liketop />
+            </div>
+            <div className='info'></div>
         </>
     )
 }

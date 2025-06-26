@@ -1,6 +1,5 @@
 package com.mini2.project_back.controller;
 
-import java.util.List;
 // import java.util.Optional;
 
 // import org.springframework.http.HttpStatus;
@@ -28,11 +27,11 @@ public class MiniController {
         this.postRepository = postRepository;
     }
 
-    // 전체 게시글 목록 조회
-    @GetMapping("/board_list")
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
-    }
+    // // 전체 게시글 목록 조회
+    // @GetMapping("/board_list")
+    // public List<Post> getAllPosts() {
+    // return postRepository.findAllOrderByDateDesc();
+    // }
 
     // 게시글 작성
     @PostMapping("/commit")

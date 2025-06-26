@@ -9,7 +9,6 @@ function Mypage() {
     const [likedPosts, setLikedPosts] = useState([]);
     const navigate = useNavigate();
 
-
     useEffect(() => {
         axios.get('/search-cookie', { withCredentials: true })
             .then(res => {
@@ -68,7 +67,7 @@ function Mypage() {
                 {myPosts.length === 0 ? <p>작성한 글이 없습니다.</p> : (
                     <ul>
                         {myPosts.map(post => (
-                            <li key={post.freeIndex} onClick={() => { navigate(`/postView?no=${post.id}`) }}>
+                            <li key={post.freeIndex} onClick={() => { navigate(`/postView?no=${post.id}`) }} style={{ cursor: 'pointer' }}>
                                 <strong>{post.title}</strong> {post.viewer}- like:{post.likeCount}- {post.freeDate}
                             </li>
                         ))}
@@ -81,7 +80,7 @@ function Mypage() {
                 {likedPosts.length === 0 ? <p>좋아요한 글이 없습니다.</p> : (
                     <ul>
                         {likedPosts.map(post => (
-                            <li key={post.freeIndex} onClick={() => { navigate(`/postView?no=${post.id}`) }}>
+                            <li key={post.freeIndex} onClick={() => { navigate(`/postView?no=${post.id}`) }} style={{ cursor: 'pointer' }}>
                                 <strong>{post.title}</strong> - {post.freeDate}
                             </li>
                         ))}

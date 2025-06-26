@@ -35,7 +35,8 @@ const PostWrite = () => {
             })
             .catch(err => {
                 console.error(err);
-                alert("인증 실패 또는 서버 오류");
+                alert("로그인 후 이용가능합니다");
+                navigate('/login');
             });
 
         if (postId) {
@@ -62,7 +63,7 @@ const PostWrite = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // const content = editorRef.current.getInstance().getHTML(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
-        const content = editorRef.current.getInstance().getMarkdown(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
+        const content = editorRef.current.getInstance().getHTML(); //toast ui 쓰기 위해 등록 버튼 클릭시 내용 가져오기
         const newPost = {
             title,
             content,
@@ -174,11 +175,20 @@ const PostWrite = () => {
 
                 {/* 버튼 */}
                 <div style={{ textAlign: "center" }}>
-                    <button type="submit" style={{ marginRight: "10px" }}>등록</button>
+                    <button
+                        type="submit"
+                        className="post-button"
+                        style={{ marginRight: "10px" }}
+                    >
+                        등록
+                    </button>
                     <Link to="/boardlist">
-                        <button type="button">목록</button>
+                        <button type="button" className="post-button">
+                            목록
+                        </button>
                     </Link>
                 </div>
+
             </form>
         </div>
     );

@@ -1,20 +1,20 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from './Button';
 import './Navbar.css';
 import axios from 'axios';
+import logo from '../assets/logo.png';
 
 function Navbar() {
 
     const [click, setClick] = useState(false);
     const [button, setButton] = useState(true);
     const [username, setUsername] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(null);
+    const [remainingTime, setRemainingTime] = useState(0);
+    const timerRef = useRef(null);
+    const navigate = useNavigate();
 
     // 로그아웃 관련
-    const [isLoggedIn, setIsLoggedIn] = useState(null);
-    const navigate = useNavigate();
     const handleLogout = () => {
         axios.post('/logout', {}, { withCredentials: true })
             .then(() => {
@@ -45,17 +45,18 @@ function Navbar() {
     useEffect(() => {
         showButton();
 
-        //로그아웃관련
         axios.get('/checklog', { withCredentials: true })
             .then(res => {
                 setUsername(res.data.username);
-                console.log(res.data.username)
                 setIsLoggedIn(true);
+                const expiresAt = parseInt(localStorage.getItem("expiresAt"), 10);
+                if (expiresAt) {
+                    startSessionTimer(expiresAt);
+                }
             })
             .catch(() => {
                 setIsLoggedIn(false);
             });
-    }, [navigate]);
 
         window.addEventListener('resize', showButton);
 
@@ -103,7 +104,7 @@ function Navbar() {
                 <div className='navbar-container'>
                     {/* 모바일버전에서 클릭하면 메뉴 보이도록 설정하는 것도 한다. (close Mobile Menu)는 다시 버튼 누르면 없어지고 생기고 하도록 한다.  */}
                     <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-                        자격증
+                        <img src={logo} alt='로고' className='navbar-logo' />
                         <i className='fab fa-typo3' />
                     </Link>
                     <div className='menu-icon' onClick={handleClick}>
@@ -117,34 +118,37 @@ function Navbar() {
                         </li>
 
                         <li className='nav-item'>
-                            <Link to='/qualipage' className='nav-links' onClick={closeMobileMenu}>
+                            <Link to='/certinfo' className='nav-links' onClick={closeMobileMenu}>
                                 정보자격증
                             </Link>
                         </li>
 
                         {/* 드롭다운 메뉴 */}
-                        <li className='nav-item dropdown'>
+                        {/* <li className='nav-item-dropdown'>
                             <span className='nav-links'><Link to='/boardlist'>
                                 게시판
                             </Link></span>
-                            <ul className='dropdown-menu'>
-                                <li>
-                                </li>
-                            </ul>
+                        </li> */}
+
+                        <li className='nav-item-dropdown'>
+                            <Link to='/boardlist' className='nav-links'>
+                                게시판
+                            </Link>
                         </li>
                     </ul>
-                    {/* {button && <button className='btn-primary btn-medium'>
-                        <Link to='/Login'>로그인</Link>
-                    </button> */}
                     {isLoggedIn === null ? null : (
                         isLoggedIn ? (
                             <>
-                                <p>{username}</p>
-                                <button onClick={() => { navigate('/Mypage') }}>마이페이지</button>
-                                <button onClick={() => { handleLogout(); }}>로그아웃</button>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <p>{formatTime(remainingTime)}</p>
+                                    <button onClick={extendSession} className='nav-button-time'>시간 연장</button>
+                                </div>
+                                <p className='login-name'>{username}</p>
+                                <button onClick={() => navigate('/Mypage')} className='nav-button'>마이페이지</button>
+                                <button onClick={handleLogout} className='nav-button'>로그아웃</button>
                             </>
                         ) : (
-                            <Link to="/login">로그인</Link>
+                            <Link to="/login" className='nav-login'>로그인</Link>
                         )
                     )}
                 </div>

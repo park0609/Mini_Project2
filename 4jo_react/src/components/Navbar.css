@@ -1,3 +1,8 @@
+html,
+body {
+    margin: 0 auto;
+}
+
 .dropdown-menu li a {
     font-size: 0.85rem;
     color: #888;
@@ -12,7 +17,8 @@
 }
 
 .navbar {
-    background: linear-gradient(135deg, #83e7d5 0%, #7388e7 100%);
+    /* background: linear-gradient(135deg, #83e7d5 0%, #7388e7 100%); */
+    background: #E4EFE7;
     height: 80px;
     display: flex;
     justify-content: center;
@@ -37,14 +43,15 @@
 }
 
 .navbar-logo {
-    color: black;
+    color: rgb(179, 224, 221);
     justify-self: start;
-    margin-left: 20px;
+    margin-top: 5px;
     cursor: pointer;
     text-decoration: none;
-    font-size: 2rem;
+    font-size: 1.7rem;
     display: flex;
     align-items: center;
+    width: 180px;
 }
 
 .fa-typo3 {
@@ -61,14 +68,46 @@
     width: 60vw;
     justify-content: end;
     margin-right: 2rem;
+    margin-top: 0px;
+}
+
+.nav-item:link,
+.nav-item:visited,
+.nav-item:hover,
+.nav-item:active {
+    color: black;
+    /* 글자색 고정 */
+    text-decoration: none !important;
+}
+
+.nav-login {
+    margin-top: -4px;
+    background-color: #99BC85;
+    width: 80px;
+    height: 50px;
+    font-weight: bold;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: rgb(45, 59, 49);
+    border: 2px solid #99BC85;
+    border-radius: 30%;
+}
+
+.nav-item-dropdown {
+    text-decoration: none !important;
+    color: black;
 }
 
 .nav-item {
     height: 80px;
+    text-decoration: none !important;
+    color: black;
 }
 
 .nav-links {
-
     color: black;
     display: flex;
     align-items: center;
@@ -93,6 +132,45 @@
 
 .menu-icon {
     display: none;
+}
+
+.login-name {
+    width: 100px;
+    text-align: center;
+}
+
+.nav-button {
+    margin-top: -4px;
+    background-color: #EBBF75;
+    width: 100px;
+    height: 50px;
+    margin: 10px;
+    font-weight: bold;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    border: 2px solid #EBBF75;
+    border-radius: 30%;
+}
+
+.nav-button-time {
+    all: unset;
+    margin-top: -4px;
+    background-color: initial;
+    width: 100px;
+    height: 50px;
+    margin: 10px;
+    font-weight: bold;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    border-radius: 30%;
 }
 
 @media screen and (max-width: 960px) {

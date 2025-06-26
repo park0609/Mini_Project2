@@ -1,213 +1,262 @@
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { Viewer } from '@toast-ui/react-editor';
 import axios from 'axios';
+import './PostView.css';
 
-const PostView = () => {
+export default function PostView() {
     const location = useLocation();
     const navigate = useNavigate();
-    const searchParams = new URLSearchParams(location.search);
-    const postId = searchParams.get("no");
-    const [userinfo, setUserinfo] = useState('');
+
+    const [postId, setPostId] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([]);
-    const [newComment, setNewComment] = useState("");
+    const [newComment, setNewComment] = useState('');
     const [recommentingTo, setRecommentingTo] = useState(null);
-    const [recommentContent, setRecommentContent] = useState("");
-    const [userId, setUserId] = useState("")
-    const [like, setLike] = useState(false)
-    const [likeCount, setLikeCount] = useState()
+    const [recommentContent, setRecommentContent] = useState('');
+    const [likeCount, setLikeCount] = useState(0);
+    const [liked, setLiked] = useState(false);
 
+    // 쿼리 파라미터 변화 감지 및 데이터 로드
     useEffect(() => {
-
-        console.log("useEffect 실행됨")
-        axios.get(`/posts/${postId}`)
-            .then((res) => {
-                console.log("데이터 받음: ", res.data)
-                setPost(res.data); // 실제 글 목록으로 상태 설정
-            })
-            .catch((err) => console.error("에러: ", err));
-        // 회원정보 가져오기
-        axios.get('/search-cookie', { withCredentials: true })
-            .then(res => {
-                setUserinfo(res.data)
-                console.log("사용자 정보:", res.data);
-            })
-            .catch(err => {
-                console.error(err);
-                alert("인증 실패 또는 서버 오류");
-            });
-
-    }, [postId]);
-
-    const handleAddComment = () => {
-        if (!newComment.trim()) return alert("댓글을 입력하세요");
-        axios.post(`/posts/${postId}/comments`, {
-            content: newComment,
-            author: userinfo.username,
-            authorId: userinfo.userid
-        })
-            .then(res => {
-                setComments(prev => [...prev, res.data]);
-                setNewComment("");
-            })
-            .catch(() => alert("댓글 작성 실패"));
-    };
-
-    const handleAddRecomment = (parentComment) => {
-        if (!recommentContent.trim()) return alert("답글을 입력하세요");
-        axios.post(`/posts/${postId}/comments/${parentComment.id}/recomments`, {
-            content: recommentContent,
-            author: userinfo.username,
-            authorId: userinfo.userid
-        })
-            .then(res => {
-                setComments(prev => prev.map(c => {
-                    if (c.id === parentComment.id) {
-                        return { ...c, recomments: [...(c.recomments || []), res.data] };
-                    }
-                    return c;
-                }));
-                setRecommentingTo(null);
-                setRecommentContent("");
-            })
-            .catch(() => alert("답글 작성 실패"));
-    };
-
-    const handleDeleteComment = (commentId) => {
-        axios.delete(`/posts/${postId}/comments/${commentId}`)
-            .then(() => {
-                setComments(prev => prev.filter(c => c.id !== commentId));
-                alert("댓글 삭제 완료");
-            })
-            .catch(() => alert("댓글 삭제 실패"));
-    };
-
-    const handleDeleteRecomment = (recommentId) => {
-        axios.delete(`/posts/${postId}/recomments/${recommentId}`)
-            .then(() => {
-                setComments(prev => prev.map(c => ({
-                    ...c,
-                    recomments: c.recomments ? c.recomments.filter(r => r.id !== recommentId) : []
-                })));
-                alert("답글 삭제 완료");
-            })
-            .catch(() => alert("답글 삭제 실패"));
-    };
-
-    //좋아요 증가 로직
-    useEffect(() => {
-        axios.get("/search-cookie", { withCredentials: true })
-            .then(res => {
-                console.log("userInfo:", res.data);
-                setUserinfo(res.data);
-
-                const id = res.data.userid || res.data.id || res.data.username;
-                if (!id) {
-                    console.warn(" userId가 없음");
-                    return;
-                }
-                setUserId(id);  // 반드시 있어야 서버 요청 가능
-            })
-            .catch(err => {
-                console.log("유저 정보 요청 실패", err);
-            });
-    }, []);
-
-    const handleLike = async () => {
-        try {
-            await axios.post(`/like/${postId}?userId=${userId}`);
-            setLike(prev => !prev);
-        } catch (err) {
-            console.error("좋아요 실패", err);
-        }
-    };
-
-    useEffect(() => {
-        axios.get(`/like/count/${postId}`)
-            .then(res => {
-                setLikeCount(res.data)
-            })
-            .catch(err => {
-                console.log("좋아요 값 가져오지 못함", err)
-            })
-    }, [postId])
-
-    useEffect(() => {
-        if (!userId || !postId) return;
-
-        axios.get(`/like/status/${postId}?userId=${userId}`, { withCredentials: true })
-            .then(res => {
-                setLike(res.data);
-            })
-            .catch(err => {
-                console.error("좋아요 상태 불러오기 실패", err);
-            });
-    }, [userId, postId]);
-
-    // 조회수 증가 로직
-    useEffect(() => {
-        if (!postId) {
-            console.warn("postId가 없음, 조회수 증가 생략");
+        const params = new URLSearchParams(location.search);
+        const id = params.get('no');
+        if (!id) {
+            navigate('/boardlist');
             return;
         }
+        if (id !== postId) {
+            setPostId(id);
 
-        const View = async () => {
-            try {
-                console.log("postId:", postId);
-                await axios.put(`/posts/${postId}/view`);
-            } catch (error) {
-                console.error("게시글 조회 중 오류", error);
+            // 1) 유저 정보
+            axios.get('/search-cookie', { withCredentials: true })
+                .then(res => setUserInfo(res.data))
+                .catch(() => {
+                    alert('로그인 후 이용가능합니다');
+                    navigate('/login');
+                });
+
+            // 2) 게시글
+            axios.get(`/posts/${id}`)
+                .then(res => setPost(res.data))
+                .catch(err => console.error('게시글 불러오기 실패', err));
+
+            // 3) 댓글
+            axios.get(`/posts/${id}/comments`)
+                .then(res => setComments(res.data))
+                .catch(err => console.error('댓글 가져오기 실패', err));
+
+            // 4) 좋아요 수
+            axios.get(`/like/count/${id}`)
+                .then(res => setLikeCount(res.data))
+                .catch(err => console.error('좋아요 값 가져오기 실패', err));
+
+            // 5) 좋아요 상태
+            if (userInfo?.userid) {
+                axios.get(`/like/status/${id}`, {
+                    params: { userId: userInfo.userid }, withCredentials: true
+                })
+                    .then(res => setLiked(res.data))
+                    .catch(err => console.error('좋아요 상태 가져오기 실패', err));
             }
+
+            // 6) 조회수 증가
+            axios.put(`/posts/${id}/view`)
+                .catch(err => console.error('조회수 업데이트 실패', err));
         }
+    }, [location.search, postId, navigate, userInfo]);
 
-        View()
-    }, [postId])
+    const handleAddComment = () => {
+        if (!newComment.trim()) return alert('댓글을 입력하세요');
+        axios.post(
+            `/posts/${postId}/comments`,
+            { content: newComment, author: userInfo.username, authorId: userInfo.userid },
+            { withCredentials: true }
+        )
+            .then(res => {
+                setComments(prev => [...prev, res.data]);
+                setNewComment('');
+            })
+            .catch(() => alert('댓글 작성 실패'));
+    };
 
-    const handleDelete = async () => {
+    const handleAddRecomment = parentId => {
+        if (!recommentContent.trim()) return alert('답글을 입력하세요');
+        axios.post(
+            `/posts/${postId}/comments/${parentId}/recomments`,
+            { content: recommentContent, author: userInfo.username, authorId: userInfo.userid },
+            { withCredentials: true }
+        )
+            .then(res => {
+                setComments(prev =>
+                    prev.map(c =>
+                        c.id === parentId
+                            ? { ...c, recomments: [...(c.recomments || []), res.data] }
+                            : c
+                    )
+                );
+                setRecommentingTo(null);
+                setRecommentContent('');
+            })
+            .catch(() => alert('답글 작성 실패'));
+    };
+
+    const handleDeleteComment = commentId => {
+        axios.delete(`/posts/${postId}/comments/${commentId}`, { withCredentials: true })
+            .then(() => setComments(prev => prev.filter(c => c.id !== commentId)))
+            .catch(() => alert('댓글 삭제 실패'));
+    };
+
+    const handleDeleteRecomment = (parentId, reId) => {
+        axios.delete(
+            `/posts/${postId}/comments/${parentId}/recomments/${reId}`,
+            { withCredentials: true }
+        )
+            .then(() =>
+                setComments(prev =>
+                    prev.map(c =>
+                        c.id === parentId
+                            ? { ...c, recomments: (c.recomments || []).filter(r => r.id !== reId) }
+                            : c
+                    )
+                )
+            )
+            .catch(() => alert('답글 삭제 실패'));
+    };
+
+    const handleLike = () => {
+        axios.post(
+            `/like/${postId}`,
+            null,
+            { params: { userId: userInfo.userid }, withCredentials: true }
+        )
+            .then(() => {
+                setLiked(prev => !prev);
+                setLikeCount(prev => prev + (liked ? -1 : 1));
+            })
+            .catch(err => console.error('좋아요 실패', err));
+    };
+
+    const handleDeletePost = async () => {
         try {
-            await axios.delete(`/posts/${postId}`);
-            alert("삭제되었습니다.");
-            navigate("/boardlist");
-        } catch (error) {
-            console.error("삭제 중 오류 발생", error);
-            alert("삭제에 실패했습니다.");
+            await axios.delete(`/posts/${postId}`, { withCredentials: true });
+            alert('게시글이 삭제되었습니다.');
+            navigate('/boardlist');
+        } catch {
+            alert('게시글 삭제 실패');
         }
     };
 
-    const handleEdit = () => {
-        // 글 수정 페이지로 이동 (이 예시에서는 PostWrite 재활용 가능)
+    const handleEditPost = () => {
         navigate(`/postModify?no=${postId}`);
     };
 
-
     if (!post) return <div>❗게시글을 찾을 수 없습니다.</div>;
 
+    // 댓글+답글 총 개수
+    const totalComments = comments.reduce((sum, c) => sum + 1 + (c.recomments?.length || 0), 0);
+
     return (
-        <div style={{ width: "80%", margin: "0 auto", marginTop: "40px" }}>
-            <h2>📄 게시글 상세보기</h2>
-            <table border="1" width="100%" cellPadding="10" style={{ borderCollapse: "collapse" }}>
+        <div className="post-view-container">
+            <h2 className="post-header">📄 게시글 상세보기</h2>
+            <table className="post-table" border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%' }}>
                 <tbody>
-                    <tr><th>제목</th><td>{post.title}</td></tr>
+                    <tr>
+                        <th>제목</th>
+                        <td>
+                            {post.title}
+                            {totalComments > 0 && <span className="comment-count">[{totalComments}]</span>}
+                        </td>
+                    </tr>
                     <tr><th>작성자</th><td>{post.author}</td></tr>
                     <tr><th>등록일</th><td>{post.date}</td></tr>
                     <tr><th>조회수</th><td>{post.viewCount}</td></tr>
                     <tr><th>좋아요</th><td>{likeCount}</td></tr>
-                    <tr><th>내용</th><td style={{ height: "200px" }} colSpan="3" ><Viewer initialValue={post.content} sanitize={false} /></td></tr>
+                    <tr>
+                        <th>내용</th>
+                        <td style={{ height: '200px' }}>
+                            <Viewer initialValue={post.content} sanitize={false} />
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-            {/* 
-            <div style={{ marginTop: "20px", textAlign: "right" }}>
-                {userinfo && userinfo.username === post.author && (
+
+            <div className="post-buttons">
+                <button onClick={handleLike}>
+                    {liked ? '💔 좋아요 취소' : '❤️ 좋아요'} {likeCount}
+                </button>
+                {userInfo?.userid === post.userid && (
                     <>
-                        <button onClick={handleEdit}>수정</button>{" "}
-                        <button onClick={handleDelete}>삭제</button>{" "}
+                        <button onClick={handleEditPost}>수정</button>
+                        <button onClick={handleDeletePost}>삭제</button>
                     </>
                 )}
-                <button onClick={() => navigate("/boardlist")}>목록</button>
+                <button onClick={() => navigate('/boardlist')}>목록</button>
+            </div>
+
+            <div className="comment-section">
+                <h3>💬 댓글 ({totalComments})</h3>
+                {!comments.length ? (
+                    <p>댓글이 없습니다.</p>
+                ) : (
+                    <ul className="comment-list">
+                        {comments.map(cmt => (
+                            <li key={cmt.id} className="comment-item">
+                                <strong>{cmt.author}</strong>: {cmt.content}
+                                {userInfo?.userid === cmt.authorId && (
+                                    <button onClick={() => handleDeleteComment(cmt.id)} className="post-button">
+                                        댓글삭제
+                                    </button>
+                                )}
+                                <button onClick={() => setRecommentingTo(cmt.id)} className="post-button">
+                                    답글쓰기
+                                </button>
+
+                                {cmt.recomments?.map(re => (
+                                    <div key={re.id} className="recomment-item">
+                                        <strong>{re.author}</strong>: {re.content}
+                                        {userInfo?.userid === re.authorId && (
+                                            <button
+                                                onClick={() => handleDeleteRecomment(cmt.id, re.id)}
+                                                className="post-button"
+                                            >
+                                                답글삭제
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+
+                                {recommentingTo === cmt.id && (
+                                    <div className="comment-input">
+                                        <input
+                                            type="text"
+                                            value={recommentContent}
+                                            onChange={e => setRecommentContent(e.target.value)}
+                                            placeholder="답글을 입력하세요"
+                                        />
+                                        <button onClick={() => handleAddRecomment(cmt.id)} className="post-button">
+                                            작성
+                                        </button>
+                                    </div>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+
+                <div className="new-comment-input">
+                    <input
+                        type="text"
+                        value={newComment}
+                        onChange={e => setNewComment(e.target.value)}
+                        placeholder="댓글을 입력하세요"
+                    />
+                    <button onClick={handleAddComment} className="post-button">
+                        작성
+                    </button>
+                </div>
             </div>
         </div>
     );
-};
-
-export default PostView;
+}
