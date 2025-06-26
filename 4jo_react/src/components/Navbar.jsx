@@ -35,7 +35,7 @@ function Navbar() {
                 <div className='navbar-container'>
                     {/* 모바일버전에서 클릭하면 메뉴 보이도록 설정하는 것도 한다. (close Mobile Menu)는 다시 버튼 누르면 없어지고 생기고 하도록 한다.  */}
                     <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-                        자격증
+                        장 유
                         <i className='fab fa-typo3' />
                     </Link>
                     <div className='menu-icon' onClick={handleClick}>
@@ -60,9 +60,27 @@ function Navbar() {
                             </ul>
                         </li>
                     </ul>
+<<<<<<< Updated upstream
 
 
                     {button && <Button buttonStyle='btn--outline'>SIGN UP</Button>}
+=======
+                    {isLoggedIn === null ? null : (
+                        isLoggedIn ? (
+                            <>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <p>{formatTime(remainingTime)}</p>
+                                    <button onClick={extendSession} className='nav-button-time'>시간 연장</button>
+                                </div>
+                                <p className='login-name'>{username}</p>
+                                <button onClick={() => navigate('/Mypage')} className='nav-button'>마이페이지</button>
+                                <button onClick={handleLogout} className='nav-button'>로그아웃</button>
+                            </>
+                        ) : (
+                            <Link to="/login"><div className='nav-login'>로그인</div></Link>
+                        )
+                    )}
+>>>>>>> Stashed changes
                 </div>
             </nav >
         </>

@@ -87,6 +87,26 @@ const PostWrite = () => {
                 <button>목록</button>
             </div>
 
+<<<<<<< Updated upstream
+=======
+                {/* 버튼 */}
+                <div style={{ textAlign: "center" }}>
+                    <button
+                        type="submit"
+                        className="post-button"
+                        style={{ marginRight: "10px" }}
+                    >
+                        등록
+                    </button>
+                    <Link to="/boardlist">
+                        <button type="button" className="post-button">
+                            목록
+                        </button>
+                    </Link>
+                </div>
+
+            </form>
+>>>>>>> Stashed changes
         </div>
 
     );

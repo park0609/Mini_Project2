@@ -1,0 +1,112 @@
+/* 전체 페이지 중앙 정렬 */
+.login-page {
+  display: flex !important;
+  justify-content: center !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  min-height: 100vh !important;
+  background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%) !important;
+  font-family: 'Arial', sans-serif !important;
+}
+
+/* 카드 형태 */
+.login-page>div {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+}
+
+/* 제목 */
+.head {
+  margin-top: 24px;
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 라벨 + 인풋 영역 */
+.login-page label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #555;
+}
+
+.login-page input,
+.login-page select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+
+.login-page input:focus,
+.login-page select:focus {
+  outline: none;
+  border-color: #74ebd5;
+}
+
+/* 버튼 스타일 */
+.login-page button {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #74ebd5;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login-page button:hover {
+  background: #4eb8c2;
+}
+
+/* 주소 찾기 버튼 */
+.login-page .address-btn {
+  background: #ACB6E5;
+}
+
+.login-page .address-btn:hover {
+  background: #8ea2d4;
+}
+
+/* 아이디/비밀번호 찾기 */
+.login-page .find-btn {
+  background: #f5a623;
+}
+
+.login-page .find-btn:hover {
+  background: #d48806;
+}
+
+.login-page .postcode-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* 회원가입, 찾기버튼 */
+.login-page .link-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 14px;
+  padding: 0;
+  margin: 4px 0;
+  cursor: pointer;
+}
+
+.btn-line {
+  display: flex;
+  text-align: center;
+}

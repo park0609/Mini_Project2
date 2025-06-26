@@ -1,0 +1,135 @@
+.post-view-container {
+    width: 80%;
+    margin: 40px auto;
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+    border-bottom: 2px solid #4b7bec;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+.post-header h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+.post-meta {
+    font-size: 14px;
+    color: #888;
+}
+
+.post-content {
+    margin-bottom: 30px;
+    font-size: 16px;
+    color: #333;
+}
+
+.post-buttons {
+    text-align: right;
+    margin-bottom: 30px;
+}
+
+.post-buttons button {
+    background-color: #4b7bec;
+    color: #fff;
+    padding: 8px 14px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.post-button {
+    background-color: #4b7bec;
+    color: #fff;
+    padding: 8px 14px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.post-button:hover {
+    background-color: #3b63d1;
+}
+
+.post-buttons button:hover {
+    background-color: #3b63d1;
+}
+
+.comment-section {
+    margin-top: 30px;
+}
+
+.comment-section h3 {
+    font-size: 18px;
+    margin-bottom: 14px;
+    color: #2c3e50;
+}
+
+.comment-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.comment-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+    color: #444;
+}
+
+.comment-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.comment-input input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.comment-input button {
+    padding: 10px 16px;
+    background-color: #4b7bec;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.comment-input button:disabled {
+    background-color: #a0a0a0;
+    cursor: not-allowed;
+}
+
+
+.comment-count {
+    margin-left: 8px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* PostView.css */
+.comment-input-field {
+    width: 90%;
+    padding: 8px;
+    font-size: 1em;
+}

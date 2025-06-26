@@ -45,6 +45,7 @@
     font-size: 2rem;
     display: flex;
     align-items: center;
+    width: 200px;
 }
 
 .fa-typo3 {
@@ -93,6 +94,45 @@
 
 .menu-icon {
     display: none;
+}
+
+.login-name {
+    width: 100px;
+    text-align: center;
+}
+
+.nav-button {
+    margin-top: -4px;
+    background-color: #EBBF75;
+    width: 100px;
+    height: 50px;
+    margin: 10px;
+    font-weight: bold;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    border: 2px solid #EBBF75;
+    border-radius: 30%;
+}
+
+.nav-button-time {
+    all: unset;
+    margin-top: -4px;
+    background-color: initial;
+    width: 100px;
+    height: 50px;
+    margin: 10px;
+    font-weight: bold;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    border-radius: 30%;
 }
 
 @media screen and (max-width: 960px) {
