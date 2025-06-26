@@ -1,27 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-<<<<<<< Updated upstream
-import { useEffect, useState } from 'react';
-
-const dummyPosts = [
-    { _id: "1", title: "React 게시판 만들기", content: "내용입니다.", author: "관리자", date: "2025-06-18", views: 10 },
-    { _id: "2", title: "첫 글입니다", content: "이건 첫 글이에요.", author: "홍길동", date: "2025-06-17", views: 5 },
-];
-=======
 import { Viewer } from '@toast-ui/react-editor';
 import axios from 'axios';
 import './PostView.css';
->>>>>>> Stashed changes
 
 export default function PostView() {
     const location = useLocation();
     const navigate = useNavigate();
-<<<<<<< Updated upstream
-    const searchParams = new URLSearchParams(location.search);
-    const postId = searchParams.get("no");
-
-    const [post, setPost] = useState(null);
-=======
 
     const [postId, setPostId] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
@@ -32,26 +17,9 @@ export default function PostView() {
     const [recommentContent, setRecommentContent] = useState('');
     const [likeCount, setLikeCount] = useState(0);
     const [liked, setLiked] = useState(false);
->>>>>>> Stashed changes
 
     // 쿼리 파라미터 변화 감지 및 데이터 로드
     useEffect(() => {
-<<<<<<< Updated upstream
-        // 임시 더미데이터에서 가져오기 (나중엔 axios.get)
-        const found = dummyPosts.find((p) => p._id === postId);
-        setPost(found);
-    }, [postId]);
-
-    const handleDelete = () => {
-        // 나중에 axios.delete 요청
-        alert("삭제되었습니다.");
-        navigate("/");
-    };
-
-    const handleEdit = () => {
-        // 글 수정 페이지로 이동 (이 예시에서는 PostWrite 재활용 가능)
-        navigate(`/postWrite?no=${postId}`);
-=======
         const params = new URLSearchParams(location.search);
         const id = params.get('no');
         if (!id) {
@@ -182,7 +150,6 @@ export default function PostView() {
 
     const handleEditPost = () => {
         navigate(`/postModify?no=${postId}`);
->>>>>>> Stashed changes
     };
 
     if (!post) return <div>❗게시글을 찾을 수 없습니다.</div>;
@@ -197,25 +164,6 @@ export default function PostView() {
                 <tbody>
                     <tr>
                         <th>제목</th>
-<<<<<<< Updated upstream
-                        <td>{post.title}</td>
-                    </tr>
-                    <tr>
-                        <th>작성자</th>
-                        <td>{post.author}</td>
-                    </tr>
-                    <tr>
-                        <th>등록일</th>
-                        <td>{post.date}</td>
-                    </tr>
-                    <tr>
-                        <th>조회수</th>
-                        <td>{post.views}</td>
-                    </tr>
-                    <tr>
-                        <th>내용</th>
-                        <td style={{ height: "200px" }}>{post.content}</td>
-=======
                         <td>
                             {post.title}
                             {totalComments > 0 && <span className="comment-count">[{totalComments}]</span>}
@@ -230,23 +178,10 @@ export default function PostView() {
                         <td style={{ height: '200px' }}>
                             <Viewer initialValue={post.content} sanitize={false} />
                         </td>
->>>>>>> Stashed changes
                     </tr>
                 </tbody>
             </table>
 
-<<<<<<< Updated upstream
-            <div style={{ marginTop: "20px", textAlign: "right" }}>
-                <button onClick={handleEdit}>수정</button>{" "}
-                <button onClick={handleDelete}>삭제</button>{" "}
-                <button onClick={() => navigate("/")}>목록</button>
-            </div>
-        </div>
-    );
-};
-
-export default PostView;
-=======
             <div className="post-buttons">
                 <button onClick={handleLike}>
                     {liked ? '💔 좋아요 취소' : '❤️ 좋아요'} {likeCount}
@@ -325,4 +260,3 @@ export default PostView;
         </div>
     );
 }
->>>>>>> Stashed changes

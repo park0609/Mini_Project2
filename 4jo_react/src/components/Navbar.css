@@ -1,3 +1,8 @@
+html,
+body {
+    margin: 0 auto;
+}
+
 .dropdown-menu li a {
     font-size: 0.85rem;
     color: #888;
@@ -62,14 +67,46 @@
     width: 60vw;
     justify-content: end;
     margin-right: 2rem;
+    margin-top: 0px;
+}
+
+.nav-item:link,
+.nav-item:visited,
+.nav-item:hover,
+.nav-item:active {
+    color: black;
+    /* 글자색 고정 */
+    text-decoration: none !important;
+}
+
+.nav-login {
+    margin-top: -4px;
+    background-color: #EBBF75;
+    width: 80px;
+    height: 50px;
+    font-weight: bold;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    border: 2px solid #EBBF75;
+    border-radius: 30%;
+}
+
+.nav-item-dropdown {
+    text-decoration: none !important;
+    color: black;
 }
 
 .nav-item {
     height: 80px;
+    text-decoration: none !important;
+    color: black;
 }
 
 .nav-links {
-
     color: black;
     display: flex;
     align-items: center;

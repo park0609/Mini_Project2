@@ -1,14 +1,19 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar.jsx';
+import Home from './Home'
+import './App.css';
+import Login from './pages/Login.jsx';
+import Modifyprofile from './pages/Modifyprofile.jsx';
+import Mypage from './pages/Mypage.jsx';
+import Searchuser from './pages/Searchuser.jsx';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import BoardList from './pages/BoardList.jsx';
+import PostModify from './pages/PostModify.jsx';
+import PostView from './pages/PostView.jsx';
+import PostWrite from './pages/PostWrite.jsx';
+import CertInfo from './pages/CertInfo.jsx';
 
-// 컴포넌트 import
-import Navbar from "./components/Navbar";
-import "./components/Navbar.css";
-import BoardList from './pages/BoardList';
-import PostWrite from './pages/PostWrite';
-import PostView from './pages/PostView';
-import InfoBoard from './pages/InfoBoard';
 
 function App() {
   const navRef = useRef(null);
@@ -33,20 +38,27 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <>
+
       <div ref={navRef}>
         <Navbar />
       </div>
-      <div style={{ paddingTop: "80px" }}>{/* ← 네비 높이만큼 밀어줌 */}
-        <Routes>
-          <Route path="/" element={<BoardList />} />
-          <Route path="/postWrite" element={<PostWrite />} />
-          <Route path="/postView" element={<PostView />} />
-          <Route path="/InfoBoard" element={<InfoBoard />} />
-        </Routes>
-      </div>
-    </Router>
+
+      <Routes>
+        <Route path='/' element={<Home />} /> {/*메인 페이지*/}
+        <Route path='/Login' element={<Login />} /> {/*로그인 페이지*/}
+        <Route path='/Searchuser' element={<Searchuser />} /> {/* 아이디/비번찾기페이지 */}
+        <Route path='/Mypage' element={<Mypage />} /> {/* 마이페이지 */}
+        <Route path='/Mypage/Modifyprofile' element={<Modifyprofile />} /> {/* 회원정보수정페이지 */}
+        <Route path='/boardlist' element={<BoardList />} /> {/* 게시판페이지 */}
+        <Route path="/postWrite" element={<PostWrite />} />
+        <Route path="/postView" element={<PostView />} />
+        <Route path="/postModify" element={<PostModify />} />
+        <Route path="/postView" element={<PostView />} />
+        <Route path="/certinfo" element={<CertInfo />} />
+      </Routes>
+
+    </>
   );
 }
-
 export default App;
