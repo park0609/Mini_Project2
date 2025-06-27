@@ -1,0 +1,152 @@
+.cal-layout {
+    position: relative;
+    width: 1000px;
+    height: 550px;
+    /* position: relative; */
+    background-color: white;
+    left: 20px;
+    top: 40px;
+    border-radius: 4%;
+    margin: 30px 20px;
+    display: flex;
+}
+
+.calendar-container {
+    width: 100%;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 10px;
+    gap: 20px;
+    position: absolute;
+    transform: translateX(68%);
+    margin-top: 20px;
+}
+
+.cal {
+    border-collapse: collapse;
+    position: relative;
+    table-layout: fixed;
+    overflow: hidden;
+    top: 40px;
+    width: 500px;
+    height: 400px;
+    margin-right: 50px;
+    /* height: 300px; */
+    margin-left: 50px;
+    margin-top: 21px;
+}
+
+.cal td {
+    height: calc(300px / 6);
+    /* 6줄 기준 고정 */
+    width: calc(100% / 7);
+    /* 7칸 기준 고정 */
+    vertical-align: top;
+    text-align: center;
+}
+
+.cal th,
+.cal td {
+    border: 1px solid #ddd;
+    width: 14.2%;
+    height: 20px;
+    text-align: center;
+    vertical-align: top;
+    padding: 4px;
+    position: relative;
+}
+
+.cal td.today {
+    background-color: #fff0c1;
+    font-weight: bold;
+}
+
+.calendar-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.arrow-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.arrow-btn:hover {
+    color: #007bff;
+}
+
+.bars {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 4px;
+    gap: 2px;
+    /* 점 사이 간격 */
+    max-width: 24px;
+    /* 가로 너비 제한 (2개만 한 줄에) */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bar {
+    width: 6px;
+    height: 6px;
+    background-color: #4caf50;
+    border-radius: 50%;
+}
+
+.sche-title {
+    text-align: center;
+}
+
+.sche {
+    text-align: center;
+    flex: 1;
+    max-width: 10000px;
+    /* ← 더 넓게 */
+    width: 100%;
+    font-size: 15px;
+    max-height: 450px;
+    /* ↓ 세로 약간 줄이기 */
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-left: -10px;
+    margin-top: 40px;
+    word-break: break-word;
+    white-space: normal;
+}
+
+.schedule-block {
+    margin-bottom: 8px;
+    /* ↓ 세로 간격 줄이기 */
+    padding: 6px 10px;
+    /* ↓ 패딩 조절 */
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    font-size: 15px;
+    /* ↓ 텍스트 크기 살짝 줄이기 */
+    line-height: 1.4;
+    /* ↓ 줄 간격 조금 조절 */
+    width: 100%;
+    /* ↔ 가로 최대화 */
+    box-sizing: border-box;
+}
+
+.sche a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    margin-right: 6px;
+}
+
+.sche a.active {
+    font-weight: bold;
+    color: #007bff;
+}
