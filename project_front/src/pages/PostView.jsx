@@ -210,6 +210,17 @@ export default function PostView() {
 
             <div className="comment-section">
                 <h3>💬 댓글 ({totalComments})</h3>
+                <div className="comment-input">
+                    <input
+                        type="text"
+                        value={newComment}
+                        onChange={e => setNewComment(e.target.value)}
+                        placeholder="댓글을 입력하세요"
+                    />
+                    <button onClick={handleAddComment} className="post-button">
+                        작성
+                    </button>
+                </div>
                 {!comments.length ? (
                     <p>댓글이 없습니다.</p>
                 ) : (
@@ -258,17 +269,7 @@ export default function PostView() {
                     </ul>
                 )}
 
-                <div className="new-comment-input">
-                    <input
-                        type="text"
-                        value={newComment}
-                        onChange={e => setNewComment(e.target.value)}
-                        placeholder="댓글을 입력하세요"
-                    />
-                    <button onClick={handleAddComment} className="post-button">
-                        작성
-                    </button>
-                </div>
+
             </div>
         </div>
     );

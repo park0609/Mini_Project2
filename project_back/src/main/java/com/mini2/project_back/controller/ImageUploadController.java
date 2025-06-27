@@ -36,6 +36,6 @@ public class ImageUploadController {
          * 7. 저장된 이미지에 접근할 수 있는 url 반환
          * <img scr ="..."> 형태로 React 에디터라 사용
          */
-        return ResponseEntity.ok("http://localhost:8090/uploads/" + filename);
+        return ResponseEntity.ok("/uploads/" + filename);
     }
 }
