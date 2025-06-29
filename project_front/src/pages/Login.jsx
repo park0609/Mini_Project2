@@ -3,8 +3,6 @@ import axios from 'axios';
 import DaumPostcode from 'react-daum-postcode';  // 다음주소찾기
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
-import { jsx } from 'react/jsx-runtime';
-import { CenturyView } from 'react-calendar';
 
 
 function Login() {
@@ -82,8 +80,8 @@ function Login() {
       alert("전화번호를 입력해주세요")
     } else if (userinfo.email == "") {
       alert("이메일을 입력해주세요")
-    } else if (isCustom ? customDomain : domain == "") {
-      alert("메일을 선택해주세요")
+    } else if ((isCustom && customDomain === "") || (!isCustom && domain === "")) {
+      alert("메일을 선택해주세요");
     }
     else if (userinfo.address == "") {
       alert("주소를 입력해주세요")
@@ -108,6 +106,13 @@ function Login() {
               phone: ''
             })
             setLoginchange(false);
+            setIsCustom(false)
+            setEmail('');
+            setDomain('');
+            setCustomDomain('');
+            setAddress('');
+            setDetailadd('');
+
           }
         })
         .catch(err => {
@@ -135,9 +140,11 @@ function Login() {
     if (value === 'custom') {
       setIsCustom(true);
       setDomain('');
+      setCustomDomain('');
     } else {
       setIsCustom(false);
       setDomain(value);
+      setCustomDomain('');
     }
   };
 
@@ -157,7 +164,7 @@ function Login() {
         alignItems: 'center',
         flexDirection: 'column',
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)',
+        background: '#FDFAF6',
         fontFamily: 'Arial ,sans-serif'
       }}>
       {loginchange ?
@@ -217,7 +224,7 @@ function Login() {
               <option value="">선택하세요</option>
               <option value="@naver.com">@naver.com</option>
               <option value="@daum.com">@daum.com</option>
-              <option value="@google.com">@google.com</option>
+              <option value="@gmail.com">@gmail.com</option>
               <option value="custom">직접입력</option>
             </select>
             <input type="text"

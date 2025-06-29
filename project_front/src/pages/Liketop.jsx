@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../Home.css';
-import { Link } from 'react-router-dom'
+import './ViewLikeTop.css';
+import { Link, useNavigate } from 'react-router-dom'
 
 
 function TopLike() {
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('/api/board/top-like')
@@ -26,7 +28,7 @@ function TopLike() {
                 </div>
                 <ul className='top-content'>
                     {posts.map(post => (
-                        <li key={post.id} >
+                        <li key={post.id} onClick={() => navigate(`/postView?no=${post.id}`)}>
                             {post.title} (작성자: {post.author}, 조회수: {post.viewer}, 좋아요: {post.likeCount})
                         </li>
                     ))}

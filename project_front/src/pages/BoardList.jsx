@@ -66,8 +66,8 @@ export default function BoardList() {
                         return (
                             <tr key={post.id} className={idx % 2 === 0 ? 'even' : 'odd'}>
                                 <td>{number}</td>
-                                <td>
-                                    <Link to={`/postview?no=${post.id}`}>{post.title}</Link>
+                                <td >
+                                    <Link to={`/postview?no=${post.id}`} style={{ textDecoration: "none" }}>{post.title}</Link>
                                     {commentTotal > 0 && <span className="comment-count">[{commentTotal}]</span>}
                                 </td>
                                 <td>{post.author}</td>

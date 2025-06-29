@@ -1,37 +1,38 @@
 /* 전체 페이지 중앙 정렬 */
-.My-page {
+.modify-page {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+    height: 100%;
+    background: #FDFAF6;
     font-family: 'Arial', sans-serif;
 }
 
-.My-page>div {
+.modify-page>div {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    margin: 20px;
+    /* margin: 20px; */
     background: white;
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     width: 90%;
-    max-width: 1000px;
+    min-width: 1500px;
+    height: 100%;
 }
 
 /* 카드 형태 */
-.My-page>div>div {
+/* .modify-page>div>div {
     margin: 20px;
     background: white;
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     width: 90%;
-    /* max-width: 400px; */
-}
+    max-width: 400px;
+} */
 
 /* 제목 */
 .head {
@@ -44,15 +45,15 @@
 }
 
 /* 라벨 + 인풋 영역 */
-.My-page label {
+.modify-page label {
     display: block;
     margin-bottom: 6px;
     font-weight: 600;
     color: #555;
 }
 
-.My-page input,
-.My-page select {
+.modify-page input,
+.modify-page select {
     width: 100%;
     padding: 10px 12px;
     margin-bottom: 16px;
@@ -61,49 +62,49 @@
     transition: border-color 0.2s;
 }
 
-.My-page input:focus,
-.My-page select:focus {
+.modify-page input:focus,
+.modify-page select:focus {
     outline: none;
-    border-color: #74ebd5;
+    border-color: #99bc85;
 }
 
 /* 버튼 스타일 */
-.My-page button {
+.modify-page button {
     width: 100%;
     padding: 10px 14px;
     margin-bottom: 10px;
     border: none;
     border-radius: 6px;
-    background: #74ebd5;
+    background: #99bc85;
     color: white;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s;
 }
 
-.My-page button:hover {
+.modify-page button:hover {
     background: #4eb8c2;
 }
 
 /* 주소 찾기 버튼 */
-.My-page .address-btn {
+.modify-page .address-btn {
     background: #ACB6E5;
 }
 
-.My-page .address-btn:hover {
+.modify-page .address-btn:hover {
     background: #8ea2d4;
 }
 
 /* 아이디/비밀번호 찾기 */
-.My-page .find-btn {
+.modify-page .find-btn {
     background: #f5a623;
 }
 
-.My-page .find-btn:hover {
+.modify-page .find-btn:hover {
     background: #d48806;
 }
 
-.My-page .postcode-content {
+.modify-page .postcode-content {
     background: white;
     padding: 20px;
     border-radius: 8px;

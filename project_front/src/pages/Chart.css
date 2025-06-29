@@ -1,13 +1,14 @@
 .chart-slider {
-    position: fixed;
-    top: 120px;
-    right: 20px;
-    width: 900px;
+    position: relative;
+    width: 1550px;
     height: 550px;
     overflow: hidden;
     background: white;
     z-index: 1000;
-    border-radius: 4%;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    padding: 0 180px;
 }
 
 .tab-slider-wrapper {
@@ -47,6 +48,8 @@
     text-align: center;
     /* 줄바꿈 방지 */
     white-space: nowrap;
+    margin-top: 35px;
+    height: 40px;
 }
 
 /* 게이지 바 기본 상태 */
@@ -87,6 +90,7 @@
     padding: 0;
     box-sizing: border-box;
     outline: none;
+    margin-top: 45px;
 }
 
 .tab-arrow:focus {

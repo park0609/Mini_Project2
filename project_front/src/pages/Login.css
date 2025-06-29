@@ -5,7 +5,7 @@
   flex-direction: column !important;
   align-items: center !important;
   min-height: 100vh !important;
-  background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%) !important;
+  background: #FDFAF6 !important;
   font-family: 'Arial', sans-serif !important;
 }
 
@@ -50,7 +50,7 @@
 .login-page input:focus,
 .login-page select:focus {
   outline: none;
-  border-color: #74ebd5;
+  border-color: #99bc85;
 }
 
 /* 버튼 스타일 */
@@ -60,7 +60,7 @@
   margin-bottom: 10px;
   border: none;
   border-radius: 6px;
-  background: #74ebd5;
+  background: #99bc85;
   color: white;
   font-weight: bold;
   cursor: pointer;
@@ -99,7 +99,7 @@
 .login-page .link-btn {
   background: none;
   border: none;
-  color: #007bff;
+  color: #537D5D;
   font-size: 14px;
   padding: 0;
   margin: 4px 0;

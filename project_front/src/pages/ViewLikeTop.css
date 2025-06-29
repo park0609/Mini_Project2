@@ -1,0 +1,80 @@
+.view-top {
+    bottom: 20px;
+    right: 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    width: 520px;
+    border: 1px solid #e9ecef;
+    z-index: 1000;
+    height: 230px;
+    /* 다른 요소들 위에 표시 */
+}
+
+.like-top {
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    width: 520px;
+    border: 1px solid #e9ecef;
+    z-index: 1000;
+    height: 230px;
+    /* 다른 요소들 위에 표시 */
+}
+
+.top-name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 8px;
+}
+
+.top-title {
+    font-weight: 600;
+    color: #333;
+    font-weight: bold;
+    margin: 10px 0 0 10px;
+    font-size: 16px;
+}
+
+.board-move {
+    color: #007bff;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.board-move:hover {
+    color: #0056b3;
+}
+
+.top-content {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.top-content li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f8f9fa;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.top-content li:last-child {
+    border-bottom: none;
+}
+
+.top-content li:hover {
+    color: #007bff;
+    cursor: pointer;
+}

@@ -43,7 +43,7 @@ public class UserController {
                     .sameSite("Strict")
                     .build();
 
-            long expiresAt = System.currentTimeMillis() + (30 * 1000);
+            long expiresAt = System.currentTimeMillis() + (30 * 1000 * 2 * 60);
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())

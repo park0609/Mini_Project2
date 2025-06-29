@@ -24,11 +24,12 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 1.2rem;
-
-    position: sticky;
+    width: 100%;
+    position: fixed;
     /* 또는 fixed */
     top: 0;
     z-index: 999;
+    margin-bottom: 30px;
 }
 
 .navbar-container {

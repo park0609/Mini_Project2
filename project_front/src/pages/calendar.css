@@ -1,17 +1,18 @@
 .cal-layout {
-    display: flex;
-    width: 900px;
-    height: 550px;
     position: relative;
+    width: 1000px;
+    height: 550px;
+    /* position: relative; */
     background-color: white;
     left: 20px;
     top: 40px;
     border-radius: 4%;
+    margin: 30px 20px;
+    display: flex;
 }
 
 .calendar-container {
     width: 100%;
-
 }
 
 .calendar-header {

@@ -9,23 +9,26 @@
 }
 
 .post-header {
-    border-bottom: 2px solid #4b7bec;
+    border-bottom: 2px solid #537D5D;
     padding-bottom: 16px;
     margin-bottom: 24px;
 }
 
 .post-header h1 {
+    margin: 10px;
     font-size: 28px;
-    margin-bottom: 8px;
-    color: #2c3e50;
+    color: hsl(210, 29%, 24%);
 }
 
 .post-meta {
+    display: flex;
+    gap: 15px;
     font-size: 14px;
     color: #888;
 }
 
 .post-content {
+    height: auto;
     margin-bottom: 30px;
     font-size: 16px;
     color: #333;
@@ -37,7 +40,7 @@
 }
 
 .post-buttons button {
-    background-color: #4b7bec;
+    background-color: #537D5D;
     color: #fff;
     padding: 8px 14px;
     margin-left: 10px;
@@ -49,7 +52,7 @@
 }
 
 .post-button {
-    background-color: #4b7bec;
+    background-color: #537D5D;
     color: #fff;
     padding: 8px 14px;
     margin-left: 10px;
@@ -61,11 +64,11 @@
 }
 
 .post-button:hover {
-    background-color: #3b63d1;
+    background-color: #537D5D;
 }
 
 .post-buttons button:hover {
-    background-color: #3b63d1;
+    background-color: #537D5D;
 }
 
 .comment-section {
@@ -75,7 +78,8 @@
 .comment-section h3 {
     font-size: 18px;
     margin-bottom: 14px;
-    color: #2c3e50;
+    border-top: 2px solid #9EBC8A;
+    padding-top: 10px;
 }
 
 .comment-list {
@@ -106,7 +110,7 @@
 
 .comment-input button {
     padding: 10px 16px;
-    background-color: #4b7bec;
+    background-color: #537D5D;
     color: #fff;
     border: none;
     border-radius: 6px;

@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../Home.css'
-import { Link } from 'react-router-dom'
+import './ViewLikeTop.css';
+import { Link, useNavigate } from 'react-router-dom'
+
 
 function Viewtop() {
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('/api/board/top-viewer')
@@ -29,7 +32,7 @@ function Viewtop() {
                 </div>
                 <ul className='top-content'>
                     {posts.map(post => (
-                        <li key={post.id} >
+                        <li key={post.id} onClick={() => navigate(`/postView?no=${post.id}`)}>
                             {post.title} (조회수: {post.viewer})
                         </li>
                     ))}

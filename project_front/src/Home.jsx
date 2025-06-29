@@ -7,11 +7,13 @@ import './Home.css'
 const Home = () => {
     return (
         <>
-            <Calendar />
             <Chart />
             <div className='top-wapper'>
-                <Viewtop />
-                <Liketop />
+                <Calendar />
+                <div className='top5-wapper'>
+                    <Viewtop />
+                    <Liketop />
+                </div>
             </div>
             <div className='info'></div>
         </>

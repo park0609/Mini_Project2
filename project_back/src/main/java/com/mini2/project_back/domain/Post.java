@@ -1,7 +1,11 @@
 package com.mini2.project_back.domain;
 
-import java.time.LocalDate;
-// import java.time.LocalDateTime;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 // JPA 어노테이션 사용
 import jakarta.persistence.Column;
@@ -31,8 +35,10 @@ public class Post {
     @Column(name = "FREE_CONTENT", nullable = false)
     private String content;
 
-    @Column(name = "FREE_DATE", insertable = false, updatable = false)
-    private LocalDate date;
+    @CreationTimestamp
+    @JsonProperty(access = Access.READ_ONLY)
+    @Column(name = "FREE_DATE", nullable = false, updatable = false)
+    private LocalDateTime date;
 
     @Column(name = "FREE_AUTHOR", nullable = false)
     private String author;
@@ -88,11 +94,11 @@ public class Post {
         this.author = author;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
