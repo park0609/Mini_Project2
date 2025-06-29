@@ -58,10 +58,57 @@ export default function PostView() {
             }
 
             // 6) 조회수 증가
-            axios.put(`/posts/${id}/view`)
-                .catch(err => console.error('조회수 업데이트 실패', err));
+            const viewedKey = `viewed_${id}`;
+            const viewedData = JSON.parse(localStorage.getItem(viewedKey));
+            const now = Date.now();
+
+            // 30초 내 조회수 증가 생략
+            if (!viewedData || now - viewedData.time > 30000) {
+                axios.put(`/posts/${id}/view`)
+                    .then(() => {
+                        localStorage.setItem(viewedKey, JSON.stringify({ time: now }));
+                        console.log("조회수 증가 완료");
+                    })
+                    .catch(err => {
+                        console.error("게시글 조회 중 오류", err);
+                    });
+            }
+            cleanUpOldViewedPosts();
         }
     }, [location.search, postId, navigate, userInfo]);
+
+    const toKST = isoString => {
+        if (!isoString) return '';
+        // Date.parse(isoString) 로 UTC 기준 timestamp(ms) 얻고, +9h
+        const ts = Date.parse(isoString) + 9 * 60 * 60 * 1000;
+        return new Date(ts).toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
+    const cleanUpOldViewedPosts = () => {
+        const now = Date.now();
+        const cleanuptime = 30 * 1000;
+
+        Object.keys(localStorage).forEach((key) => {
+            if (key.startsWith("viewed_")) {
+                try {
+                    const value = JSON.parse(localStorage.getItem(key));
+                    if (value?.time && now - value.time > cleanuptime) {
+                        localStorage.removeItem(key);
+                        console.log(`'${key}'삭제됨 `);
+                    }
+                } catch (err) {
+                    console.warn(`'${key}' 삭제 중 오류`, err);
+                    localStorage.removeItem(key);
+                }
+            }
+        });
+    };
 
     const handleAddComment = () => {
         if (!newComment.trim()) return alert('댓글을 입력하세요');
@@ -104,21 +151,33 @@ export default function PostView() {
             .catch(() => alert('댓글 삭제 실패'));
     };
 
-    const handleDeleteRecomment = (parentId, reId) => {
-        axios.delete(
-            `/posts/${postId}/comments/${parentId}/recomments/${reId}`,
-            { withCredentials: true }
-        )
-            .then(() =>
-                setComments(prev =>
-                    prev.map(c =>
-                        c.id === parentId
-                            ? { ...c, recomments: (c.recomments || []).filter(r => r.id !== reId) }
-                            : c
-                    )
-                )
-            )
-            .catch(() => alert('답글 삭제 실패'));
+    // const handleDeleteRecomment = (parentId, reId) => {
+    //     axios.delete(
+    //         `/posts/${postId}/comments/${parentId}/recomments/${reId}`,
+    //         { withCredentials: true }
+    //     )
+    //         .then(() =>
+    //             setComments(prev =>
+    //                 prev.map(c =>
+    //                     c.id === parentId
+    //                         ? { ...c, recomments: (c.recomments || []).filter(r => r.id !== reId) }
+    //                         : c
+    //                 )
+    //             )
+    //         )
+    //         .catch(() => alert('답글 삭제 실패'));
+    // };
+
+    const handleDeleteRecomment = (recommentId) => {
+        axios.delete(`/posts/${postId}/recomments/${recommentId}`)
+            .then(() => {
+                setComments(prev => prev.map(c => ({
+                    ...c,
+                    recomments: c.recomments ? c.recomments.filter(r => r.id !== recommentId) : []
+                })));
+                alert("답글 삭제 완료");
+            })
+            .catch(() => alert("답글 삭제 실패"));
     };
 
     const handleLike = () => {
@@ -185,7 +244,7 @@ export default function PostView() {
                     </h1>
                     <div className="post-meta">
                         <span className="author">{post.author}</span>
-                        <span className="date">{post.date}</span>
+                        <span className="date">{toKST(post.date)}</span>
                         <span className="views">조회 {post.viewCount}</span>
                         <span className="likes">좋아요 {likeCount}</span>
                     </div>
@@ -210,67 +269,76 @@ export default function PostView() {
 
             <div className="comment-section">
                 <h3>💬 댓글 ({totalComments})</h3>
-                <div className="comment-input">
-                    <input
-                        type="text"
-                        value={newComment}
-                        onChange={e => setNewComment(e.target.value)}
-                        placeholder="댓글을 입력하세요"
-                    />
-                    <button onClick={handleAddComment} className="post-button">
-                        작성
-                    </button>
-                </div>
-                {!comments.length ? (
-                    <p>댓글이 없습니다.</p>
-                ) : (
-                    <ul className="comment-list">
-                        {comments.map(cmt => (
-                            <li key={cmt.id} className="comment-item">
-                                <strong>{cmt.author}</strong>: {cmt.content}
-                                {userInfo?.userid === cmt.authorId && (
-                                    <button onClick={() => handleDeleteComment(cmt.id)} className="post-button">
-                                        댓글삭제
-                                    </button>
-                                )}
-                                <button onClick={() => setRecommentingTo(cmt.id)} className="post-button">
-                                    답글쓰기
-                                </button>
-
-                                {cmt.recomments?.map(re => (
-                                    <div key={re.id} className="recomment-item">
-                                        <strong>{re.author}</strong>: {re.content}
-                                        {userInfo?.userid === re.authorId && (
-                                            <button
-                                                onClick={() => handleDeleteRecomment(cmt.id, re.id)}
-                                                className="post-button"
-                                            >
-                                                답글삭제
-                                            </button>
-                                        )}
-                                    </div>
-                                ))}
-
-                                {recommentingTo === cmt.id && (
-                                    <div className="comment-input">
-                                        <input
-                                            type="text"
-                                            value={recommentContent}
-                                            onChange={e => setRecommentContent(e.target.value)}
-                                            placeholder="답글을 입력하세요"
-                                        />
-                                        <button onClick={() => handleAddRecomment(cmt.id)} className="post-button">
-                                            작성
-                                        </button>
-                                    </div>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-
-
+                {userInfo?.userid ?
+                    <div className="comment-input">
+                        <input
+                            type="text"
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="댓글을 입력하세요"
+                            style={{ width: "80%", padding: "5px" }}
+                        />
+                        <button onClick={handleAddComment} className='post-button'>작성</button>
+                    </div>
+                    : ""}
             </div>
+
+            {!comments.length ? (
+                <p>댓글이 없습니다.</p>
+            ) : (
+                <ul className="comment-list">
+                    {comments.map(cmt => (
+                        <li key={cmt.id} className="comment-item">
+                            <strong>{cmt.author}</strong>: {cmt.content}
+                            {userInfo?.userid === cmt.authorId && (
+                                <button onClick={() => handleDeleteComment(cmt.id)} className="post-button">
+                                    댓글삭제
+                                </button>
+                            )}
+
+                            {userInfo?.userid ?
+                                <>
+                                    <button onClick={() => setRecommentingTo(cmt.id)} className="post-button">답글쓰기</button>
+                                    {cmt.recomments && cmt.recomments.map(re => (
+                                        <div key={re.id} style={{ marginLeft: "20px", paddingTop: "2px" }}>
+                                            <strong>{re.author}</strong>: {re.content}
+                                            {userInfo?.userid === re.authorId && (
+                                                <button onClick={() => handleDeleteRecomment(re.id)} className="post-button">답글삭제</button>
+                                            )}
+                                        </div>
+                                    ))}
+                                </>
+                                :
+                                <>
+                                    {cmt.recomments && cmt.recomments.map(re => (
+                                        <div key={re.id} style={{ marginLeft: "20px", paddingTop: "2px" }}>
+                                            <strong>{re.author}</strong>: {re.content}
+                                            {userInfo?.userid === re.authorId && (
+                                                <button onClick={() => handleDeleteRecomment(re.id)} className="post-button">답글삭제</button>
+                                            )}
+                                        </div>
+                                    ))}
+                                </>
+                            }
+                            {recommentingTo === cmt.id && (
+                                <div className="comment-input">
+                                    <input
+                                        type="text"
+                                        value={recommentContent}
+                                        onChange={e => setRecommentContent(e.target.value)}
+                                        placeholder="답글을 입력하세요"
+                                    />
+                                    <button onClick={() => handleAddRecomment(cmt.id)} className="post-button">
+                                        작성
+                                    </button>
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            )}
+
+
         </div>
     );
 }

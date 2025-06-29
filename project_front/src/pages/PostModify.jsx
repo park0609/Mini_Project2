@@ -6,6 +6,7 @@ import axios from 'axios';
 //const LazyEditor = React.lazy(() => import('@toast-ui/react-editor'));
 //import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
+import './PostView.css';
 
 
 const UpdateWrite = () => {
@@ -163,9 +164,9 @@ const UpdateWrite = () => {
 
                 {/* 버튼 */}
                 <div style={{ textAlign: "center" }}>
-                    <button type="submit" style={{ marginRight: "10px" }}>등록</button>
+                    <button type="submit" className='post-button'>등록</button>
                     <Link to="/boardlist">
-                        <button type="button">목록</button>
+                        <button type="button" className='post-button'>목록</button>
                     </Link>
                 </div>
             </form >

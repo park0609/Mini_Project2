@@ -18,6 +18,11 @@
     cursor: pointer;
 }
 
+thead>th {
+    background-color: #AEC8A4;
+    font-weight: bold;
+}
+
 .board-table {
     width: 100%;
     border-collapse: collapse;
@@ -36,8 +41,13 @@
     font-weight: bold;
 }
 
+/* 수정 */
+.board-table td:nth-child(2) {
+    width: 46%;
+}
+
 .board-table .odd {
-    background-color: #fafafa;
+    background-color: #f5f5f5;
 }
 
 .board-table .even {
