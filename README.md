@@ -1,5 +1,6 @@
 # 자격증 정보, 시험 및 정보공유 사이트
-![image.png](attachment:efe4655b-eeb3-4d32-8e7c-ff2867befc44:image.png)
+![미니프로젝트 로고](https://github.com/user-attachments/assets/e3f28221-2d84-45c6-b811-4c249c0303e3)
+
 
 # 🎓 합격할 sudo!
 
