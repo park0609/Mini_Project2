@@ -71,7 +71,7 @@
 ---
 
 # **🏭 홈페이지 구조**
-![Uploading 설계도.png…]()
+<img width="1435" alt="설계도" src="https://github.com/user-attachments/assets/61398f91-f167-40ee-b4e2-7ca143fba8b6" />
 
 
 
