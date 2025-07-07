@@ -95,34 +95,35 @@
 
 - 메인 페이지
 
-![image.png](attachment:d291755a-e0bb-467c-ae72-f9ee3770c87a:image.png)
+<img src="./mini2_image/mini2_main.png" width="1000" heigth="800">
 
 - 시험일정
 
-![image.png](attachment:b82b682d-cad7-4640-ae1f-589aa14e8ce8:image.png)
+<img src="./mini2_image/mini2_calendar.png" width="1000" heigth="800">
 
 - 로그인 화면
 
-![image.png](attachment:258fe0cc-1255-4931-ba16-bbf71277b3cd:image.png)
+<img src="./mini2_image/mini2_login.png" width="1000" heigth="800">
 
 - 회원가입 화면
 
-![image.png](attachment:24edcee9-9a1c-40f7-8b7f-a620999c055c:image.png)
+<img src="./mini2_image/mini2_user_create.png" width="1000" heigth="800">
 
 - 마이페이지
-
-![image.png](attachment:e5954dce-10f9-4012-babc-c82de0069dca:image.png)
+  
+<img src="./mini2_image/mini2_mypage.png" width="1000" heigth="800">
 
 - 자격증 검색 페이지
     
-    ![image.png](attachment:c219a819-b7e3-4458-8d30-b2e7dfc98794:image.png)
+<img src="./mini2_image/mini2_quali.png" width="1000" heigth="800">
     
-    ![image.png](attachment:1bafe403-2a83-4de6-ad30-9cab872dfb8f:image.png)
+
     
 - 자유 게시판
 
-![image.png](attachment:048131d9-3818-4a2d-a035-72681c26931d:image.png)
+<img src="./mini2_image/mini2_board_list.png" width="1000" heigth="800">
 
-![image.png](attachment:79aa8f9b-0ce1-4628-aadf-c56628336e46:image.png)
+<img src="./mini2_image/mini2_board_write.png" width="1000" heigth="800">
 
+<img src="./mini2_image/mini2_board_view.png" width="1000" heigth="800">
 ---
